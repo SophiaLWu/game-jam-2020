@@ -7,38 +7,34 @@ class Player extends Phaser.GameObjects.Graphics {
 
     // physics
     this.player = this.scene.physics.add.sprite(100, 450, 'dude');
-    this.player.body.setGravityY(300);
-    this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
   }
 
   update() {
+    let direction = {
+      x : 0,
+      y : 0
+    };
+
     if (this.cursors.left.isDown) {
-      this.moveLeft();
-    } else if (this.cursors.right.isDown) {
-      this.moveRight();
-    } else {
-      this.turn();
+      direction['x'] -= 1;
     }
-
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-450);
+    if (this.cursors.right.isDown) {
+      direction['x'] += 1;
     }
+    if (this.cursors.up.isDown) {
+      direction['y'] -= 1;
+    }
+    if (this.cursors.down.isDown) {
+      direction['y'] += 1;
+    }
+    this.move(direction);
   }
 
-  moveLeft() {
-    this.player.setVelocityX(-160);
-    this.player.anims.play('left', true);
-  }
-
-  moveRight() {
-    this.player.setVelocityX(160);
-    this.player.anims.play('right', true);
-  }
-
-  turn() {
-    this.player.setVelocityX(0);
-    this.player.anims.play('turn');
+  move(direction) {
+    const speed = 160;
+    this.player.setVelocityX(speed * direction.x);
+    this.player.setVelocityY(speed * direction.y);
   }
 }
 
