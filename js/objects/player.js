@@ -11,7 +11,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.player = this.scene.physics.add.sprite(100, 450, 'dude');
     this.player.setCollideWorldBounds(true);
     this.maxHealth = 10;
-    this.health = maxHealth;
+    this.health = this.maxHealth;
   }
 
   update() {
