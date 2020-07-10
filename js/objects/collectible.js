@@ -15,7 +15,7 @@ class Collectible extends Phaser.GameObjects.Image {
   }
 
   onCollision() {
-    this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.stomach_contents_max)
+    this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.STOMACH_CONTENTS_MAX)
     this.collectible.disableBody(true, true)
   }
 }
