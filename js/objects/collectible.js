@@ -8,15 +8,14 @@ class Collectible extends Phaser.GameObjects.Image {
     // this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     // physics
-    this.collectible = this.scene.physics.add.image(this.x, this.y, this.texture.key)
+    this.collectible = this.scene.physics.add.image(this.x, this.y, this.texture.key);
   }
 
   update() {
   }
 
   onCollision() {
-    this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.STOMACH_CONTENTS_MAX)
-    this.collectible.disableBody(true, true)
+    this.collectible.disableBody(true, true);
   }
 }
 
