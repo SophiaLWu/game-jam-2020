@@ -47,7 +47,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
 
   pickUpFood(food) {
     food.onCollision();
-    this.player.addHealth(1);
+    this.player.heal(1);
     const {x, y} = this.getRandomSpawnLocation();
     this.createFood(x, y);
   }
