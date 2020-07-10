@@ -1,3 +1,4 @@
+import Ecosystem from "../objects/ecosystem.js"
 import Player from "../objects/player.js"
 
 class GameScene extends Phaser.Scene {
@@ -23,7 +24,8 @@ class GameScene extends Phaser.Scene {
     this.platforms.create(50, 250, 'ground');
     this.platforms.create(750, 220, 'ground');
 
-    this.player = new Player({ scene: this, opt: {} })
+    this.player = new Player({ scene: this, opt: {} });
+    this.ecosystem = new Ecosystem({ scene: this, opt: {} });
 
     this.anims.create({
       key: 'left',
@@ -50,7 +52,10 @@ class GameScene extends Phaser.Scene {
 
   update() {
     this.player.update();
+    this.ecosystem.update();
   }
 }
+
+
 
 export default GameScene;

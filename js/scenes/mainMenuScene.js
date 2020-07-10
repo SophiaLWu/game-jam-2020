@@ -15,7 +15,7 @@ class MainMenuScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(20, CONSTANTS.height / 2, "Press S to play this sweet sweet game", { fontSize: '32px', fill: '#fff' });
+    this.add.text(20, CONSTANTS.SCREEN_HEIGHT / 2, "Press S to play this sweet sweet game", { fontSize: '32px', fill: '#fff' });
   }
 
   update() {

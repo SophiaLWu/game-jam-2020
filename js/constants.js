@@ -1,6 +1,7 @@
 const CONSTANTS = {
-  width: 800,
-  height: 600,
+  SCREEN_WIDTH: 800,
+  SCREEN_HEIGHT: 600,
+  ONE_OVER_SQRT_TWO: 1.0/Math.sqrt(2),
 };
 
 export { CONSTANTS };
