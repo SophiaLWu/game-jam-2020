@@ -67,18 +67,7 @@ class GameScene extends Phaser.Scene {
   update() {
     this.player.update();
     this.villager.update();
-    this.collectible.update();
-    this.stomachContentsText.setText(this.stomach_contents);
-    this.ecosystem.update();
-  }
-
-  collideWithCollectible() {
-    this.collectible.onCollision();
-  }
-
-  collideWithVillager() {
-    this.villager.onCollision();
-    this.player.onCollision();
+    //this.stomachContentsText.setText(this.stomach_contents);
     this.ecosystem.update();
   }
 }
