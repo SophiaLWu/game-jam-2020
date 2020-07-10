@@ -61,6 +61,10 @@ class Player extends Phaser.GameObjects.Graphics {
   heal(amount) {
     this.health = Math.max(this.health + amount, this.maxHealth);
   }
+
+  onCollision() {
+    this.damage(1);
+  }
 }
 
 export default Player;

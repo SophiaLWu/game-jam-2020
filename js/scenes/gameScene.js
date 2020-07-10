@@ -1,6 +1,8 @@
 import Ecosystem from "../objects/ecosystem.js"
 import Player from "../objects/player.js"
 import Collectible from "../objects/collectible.js";
+import Villager from "../objects/villager.js"
+
 import { CONSTANTS } from "../constants.js";
 
 class GameScene extends Phaser.Scene {
@@ -9,7 +11,7 @@ class GameScene extends Phaser.Scene {
   }
 
   init() {
-    this.stomach_contents = CONSTANTS.stomach_contents_starting
+    this.stomach_contents = CONSTANTS.STOMACH_CONTENTS_STARTING
   }
 
   preload() {
@@ -32,6 +34,8 @@ class GameScene extends Phaser.Scene {
     this.platforms.create(750, 220, 'ground');
 
     this.player = new Player({ scene: this, opt: {} });
+    this.villager = new Villager({ scene: this, opt: {} });
+    this.collectible = new Collectible({ scene: this, x: 50, y: 50, texture: 'star', frame: {}});
     this.ecosystem = new Ecosystem({ scene: this, opt: {} });
 
     this.anims.create({
@@ -55,14 +59,14 @@ class GameScene extends Phaser.Scene {
     });
 
     this.physics.add.collider(this.player.player, this.platforms);
-
-    this.collectible = new Collectible({ scene: this, x: 50, y: 50, texture: 'star', frame: {}});
     this.stomachContentsText = this.add.text(100, 100, this.stomach_contents, { fontSize: '32px', fill: '#fff' });
     this.physics.add.overlap(this.player.player, this.collectible.collectible, this.collideWithCollectible, null, this);
+    this.physics.add.overlap(this.player.player, this.villager.villager, this.collideWithVillager, null, this);
   }
 
   update() {
     this.player.update();
+    this.villager.update();
     this.collectible.update();
     this.stomachContentsText.setText(this.stomach_contents);
     this.ecosystem.update();
@@ -70,6 +74,11 @@ class GameScene extends Phaser.Scene {
 
   collideWithCollectible() {
     this.collectible.onCollision();
+  }
+
+  collideWithVillager() {
+    this.villager.onCollision();
+    this.player.onCollision();
   }
 }
 
