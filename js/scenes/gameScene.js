@@ -52,7 +52,7 @@ class GameScene extends Phaser.Scene {
 
     this.collectible = new Collectible({ scene: this, x: 50, y: 50, texture: 'star', frame: {}});
     this.add.text(100, 100, CONSTANTS.satiation, { fontSize: '32px', fill: '#fff' });
-    this.physics.add.overlap(this.player.player, this.collectible, this.collideWithCollectible, null, this);
+    this.physics.add.overlap(this.player.player, this.collectible.collectible, this.collideWithCollectible, null, this);
   }
 
   update() {
