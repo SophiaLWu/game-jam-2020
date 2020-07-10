@@ -32,7 +32,10 @@ class GameScene extends Phaser.Scene {
     this.platforms.create(750, 220, 'ground');
 
     this.player = new Player({ scene: this, opt: {} });
-    this.ecosystem = new Ecosystem({ scene: this, opt: {} });
+    this.ecosystem = new Ecosystem({
+      scene: this,
+      opt: {}
+    });
 
     this.anims.create({
       key: 'left',
@@ -55,21 +58,12 @@ class GameScene extends Phaser.Scene {
     });
 
     this.physics.add.collider(this.player.player, this.platforms);
-
-    this.collectible = new Collectible({ scene: this, x: 50, y: 50, texture: 'star', frame: {}});
-    this.stomachContentsText = this.add.text(100, 100, this.stomach_contents, { fontSize: '32px', fill: '#fff' });
-    this.physics.add.overlap(this.player.player, this.collectible.collectible, this.collideWithCollectible, null, this);
   }
 
   update() {
     this.player.update();
-    this.collectible.update();
-    this.stomachContentsText.setText(this.stomach_contents);
+    //this.stomachContentsText.setText(this.stomach_contents);
     this.ecosystem.update();
-  }
-
-  collideWithCollectible() {
-    this.collectible.onCollision();
   }
 }
 

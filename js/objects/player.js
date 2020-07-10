@@ -1,4 +1,4 @@
-const ONE_OVER_SQRT_TWO = 1.0/Math.sqrt(2);
+import { CONSTANTS } from "../constants.js"
 
 class Player extends Phaser.GameObjects.Graphics {
   constructor(params) {
@@ -39,8 +39,8 @@ class Player extends Phaser.GameObjects.Graphics {
   move(direction) {
     const speed = 160;
     if (direction.x !== 0 && direction.y !== 0) {
-      direction.x *= ONE_OVER_SQRT_TWO;
-      direction.y *= ONE_OVER_SQRT_TWO;
+      direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
+      direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
     this.player.setVelocityX(speed * direction.x);
