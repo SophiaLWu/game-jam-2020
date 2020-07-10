@@ -1,3 +1,5 @@
+const ONE_OVER_SQRT_TWO = 1.0/Math.sqrt(2);
+
 class Player extends Phaser.GameObjects.Graphics {
   constructor(params) {
     super(params.scene, params.opt);
@@ -8,6 +10,8 @@ class Player extends Phaser.GameObjects.Graphics {
     // physics
     this.player = this.scene.physics.add.sprite(100, 450, 'dude');
     this.player.setCollideWorldBounds(true);
+    this.maxHealth = 10;
+    this.health = maxHealth;
   }
 
   update() {
@@ -33,8 +37,28 @@ class Player extends Phaser.GameObjects.Graphics {
 
   move(direction) {
     const speed = 160;
+    if (direction.x !== 0 && direction.y !== 0) {
+      direction.x *= ONE_OVER_SQRT_TWO;
+      direction.y *= ONE_OVER_SQRT_TWO;
+    }
+
     this.player.setVelocityX(speed * direction.x);
     this.player.setVelocityY(speed * direction.y);
+  }
+
+  kill() {
+    console.log("You're dead!");
+  }
+
+  damage(amount) {
+    this.health = this.health - amount;
+    if (this.health <= 0) {
+      kill();
+    }
+  }
+
+  heal(amount) {
+    this.health = Math.max(this.health + amount, this.maxHealth);
   }
 }
 
