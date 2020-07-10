@@ -1,8 +1,9 @@
 const CONSTANTS = {
-  width: 800,
-  height: 600,
-  stomach_contents_starting: 50,
-  stomach_contents_max: 100
+  ONE_OVER_SQRT_TWO: 1.0/Math.sqrt(2),
+  SCREEN_HEIGHT: 600,
+  SCREEN_WIDTH: 800,
+  STOMACH_CONTENTS_MAX: 100,
+  STOMACH_CONTENTS_STARTING: 50,
 };
 
 export { CONSTANTS };
