@@ -171,7 +171,7 @@ class Player extends Phaser.GameObjects.Graphics {
 
   kill() {
     console.log("You're dead!");
-    gameOver = true;
+    this.gameOver = true;
   }
 
   damage(amount) {

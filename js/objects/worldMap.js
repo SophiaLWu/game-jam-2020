@@ -33,8 +33,8 @@ const FILE_NAMES = {
     'plant_4.png', // 22 - Petal bush teal side view
   ],
   buildings: [
-    'hut_1.png', // 23 - Hut w/ window
-    'hut_2.png', // 24 - Hut w/o window
+    'hut_1_small.png', // 23 - Hut w/ window
+    'hut_2_small.png', // 24 - Hut w/o window
     'sign_2.png', // 25 - Sign directions
     'sign_3.png', // 26 - Sign text
   ],
@@ -60,9 +60,9 @@ class WorldMap {
 
     const level = [
       [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ],
-      [  1,  11,   2,   3,   4,   5,   6,   7,   8,   9,   1 ],
-      [  1,  12,  13,  14,  15,  16,  17,  18,  19,  20,   1 ],
-      [  1,  23,  24,  25,  26,  27,  28,  29,  30,  31,   1 ],
+      [  1,  23,  24,   3,   4,   5,   6,   7,   8,   9,   1 ],
+      [  1,  12,   0,   0,   0,  16,  17,  18,  19,  20,   1 ],
+      [  1,   5,   0,   0,   0,  27,  28,  29,  30,  31,   1 ],
       [  1,  34,  35,   0,  13,  14,   0,   0,   0,   0,   1 ],
       [  1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1 ],
       [  1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1 ],
@@ -81,8 +81,14 @@ class WorldMap {
         this.createObstacle(id, x, y);
       });
     });
-
-    new Obstacle({scene: params.scene, x: 800, y: 600, filename: 'snowman.png'})
+    
+    // Create the town
+    this.createObstacle(23, 1000, 600)
+    this.createObstacle(23, 800, 600)
+    this.createObstacle(12, 720, 710)
+    this.createObstacle(10, 835, 770)
+    this.createObstacle(24, 850, 600)
+    this.createObstacle(24, 890, 750)
   }
 
   getObstacles() {
@@ -101,9 +107,9 @@ class WorldMap {
     } else if (id < 23) {
       filename = FILE_NAMES.bushes[id - 14];
     } else if (id < 27) {
-      filename = FILE_NAMES.buildings[id - 14];
+      filename = FILE_NAMES.buildings[id - 23];
     } else if (id < 36) {
-      filename = FILE_NAMES.trees[id - 27];
+      filename = FILE_NAMES.trees[id - 29];
     }
     if (!filename) return false;
     new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename});
