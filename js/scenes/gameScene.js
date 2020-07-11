@@ -45,7 +45,7 @@ class GameScene extends Phaser.Scene {
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
     this.cameras.main.startFollow(this.player.player);
-    this.cameras.main.setBackgroundColor('rgb(248, 250, 252)');
+    this.cameras.main.setBackgroundColor('rgb(238, 240, 246)');
   }
 
   update() {

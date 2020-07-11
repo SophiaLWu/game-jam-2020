@@ -27,26 +27,44 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   findNewFood() {
-    this.targetFood = Food.getClosestAvailableFood(this.physicsBody.x, this.physicsBody.y);
-    console.log(this.targetFood.id);
-    if (this.targetFood) {
-      this.targetFood.addEatListener(() => this.findNewFood());
+    const lastFoodTarget = this.targetFood;
+    this.targetFood = null;
+    const targetFood = Food.getClosestAvailableFood(this.physicsBody.x, this.physicsBody.y);
+    if (targetFood) {
+      targetFood.addEatListener(() => this.findNewFood());
+      if (targetFood !== lastFoodTarget) {
+        setTimeout((() => {
+          this.targetFood = targetFood;
+        }).bind(this), CONSTANTS.FOOD_FIND_DELAY_MILLIS_MIN);
+      }
     }
+  }
+
+  getFoodFindDelay() {
+    return 
+      CONSTANTS.FOOD_FIND_DELAY_MILLIS_MIN +
+      Math.random() * 
+        (CONSTANTS.FOOD_FIND_DELAY_MILLIS_MAX -
+         CONSTANTS.FOOD_FIND_DELAY_MILLIS_MIN)
   }
 
   update() {
     this.setVillagerMovement();
   }
 
-  setVillagerMovement() {
-    const epsilson = 2;
-    var foodX = this.targetFood.x
-    var foodY = this.targetFood.y
-
+  getDirectionTowardFood() {
     let direction = {
       x: 0,
       y: 0
     };
+
+    if (this.targetFood === null) {
+      return direction;
+    }
+
+    const epsilson = 2;
+    var foodX = this.targetFood.x
+    var foodY = this.targetFood.y
 
     if (this.physicsBody.x < (foodX - epsilson)) {
       direction['x'] += 1;
@@ -58,6 +76,11 @@ class Villager extends Phaser.GameObjects.Graphics {
     } else if (this.physicsBody.y > (foodY + epsilson)) {
       direction['y'] -= 1;
     }
+    return direction;
+  }
+
+  setVillagerMovement() {
+    const direction = this.getDirectionTowardFood()
 
     this.move(direction);
   }
