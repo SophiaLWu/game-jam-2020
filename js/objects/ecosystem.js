@@ -106,10 +106,10 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.villagerOverlapTriggered = true;
 
     if (villager.isAngry()) {
-      this.player.damage(1);
+      this.player.onCollision();
     }
 
-    if (false) { // TODO: when player is a werewolf
+    if (this.player.isWerewolf) {
       villager.kill(); 
 
       var newVillagers = 0;
