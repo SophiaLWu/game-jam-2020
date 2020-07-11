@@ -1,6 +1,6 @@
 import { manhattanDistance } from "../utils.js"
 import { CONSTANTS } from "../constants.js"
-import { HITBOXES } from "../constants.js"
+import { HITBOXES } from "../hitboxes.js"
 import Collectible from "./collectible.js";
 import Villager from "./villager.js";
 
