@@ -1,5 +1,6 @@
 import { manhattanDistance } from "../utils.js"
 import { CONSTANTS } from "../constants.js"
+import { HITBOXES } from "../constants.js"
 import Collectible from "./collectible.js";
 import Villager from "./villager.js";
 
@@ -17,6 +18,18 @@ class Food extends Collectible {
     this.physicsBody.getFood = () => this;
     this.onEatListeners = [];
     allFood.push(this);
+    this.setupHitbox();
+  }
+
+  setupHitbox() {
+    const { x1, y1, x2, y2 } = HITBOXES['41.png'];
+    const width = x2 - x1;
+    const height = y2 - y1;
+    const newX = Math.floor((x1 + x2) * 0.5);
+    const newY = Math.floor((y1 + y2) * 0.5);
+
+    this.physicsBody.body.setSize(width, height, 0, 0);
+    this.physicsBody.body.setOffset(newX, newY);
   }
 
   update() {
