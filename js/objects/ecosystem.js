@@ -38,6 +38,8 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     }
 
     this.physics.add.collider(this.villagerBodies, this.foodBodies, this.villagerEatsFood, null, this );
+
+    this.physics.add.collider(this.player.physicsBody, this.villagerBodies, this.collideIntoVillager, null, this );
   }
 
   createFood(x, y) {
@@ -91,39 +93,37 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   pickUpFood(playerBody, foodBody) { //AndrewC: food here is physics body only, can't use methods from Food (or Collectible) classes.
     foodBody.getFood().onCollision();
     this.player.heal(1); // AndrewC: this shit only works because there's only one player
-    this.player.eat();
+    this.player.eatFood();
 
     const {x, y} = this.getRandomSpawnLocation(playerBody.x, playerBody.y);
     this.createFood(x, y);
   }
 
-  villagerEatsFood(villager, foodBody) {
-    const {x, y} = this.getRandomSpawnLocation(villager.x, villager.y);
+  villagerEatsFood(villagerBody, foodBody) {
+    const {x, y} = this.getRandomSpawnLocation(villagerBody.x, villagerBody.y);
     this.createFood(x, y);
     foodBody.getFood().onCollision();
   }
 
-  collideIntoVillager(villager) { // AndrewC: this needs to be re-written to use colliders
-    if(this.villagerOverlapTriggered && this.villagerOverlapTrigger){
-      this.physics.world.removeCollider(this.villagerOverlapTrigger);
-      return;
-    };
-
-    this.villagerOverlapTriggered = true;
-
-    if (villager.isAngry()) {
-      this.player.onCollision();
-    }
+  collideIntoVillager(playerBody, villagerBody) {
+    let villager = villagerBody.getVillager();
 
     if (this.player.isWerewolf) {
+      this.player.turnHuman();
       villager.kill(); 
 
       var newVillagers = 0;
+
+      let {lastX, lastY} = {lastX: playerBody.x, lastY: playerBody.Y};
       while(newVillagers <= CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
-        const {x, y} = this.getRandomSpawnLocation();
+        const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
+        lastX = x;
+        lastY = y;
         this.createVillager(x, y);
         newVillagers++;
-     }
+      }
+     } else if (villager.isAngry()) {
+      this.player.damage(1);
     }
   }
 }

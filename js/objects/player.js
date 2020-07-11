@@ -1,5 +1,6 @@
 import { CONSTANTS } from "../constants.js";
 import Bar from "../objects/bar.js";
+import Villager from "../objects/villager.js";
 
 const MAX_HEALTH = 100;
 
@@ -26,7 +27,7 @@ class Player extends Phaser.GameObjects.Graphics {
     
     //Speeds
     this.humanSpeed = 400;
-    this.werewolfSpeed = this.humanSpeed*3;
+    this.werewolfSpeed = this.humanSpeed*2;
     this.speed = this.humanSpeed;
 
     this.target;
@@ -36,6 +37,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
     this.hungerKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
     this.eatKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+    this.turnWerewolfKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE);
 
     //Hunger variables and timer
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
@@ -54,7 +56,7 @@ class Player extends Phaser.GameObjects.Graphics {
       args: [1],
       callbackScope: this,
       loop: true
-  });
+    });
 
     //Werewolf state variables
     this.isWerewolf = false;
@@ -71,8 +73,8 @@ class Player extends Phaser.GameObjects.Graphics {
       y: 0
     };
 
-    if(this.isWerewolf){
-      this.stepTowardTarget(this.target);
+    if (this.isWerewolf) {
+      this.stepTowardVillager();
     } else
     {
       if (this.cursors.left.isDown) {
@@ -97,12 +99,13 @@ class Player extends Phaser.GameObjects.Graphics {
         this.stomachContents = 0;
       }
       if (this.eatKey.isDown) {
-        this.eat();
+        this.eatFood();
       }
-
-
+      if (this.turnWerewolfKey.isDown) {
+        this.turnWerewolf();
+      }
+      this.move(direction);
     }
-    this.move(direction);
   }
 
   move(direction) {
@@ -130,66 +133,101 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   heal(amount) {
-
     this.health = Math.min(this.health + amount, MAX_HEALTH);
     this.healthBar.update(this.health);
-
   }
 
-  eat() {
+  eatFood() {
     this.stomachContents = Math.min(this.stomachContents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
+    this.updateStomatchBar();
+  }
 
+  updateStomatchBar() {
     this.stomachBar.update(this.stomachContents);
   }
 
   getHungry(amount) {
     this.stomachContents = Math.max(this.stomachContents - amount, 0);
-
-    this.stomachBar.update(this.stomachContents);
+    this.updateStomatchBar();
 
     if (this.stomachContents == 0 && !this.isWerewolf)
     {
       this.turnWerewolf();
     }
-
   }
 
   turnWerewolf() {
     this.isWerewolf = true;
     this.physicsBody.setTint(0xff0000);
     this.speed = this.werewolfSpeed;
-    this.determineTarget();
+    this.determineVillagerToConsume();
     console.log("Yer a Were-wuff, 'Erry!");
+  }
 
+  turnHuman() {
+    this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX;
+    this.updateStomatchBar();
+    this.isWerewolf = false;
+    this.physicsBody.clearTint();
+    this.speed = this.humanSpeed;
+    this.resetVillagerToConsume();
+    console.log("You ate a big one heh. Back to a a human you go.");
   }
 
   isWerewolf() {
-    return this.isWerewolf
+    return this.isWerewolf;
   }
 
-  turnHuman(){
-    this.isWerewolf = false;
-    this.physicsBody.setTint(0x000000);
-    this.speed = this.humanSpeed;
+  determineVillagerToConsume(){
+    this.villagerToConsume = Villager.getClosestVillager(this.physicsBody.x, this.physicsBody.y);
   }
 
-  onCollision() {
-    if (!this.isWerewolf)
-    {
-      this.damage(1);
-    } else
-    {
-      //max stomach contents
-      //turn back to human
+  resetVillagerToConsume() {
+    this.villagerToConsume = null;
+  }
+
+  stepTowardVillager(){
+    if (!this.villagerToConsume) { return };
+
+    const epsilson = 4;
+    var villagerX = this.villagerToConsume.physicsBody.x
+    var villagerY = this.villagerToConsume.physicsBody.y
+
+    let direction = {
+      x: 0,
+      y: 0
+    };
+
+    if (this.physicsBody.x < (villagerX - epsilson)) {
+      direction['x'] += 1;
+    } else if (this.physicsBody.x > (villagerX + epsilson)) {
+      direction['x'] -= 1;
     }
+    if (this.physicsBody.y < (villagerY - epsilson)) {
+      direction['y'] += 1;
+    } else if (this.physicsBody.y > (villagerY + epsilson)) {
+      direction['y'] -= 1;
+    }
+
+    this.autoMove(direction);
   }
 
-  determineTarget(){
+  autoMove(direction) {
+    if (direction.x !== 0 && direction.y !== 0) {
+      direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
+      direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
+    }
 
+    this.physicsBody.setVelocityX(this.speed * direction.x);
+    this.physicsBody.setVelocityY(this.speed * direction.y);
+    this.physicsBody.setDepth(this.getFeetLocation().y);
   }
 
-  stepTowardTarget(target){
-
+  getFeetLocation() {
+    return {
+      x: this.physicsBody.x,
+      y: this.physicsBody.y + 20,
+    };
   }
 }
 
