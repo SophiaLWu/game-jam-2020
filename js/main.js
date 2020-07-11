@@ -1,5 +1,6 @@
 import { CONSTANTS } from "./constants.js"
 import GameScene from "./scenes/gameScene.js"
+import GameOverScene from "./scenes/gameOverScene.js"
 import MainMenuScene from "./scenes/mainMenuScene.js"
 
 const config = {
@@ -13,7 +14,7 @@ const config = {
       debug: false
     }
   },
-  scene: [MainMenuScene, GameScene]
+  scene: [MainMenuScene, GameScene, GameOverScene]
 };
 
 export class Game extends Phaser.Game {

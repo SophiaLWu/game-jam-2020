@@ -1,0 +1,188 @@
+{
+	"textures": [
+		{
+			"image": "wolfAttack.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 777,
+				"h": 104
+			},
+			"scale": 0.125,
+			"frames": [
+				{
+					"filename": "__Wolf_Attack_000.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "__Wolf_Attack_007.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "__Wolf_Attack_001.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 111,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "__Wolf_Attack_002.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 222,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "__Wolf_Attack_003.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 333,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "__Wolf_Attack_004.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 444,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "__Wolf_Attack_005.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 555,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "__Wolf_Attack_006.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 666,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:ee00f4d83d7beab392d5f85ab86e8e7c:5a59253c12499e0803455fd5fddbc768:2791568c3b23d33e795c93b08c1bc06a$"
+	}
+}

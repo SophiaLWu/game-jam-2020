@@ -1,7 +1,6 @@
 import Ecosystem from "../objects/ecosystem.js"
 import Player from "../objects/player.js"
 import Collectible from "../objects/collectible.js";
-import Villager from "../objects/villager.js"
 import WorldMap from "../objects/worldMap.js"
 
 import { CONSTANTS } from "../constants.js";
@@ -10,10 +9,7 @@ import { HITBOXES } from "../hitboxes.js";
 class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' });
-  }
-
-  init() {
-    this.stomach_contents = CONSTANTS.STOMACH_CONTENTS_STARTING
+    this.gameOver = false;
   }
 
   preload() {
@@ -22,15 +18,28 @@ class GameScene extends Phaser.Scene {
         this.load.image(filename, '../../assets/' + filename);
       }
     }
+    this.load.image('villager', '../../assets/star.png');
     this.load.image('apple', '../../assets/41-small.png');
-    this.load.spritesheet('dude', '../../assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+
+    //this.load.multiatlas('princessIdle', '../../assets/Princess/PrincessIdle.json', '../../assets');
+    //this.load.multiatlas('princessAtlas', '../../assets/Princess.json', '../../assets/Princess');
+
+    //Princess Animations
+	  this.load.spritesheet('princessIdle', '../../assets/Princess/princessIdle.png', { frameWidth: 111, frameHeight: 104 });
+    this.load.spritesheet('princessRun', '../../assets/Princess/princessRun.png', { frameWidth: 111, frameHeight: 104});
+    this.load.image('princess', '../../assets/Princess/princess.png');
+
+    //Wolf Animations
+    this.load.spritesheet('wolfRun', '../../assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
+    this.load.spritesheet('wolfAttack', '../../assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
+
   }
 
   create() {
     this.physics.world.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
 
-    this.player = new Player({ scene: this, opt: {} });
-    this.collectible = new Collectible({ scene: this, x: 50, y: 50, texture: 'star', frame: {}});
+    this.player = new Player({camera: this.cameras.main, scene: this, opt: {} });
+    
     this.ecosystem = new Ecosystem({
       scene: this,
       opt: {}
@@ -40,18 +49,22 @@ class GameScene extends Phaser.Scene {
       opt: {}
     });
 
-    this.physics.add.collider(this.player.player, this.worldMap.getObstacles());
+    this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
 
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
-    this.cameras.main.startFollow(this.player.player);
-    this.cameras.main.setBackgroundColor('rgb(248, 250, 252)');
+    this.cameras.main.startFollow(this.player.physicsBody, false, 0.4, 0.4);
+    this.cameras.main.setBackgroundColor('rgb(238, 240, 246)');
+    console.log(this.cameras.main);
   }
 
   update() {
     this.player.update();
-    //this.stomachContentsText.setText(this.stomach_contents);
     this.ecosystem.update();
+
+    if (this.gameOver) {
+      this.scene.start("GameOverScene");
+    }
   }
 }
 

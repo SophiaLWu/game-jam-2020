@@ -1,13 +1,13 @@
 const HITBOXES = {
   '41.png': { // Red Apple
-    ox: 11, // x-center of image
-    oy: 11, // y-center of image
-    x: 34, // x-center of place on ground
-    y: 59, // y-center of place on ground
-    x1: 10, // top-x left corner of hitbox
-    y1: 11, // top-y left corner of hitbox
-    x2: 59, // bottom-x right corner of hitbox
-    y2: 65 // bottom-y right corner of hitbox
+    ox: 13, // x-center of image
+    oy: 17, // y-center of image
+    x: 13, // x-center of place on ground
+    y: 28, // y-center of place on ground
+    x1: 0, // top-x left corner of hitbox
+    y1: 0, // top-y left corner of hitbox
+    x2: 25, // bottom-x right corner of hitbox
+    y2: 31 // bottom-y right corner of hitbox
   },
   '42.png': { // Green Apple
     ox: 35,
@@ -24,8 +24,8 @@ const HITBOXES = {
     oy: 192,
     x: 210,
     y: 239,
-    x1: 50,
-    y1: 131,
+    x1: 45,
+    y1: 1,
     x2: 362,
     y2: 341
   },
@@ -86,14 +86,14 @@ const HITBOXES = {
     y2: 95
   },
   'bush_2.png': {
-    ox: 64,
+    ox: 93,
     oy: 64,
-    x: 113,
-    y: 63,
-    x1: 56,
-    y1: 48,
-    x2: 117,
-    y2: 93
+    x: 97,
+    y: 68,
+    x1: 42,
+    y1: 39,
+    x2: 177,
+    y2: 95
   },
   'bush_3.png': {
     ox: 64,
@@ -135,29 +135,29 @@ const HITBOXES = {
     x: 118,
     y: 73,
   },
-  'hut_1.png': {
-    ox: 256,
-    oy: 256,
-    x: 285,
-    y: 240,
-    x1: 49,
-    y1: 217,
-    x2: 452,
-    y2: 426
+  'hut_1_small.png': {
+    ox: 128,
+    oy: 128,
+    x: 143,
+    y: 120,
+    x1: 24,
+    y1: 108,
+    x2: 226,
+    y2: 213
   },
-  'hut_2.png': {
-    ox: 256,
-    oy: 256,
-    x: 248,
-    y: 396,
-    x1: 39,
-    y1: 204,
-    x2: 459,
-    y2: 458
+  'hut_2_small.png': {
+    ox: 128,
+    oy: 128,
+    x: 124,
+    y: 198,
+    x1: 20,
+    y1: 102,
+    x2: 229,
+    y2: 229
   },
   'log_1.png': {
     ox: 128,
-    oy: 64,
+    oy: 128,
     x: 126,
     y: 65,
     x1: 68,

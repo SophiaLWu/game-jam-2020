@@ -1,5 +1,5 @@
 import { manhattanDistance } from "../utils.js"
-import { CONSTANTS } from "../constants.js"
+import { CONSTANTS, MoodEnum } from "../constants.js"
 import Food from "./food.js";
 import Villager from "./villager.js";
 
@@ -28,9 +28,9 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.createFood(x,y);
     }
 
-    this.physics.add.collider(this.player.player, this.foodBodies, this.pickUpFood, null, this );
+    this.physics.add.collider(this.player.physicsBody, this.foodBodies, this.pickUpFood, null, this );
 
-    for (let i = 0; i < this.startingVillagerAmount; i++){
+    for (let i = 0; i < this.startingVillagerAmount; i++) {
       const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
       lastX = x;
       lastY = y;
@@ -39,8 +39,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
 
     this.physics.add.collider(this.villagerBodies, this.foodBodies, this.villagerEatsFood, null, this );
 
-
-    // this.stomachContentsText = this.add.text(100, 100, this.stomach_contents, { fontSize: '32px', fill: '#fff' });
+    this.physics.add.collider(this.player.physicsBody, this.villagerBodies, this.collideIntoVillager, null, this );
   }
 
   createFood(x, y) {
@@ -55,14 +54,15 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.foodBodies.add(food.physicsBody); // AndrewC: can't add Food objects to groups, only physics bodies.
   }
 
-  createVillager(x, y) {
+  createVillager(x, y, mood=MoodEnum.NORMAL) {
     const villager = new Villager({
       scene: this.scene,
       opt: {
         initialX: x,
         initialY: y,
-        foods: this.foodBodies
-      }
+        foods: this.foodBodies,
+        mood: mood
+      },
     });
     
     this.villagers.push(villager);
@@ -77,52 +77,58 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   }
 
   getRandomSpawnLocation(farX, farY) {
-    let x = farX;
-    let y = farY;
+    let x = farX || 0;
+    let y = farY || 0;
+    let withinBounds = true; //x and y are 0 the first time through, so initially set this to true
+    const minX = CONSTANTS.FOOD_BOUND_BORDER;
+    const minY = CONSTANTS.FOOD_BOUND_BORDER;
+    const maxWidth = CONSTANTS.WORLD_WIDTH - (2 * CONSTANTS.FOOD_BOUND_BORDER);
+    const maxHeight = CONSTANTS.WORLD_HEIGHT - (2 * CONSTANTS.FOOD_BOUND_BORDER);
+
+    let distance = -1
+
     while (manhattanDistance(x, y, farX, farY) < CONSTANTS.MIN_SPAWN_DISTANCE) {
-      x = Math.floor(Math.random() * 800);
-      y = Math.floor(Math.random() * 600);
+      x = minX + Math.floor(Math.random() * maxWidth);
+      y = minY + Math.floor(Math.random() * maxHeight);
     }
     return { x, y };
   }
 
-  pickUpFood(player, foodBody) { //AndrewC: food here is physics body only, can't use methods from Food (or Collectible) classes.
+  pickUpFood(playerBody, foodBody) {
     foodBody.getFood().onCollision();
-    this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
-    this.player.heal(1); // AndrewC: this shit only works because there's only one player
-    this.player.eat();
+    this.player.heal(1);
+    this.player.eatFood();
 
-    const {x, y} = this.getRandomSpawnLocation(player.x, player.y);
+    const {x, y} = this.getRandomSpawnLocation(playerBody.x, playerBody.y);
     this.createFood(x, y);
   }
 
-  villagerEatsFood(villager, foodBody) {
-    const {x, y} = this.getRandomSpawnLocation(villager.x, villager.y);
+  villagerEatsFood(villagerBody, foodBody) {
+    const {x, y} = this.getRandomSpawnLocation(villagerBody.x, villagerBody.y);
     this.createFood(x, y);
     foodBody.getFood().onCollision();
   }
 
-  collideIntoVillager(villager) { // AndrewC: this needs to be re-written to use colliders
-    if(this.villagerOverlapTriggered && this.villagerOverlapTrigger){
-      this.physics.world.removeCollider(this.villagerOverlapTrigger);
-      return;
-    };
-
-    this.villagerOverlapTriggered = true;
-
-    if (villager.isAngry()) {
-      this.player.onCollision();
-    }
+  collideIntoVillager(playerBody, villagerBody) {
+    let villager = villagerBody.getVillager();
 
     if (this.player.isWerewolf) {
+      this.player.turnHuman();
       villager.kill(); 
+      Villager.scareOtherVillagers(playerBody.x, playerBody.y);
 
-      var newVillagers = 0;
-      while(newVillagers <= CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
-        const {x, y} = this.getRandomSpawnLocation();
-        this.createVillager(x, y);
-        newVillagers++;
-     }
+      this.spawnAngryVillagers();
+      
+    } else if (villager.isAngry()) {
+      this.player.damage(1);
+    }
+  }
+
+  spawnAngryVillagers() {
+    var newVillagers = 0;
+    while (newVillagers < CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
+      this.createVillager(CONSTANTS.VILLAGE_X, CONSTANTS.VILLAGE_Y, MoodEnum.ANGRY);
+      newVillagers++;
     }
   }
 }
