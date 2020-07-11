@@ -54,6 +54,11 @@ class Food extends Collectible {
     });
     this.onEatListeners = [];
   }
+
+  setLocation(x, y) {
+    this.physicsBody.setX(x);
+    this.physicsBody.setY(y);
+  }
 }
 
 Food.getAvailableFood = () => {

@@ -166,9 +166,8 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody.disableBody(true, true);
   }
 
-  reset() {
-    this.updateMood(MoodEnum.NORMAL);
-    this.findNewFood();
+  anger() {
+    this.updateMood(MoodEnum.ANGRY);
   }
 
   updateMood(mood) {
