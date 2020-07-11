@@ -23,6 +23,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.DKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
     // physics
+
     this.physicsBody = this.scene.physics.add.sprite(400, 400, 'princess');
     this.physicsBody.setCollideWorldBounds(true);
 
@@ -32,6 +33,7 @@ class Player extends Phaser.GameObjects.Graphics {
     const newY = Math.floor((hitbox.y2 + hitbox.y1) * 0.5);
     this.physicsBody.body.setSize(width, height, 0, 0);
     this.physicsBody.body.setOffset(newX, newY);
+
 
     this.health = MAX_HEALTH;
     this.healthBar = new Bar({
@@ -83,11 +85,7 @@ class Player extends Phaser.GameObjects.Graphics {
     
 
     //Princess Animations
-    // this.runFrameNames = this.scene.anims.generateFrameNames('princessAtlas', {
-    //   start: 1, end: 8, zeroPad: 3, prefix:'Princess/inner/Run/', suffix: '.png'
-    // });
     
-
     this.scene.anims.create({
       key: 'rightPrincess',
       frames: this.scene.anims.generateFrameNumbers('princessRun', { start: 0, end: 7 } ),
@@ -120,11 +118,21 @@ class Player extends Phaser.GameObjects.Graphics {
     } else {
       if (this.cursors.left.isDown || this.AKey.isDown) {
         direction['x'] -= 1;
-        //player.anims.play('leftPrincess', true);
+        this.physicsBody.anims.play('rightPrincess', true);
+
+        if (!this.physicsBody.flipX)
+        {          
+          this.physicsBody.flipX = true;
+        }
       }
       if (this.cursors.right.isDown || this.DKey.isDown) {
         direction['x'] += 1;
         this.physicsBody.anims.play('rightPrincess', true);
+
+        if (this.physicsBody.flipX)
+        {          
+          this.physicsBody.flipX = false;
+        }
       }
       if (this.cursors.up.isDown || this.WKey.isDown) {
         direction['y'] -= 1;
@@ -167,6 +175,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.physicsBody.setVelocityX(this.speed * direction.x);
     this.physicsBody.setVelocityY(this.speed * direction.y);
     this.physicsBody.setDepth(this.getFeetLocation().y);
+
   }
 
   kill() {
