@@ -21,6 +21,7 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.velocity = Math.floor(Math.random() * 100) + 50;
 
     this.findNewFood();
+    
   }
 
   findNewFood() {
@@ -122,9 +123,15 @@ class Villager extends Phaser.GameObjects.Graphics {
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
+    this.setVillagerMoveAnimation(direction);
+
     this.physicsBody.setVelocityX(this.velocity * direction.x);
     this.physicsBody.setVelocityY(this.velocity * direction.y);
     this.physicsBody.setDepth(this.getFeetLocation().y);
+  }
+
+  setVillagerMoveAnimation(direction) {
+
   }
 
   getFeetLocation() {
@@ -201,6 +208,22 @@ Villager.scareOtherVillagers = (playerX, playerY) => {
       villager.updateMood(MoodEnum.SCARED);
     }
   });
+
+Villager.buildVillagerAnimations = () => {
+  this.scene.anims.create({
+    key: 'rightMaleVillager1',
+    frames: this.scene.anims.generateFrameNumbers('maleVillager1', { start: 6, end: 8 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  // this.scene.anims.create({
+  //   key: 'idlePrincess',
+  //   frames: this.scene.anims.generateFrameNumbers('princessIdle', { start: 0, end: 11 } ),
+  //   frameRate: 10,
+  //   repeat: -1
+  // });
+}
 };
 
 export default Villager;

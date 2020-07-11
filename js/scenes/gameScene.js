@@ -33,6 +33,10 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet('wolfRun', '../../assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
     this.load.spritesheet('wolfAttack', '../../assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
 
+    //Villager Animations    
+    this.load.spritesheet('maleVillager1', '../../assets/Villagers/MaleVillager1.png', { frameWidth: 17, frameHeight: 29});
+    this.load.spritesheet('angryMaleVillager1', '../../assets/Villagers/AngryMaleVillager1.png', { frameWidth: 17, frameHeight: 30});
+
   }
 
   create() {
