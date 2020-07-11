@@ -64,7 +64,7 @@ class Villager extends Phaser.GameObjects.Graphics {
 
   findClosestFood() {
     var distancesToFoods = {};
-    this.foods.forEach(function(food) {
+    this.foods.children.iterate(function(food) {
       var distance = distanceBetweenPoints(this.villager.x, food.x, this.villager.y, food.y);
       distancesToFoods[distance] = food;
     }.bind(this));
