@@ -8,7 +8,7 @@ const hitbox = {
   x1: 44,
   y1: 24,
   x2: 65,
-  y2: 84,
+  y2: 73,
 };
 
 class Player extends Phaser.GameObjects.Graphics {

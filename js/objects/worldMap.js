@@ -60,8 +60,8 @@ class WorldMap {
 
     const level = [
       [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ],
-      [  1,  23,  24,   3,   4,   5,   6,   7,   8,   9,   1 ],
-      [  1,  12,   0,   0,   0,  16,  17,  18,  19,  20,   1 ],
+      [  1,  12,  13,  14,  15,  16,   6,   7,   8,   9,   1 ],
+      [  1,  10,  11,   0,   0,  16,  17,  18,  19,  20,   1 ],
       [  1,   5,   0,   0,   0,  27,  28,  29,  30,  31,   1 ],
       [  1,  34,  35,   0,  13,  14,   0,   0,   0,   0,   1 ],
       [  1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1 ],
@@ -109,7 +109,7 @@ class WorldMap {
     } else if (id < 27) {
       filename = FILE_NAMES.buildings[id - 23];
     } else if (id < 36) {
-      filename = FILE_NAMES.trees[id - 29];
+      filename = FILE_NAMES.trees[id - 27];
     }
     if (!filename) return false;
     new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename});
