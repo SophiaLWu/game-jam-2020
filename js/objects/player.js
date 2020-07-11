@@ -66,12 +66,12 @@ class Player extends Phaser.GameObjects.Graphics {
     // });
     
 
-    // this.scene.anims.create({
-    //   key: 'rightPrincess',
-    //   frames: this.scene.anims.generateFrameNumbers('princessRun', { start: 0, end: 8 } ),
-    //   frameRate: 10,
-    //   repeat: -1
-    // });
+    this.scene.anims.create({
+      key: 'rightPrincess',
+      frames: this.scene.anims.generateFrameNumbers('princessRun', { start: 0, end: 7 } ),
+      frameRate: 10,
+      repeat: -1
+    });
 
     this.scene.anims.create({
       key: 'idlePrincess',
@@ -103,7 +103,7 @@ class Player extends Phaser.GameObjects.Graphics {
       }
       if (this.cursors.right.isDown) {
         direction['x'] += 1;
-        //this.player.anims.play('rightPrincess', true);
+        this.player.anims.play('rightPrincess', true);
       }
       if (this.cursors.up.isDown) {
         direction['y'] -= 1;

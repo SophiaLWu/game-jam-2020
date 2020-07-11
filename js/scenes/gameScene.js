@@ -28,7 +28,7 @@ class GameScene extends Phaser.Scene {
     //this.load.multiatlas('princessAtlas', '../../assets/Princess.json', '../../assets/Princess');
 
     this.load.spritesheet('princessIdle', '../../assets/Princess/princessIdle.png', { frameWidth: 111, frameHeight: 104 });
-    //this.load.spritesheet('princessRun', '../../assets/Princess/princessRun.png', { frameWidth: 111, frameHeight: 104});
+    this.load.spritesheet('princessRun', '../../assets/Princess/princessRun.png', { frameWidth: 111, frameHeight: 104});
     this.load.image('princess', '../../assets/Princess/princess.png');
   }
 
