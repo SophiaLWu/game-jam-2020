@@ -55,13 +55,15 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   }
 
   createVillager(x, y, mood=MoodEnum.NORMAL) {
+    console.log(mood)
     const villager = new Villager({
       scene: this.scene,
       opt: {
         initialX: x,
         initialY: y,
-        foods: this.foodBodies
-      }
+        foods: this.foodBodies,
+        mood: mood
+      },
     });
     
     this.villagers.push(villager);
@@ -114,6 +116,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     if (this.player.isWerewolf) {
       this.player.turnHuman();
       villager.kill(); 
+      Villager.scareOtherVillagers(playerBody.x, playerBody.y);
 
       var newVillagers = 0;
       var lastX = 0;
@@ -122,7 +125,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
         const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
         lastX = x;
         lastY = y;
-        this.createVillager(x, y);
+        this.createVillager(x, y, MoodEnum.ANGRY);
         newVillagers++;
       }
     } else if (villager.isAngry()) {

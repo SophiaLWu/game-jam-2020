@@ -1,12 +1,13 @@
-import { manhattanDistance } from "../utils.js"
+import { manhattanDistance, distanceBetweenPoints } from "../utils.js"
 import { CONSTANTS, MoodEnum } from "../constants.js"
 import Food from "./food.js"
 
 let activeVillagers = [];
 
 class Villager extends Phaser.GameObjects.Graphics {
-  constructor(params, mood=MoodEnum.NORMAL) {
+  constructor(params) {
     super(params.scene, params.opt);
+    console.log(params.opt)
 
     activeVillagers.push(this);
 
@@ -17,7 +18,7 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     this.physicsBody.getVillager = () => this;
 
-    this.mood = mood;
+    this.updateMood(params.opt.mood || MoodEnum.NORMAL);
     this.velocity = 100;
 
     this.findNewFood();
@@ -138,6 +139,23 @@ class Villager extends Phaser.GameObjects.Graphics {
     activeVillagers.splice(index, 1);
     this.physicsBody.disableBody(true, true);
   }
+
+  updateMood(mood) {
+    console.log("HERE", mood)
+    this.mood = mood;
+
+    switch(this.mood) {
+      case MoodEnum.NORMAL:
+        this.physicsBody.clearTint();
+        break;
+      case MoodEnum.SCARED:
+        this.physicsBody.setTint(0x05C6FF);
+        break;
+      case MoodEnum.ANGRY:
+        this.physicsBody.setTint(0xff0000);
+        break;
+    }
+  }
 }
 
 Villager.getClosestVillager = (x, y) => {
@@ -171,6 +189,15 @@ Villager.getTargetedFood = () => {
     }
   });
   return targetedFood;
+};
+
+Villager.scareOtherVillagers = (playerX, playerY) => {
+  activeVillagers.forEach((villager) => {
+    const dist = distanceBetweenPoints(villager.physicsBody.x, villager.physicsBody.y, playerX, playerY);
+    if (dist <= CONSTANTS.SCARE_VILLAGER_RANGE) {
+      villager.updateMood(MoodEnum.SCARED);
+    }
+  });
 };
 
 export default Villager;
