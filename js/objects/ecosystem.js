@@ -28,7 +28,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.createFood(x,y);
     }
 
-    this.physics.add.collider(this.player.player, this.foodBodies, this.pickUpFood, null, this );
+    this.physics.add.collider(this.player.physicsBody, this.foodBodies, this.pickUpFood, null, this );
 
     for (let i = 0; i < this.startingVillagerAmount; i++){
       const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
@@ -91,13 +91,13 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     return { x, y };
   }
 
-  pickUpFood(player, foodBody) { //AndrewC: food here is physics body only, can't use methods from Food (or Collectible) classes.
+  pickUpFood(playerBody, foodBody) { //AndrewC: food here is physics body only, can't use methods from Food (or Collectible) classes.
     foodBody.getFood().onCollision();
     this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
     this.player.heal(1); // AndrewC: this shit only works because there's only one player
     this.player.eat();
 
-    const {x, y} = this.getRandomSpawnLocation(player.x, player.y);
+    const {x, y} = this.getRandomSpawnLocation(playerBody.x, playerBody.y);
     this.createFood(x, y);
   }
 

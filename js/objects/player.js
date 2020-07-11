@@ -11,8 +11,8 @@ class Player extends Phaser.GameObjects.Graphics {
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     // physics
-    this.player = this.scene.physics.add.sprite(400, 400, 'dude');
-    this.player.setCollideWorldBounds(true);
+    this.physicsBody = this.scene.physics.add.sprite(400, 400, 'dude');
+    this.physicsBody.setCollideWorldBounds(true);
 
     this.health = MAX_HEALTH;
     this.healthBar = new Bar({
@@ -111,9 +111,9 @@ class Player extends Phaser.GameObjects.Graphics {
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
-    this.player.setVelocityX(this.speed * direction.x);
-    this.player.setVelocityY(this.speed * direction.y);
-    this.player.setDepth(this.player.y + (this.player.height * 0.5));
+    this.physicsBody.setVelocityX(this.speed * direction.x);
+    this.physicsBody.setVelocityY(this.speed * direction.y);
+    this.physicsBody.setDepth(this.physicsBody.y + (this.physicsBody.height * 0.5));
   }
 
   kill() {
@@ -156,7 +156,7 @@ class Player extends Phaser.GameObjects.Graphics {
 
   turnWerewolf() {
     this.isWerewolf = true;
-    this.player.setTint(0xff0000);
+    this.physicsBody.setTint(0xff0000);
     this.speed = this.werewolfSpeed;
     this.determineTarget();
     console.log("Yer a Were-wuff, 'Erry!");
@@ -169,7 +169,7 @@ class Player extends Phaser.GameObjects.Graphics {
 
   turnHuman(){
     this.isWerewolf = false;
-    this.player.setTint(0x000000);
+    this.physicsBody.setTint(0x000000);
     this.speed = this.humanSpeed;
   }
 
