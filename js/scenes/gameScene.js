@@ -11,10 +11,6 @@ class GameScene extends Phaser.Scene {
     super({ key: 'GameScene' });
   }
 
-  init() {
-    this.stomach_contents = CONSTANTS.STOMACH_CONTENTS_STARTING
-  }
-
   preload() {
     for (const filename in HITBOXES) {
       if (HITBOXES.hasOwnProperty(filename)) {
@@ -49,7 +45,6 @@ class GameScene extends Phaser.Scene {
 
   update() {
     this.player.update();
-    //this.stomachContentsText.setText(this.stomach_contents);
     this.ecosystem.update();
   }
 }
