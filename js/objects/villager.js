@@ -1,5 +1,6 @@
 import { distanceBetweenPoints } from "../utils.js"
 import { CONSTANTS } from "../constants.js"
+import Food from "./food.js"
 
 class Villager extends Phaser.GameObjects.Graphics {
   constructor(params) {
@@ -20,15 +21,22 @@ class Villager extends Phaser.GameObjects.Graphics {
     // this.y = params.opt.initialY;
     this.velocity = 100;
 
-    this.foodToEat = this.findClosestFood();
+    this.findNewFood();
+  }
+
+  findNewFood() {
+    this.foodToEat = Food.getClosestAvailableFood(this.physicsBody.x, this.physicsBody.y);
+    if (this.foodToEat) {
+      this.foodToEat.addEatListener(() => this.findNewFood());
+    }
   }
 
   update() {
-    this.foodToEat = this.findClosestFood();
     this.setVillagerMovement();
   }
 
   setVillagerMovement() {
+    const epsilson = 2;
     var foodX = this.foodToEat.x
     var foodY = this.foodToEat.y
 
@@ -37,16 +45,14 @@ class Villager extends Phaser.GameObjects.Graphics {
       y: 0
     };
 
-    if (this.physicsBody.x < foodX) {
+    if (this.physicsBody.x < (foodX - epsilson)) {
       direction['x'] += 1;
-    }
-    if (this.physicsBody.x > foodX) {
+    } else if (this.physicsBody.x > (foodX + epsilson)) {
       direction['x'] -= 1;
     }
-    if (this.physicsBody.y < foodY) {
+    if (this.physicsBody.y < (foodY - epsilson)) {
       direction['y'] += 1;
-    }
-    if (this.physicsBody.y > foodY) {
+    } else if (this.physicsBody.y > (foodY + epsilson)) {
       direction['y'] -= 1;
     }
 
@@ -61,20 +67,6 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     this.physicsBody.setVelocityX(this.velocity * direction.x);
     this.physicsBody.setVelocityY(this.velocity * direction.y);
-  }
-
-  findClosestFood() {
-    var distancesToFoods = {};
-    this.foods.children.iterate(function(food) {
-      if(food.body.enable){ // Only check the distance to food that hasn't been eaten
-        var distance = distanceBetweenPoints(this.physicsBody.x, food.x, this.physicsBody.y, food.y);
-        distancesToFoods[distance] = food;
-      }
-    }.bind(this));
-
-    var min = Math.min(...Object.keys(distancesToFoods));
-    var food = distancesToFoods[min]
-    return food;
   }
 
   changeVillagerDirection() {
