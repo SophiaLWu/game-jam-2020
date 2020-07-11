@@ -124,7 +124,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.spawnAngryVillagers();
       
     } else if (villager.isAngry()) {
-      this.player.damage(1);
+      this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER);
     }
   }
 
