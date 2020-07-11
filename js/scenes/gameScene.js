@@ -40,11 +40,11 @@ class GameScene extends Phaser.Scene {
       opt: {}
     });
 
-    this.physics.add.collider(this.player.player, this.worldMap.getObstacles());
+    this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
 
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
-    this.cameras.main.startFollow(this.player.player);
+    this.cameras.main.startFollow(this.player.physicsBody);
     this.cameras.main.setBackgroundColor('rgb(238, 240, 246)');
   }
 

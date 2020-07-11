@@ -15,6 +15,7 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     activeVillagers.push(this);
 
+    this.scene = params.scene;
     this.moveVillagerTick = Date.now();
     this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
     this.physicsBody.setCollideWorldBounds(true);
@@ -52,31 +53,43 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.setVillagerMovement();
   }
 
-  getDirectionTowardFood() {
+  getDirectionToward(x, y) {
+    const epsilson = 2;
     let direction = {
       x: 0,
       y: 0
     };
 
-    if (this.targetFood === null) {
-      return direction;
-    }
-
-    const epsilson = 2;
-    var foodX = this.targetFood.x
-    var foodY = this.targetFood.y
-
-    if (this.physicsBody.x < (foodX - epsilson)) {
+    if (this.physicsBody.x < (x - epsilson)) {
       direction['x'] += 1;
-    } else if (this.physicsBody.x > (foodX + epsilson)) {
+    } else if (this.physicsBody.x > (x + epsilson)) {
       direction['x'] -= 1;
     }
-    if (this.physicsBody.y < (foodY - epsilson)) {
+    if (this.physicsBody.y < (y - epsilson)) {
       direction['y'] += 1;
-    } else if (this.physicsBody.y > (foodY + epsilson)) {
+    } else if (this.physicsBody.y > (y + epsilson)) {
       direction['y'] -= 1;
     }
     return direction;
+  }
+
+  getDirectionTowardFood() {
+    if (this.targetFood === null) {
+      return {x:0, y:0};
+    }
+
+    return this.getDirectionToward(
+      this.targetFood.x,
+      this.targetFood.y
+    );
+  }
+
+  getDirectionTowardPlayer() {
+    const player = this.scene.player;
+    return this.getDirectionToward(
+      player.physicsBody.x,
+      player.physicsBody.y
+    );
   }
 
   setVillagerMovement() {
@@ -87,8 +100,13 @@ class Villager extends Phaser.GameObjects.Graphics {
         direction = this.getDirectionTowardFood();
         break;
       case MoodEnum.SCARED:
+        direction = this.getDirectionTowardPlayer();
+        // Run away from player
+        direction.x *= -1;
+        direction.y *= -1;
         break;
       case MoodEnum.ANGRY:
+        direction = this.getDirectionTowardPlayer();
         break;
     }
 

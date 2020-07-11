@@ -28,7 +28,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.createFood(x,y);
     }
 
-    this.physics.add.collider(this.player.player, this.foodBodies, this.pickUpFood, null, this );
+    this.physics.add.collider(this.player.physicsBody, this.foodBodies, this.pickUpFood, null, this );
 
     for (let i = 0; i < this.startingVillagerAmount; i++){
       const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
