@@ -77,8 +77,8 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   }
 
   getRandomSpawnLocation(farX, farY) {
-    let x = farX;
-    let y = farY;
+    let x = farX || 0;
+    let y = farY || 0;
     let withinBounds = true; //x and y are 0 the first time through, so initially set this to true
 
     while ((manhattanDistance(x, y, farX, farY) < CONSTANTS.MIN_SPAWN_DISTANCE) && (withinBounds)) {
@@ -108,7 +108,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   }
 
   collideIntoVillager(villager) { // AndrewC: this needs to be re-written to use colliders
-    if(this.villagerOverlapTriggered && this.villagerOverlapTrigger){
+    if (this.villagerOverlapTriggered && this.villagerOverlapTrigger) {
       this.physics.world.removeCollider(this.villagerOverlapTrigger);
       return;
     };
@@ -123,8 +123,12 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       villager.kill(); 
 
       var newVillagers = 0;
-      while(newVillagers <= CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
-        const {x, y} = this.getRandomSpawnLocation();
+      var lastX = 0;
+      var lastY = 0;
+      while (newVillagers <= CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
+        const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
+        lastX = x;
+        lastY = y;
         this.createVillager(x, y);
         newVillagers++;
      }

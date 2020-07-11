@@ -147,11 +147,9 @@ class Player extends Phaser.GameObjects.Graphics {
 
     this.stomachBar.update(this.stomachContents);
 
-    if (this.stomachContents == 0 && !this.isWerewolf)
-    {
+    if (this.stomachContents == 0 && !this.isWerewolf) {
       this.turnWerewolf();
     }
-
   }
 
   turnWerewolf() {
@@ -174,11 +172,9 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   onCollision() {
-    if (!this.isWerewolf)
-    {
+    if (!this.isWerewolf) {
       this.damage(1);
-    } else
-    {
+    } else {
       //max stomach contents
       //turn back to human
     }

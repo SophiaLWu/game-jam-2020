@@ -2,6 +2,8 @@ import { distanceBetweenPoints } from "../utils.js"
 import { CONSTANTS } from "../constants.js"
 import Food from "./food.js"
 
+let activeVillagers = [];
+
 class Villager extends Phaser.GameObjects.Graphics {
   constructor(params) {
     super(params.scene, params.opt);
@@ -11,23 +13,24 @@ class Villager extends Phaser.GameObjects.Graphics {
       ANGRY: 2
     }
 
+    activeVillagers.push(this);
+
     this.moveVillagerTick = Date.now();
     this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
     this.physicsBody.setCollideWorldBounds(true);
     this.changeVillagerDirection();
     this.mood = this.MoodEnum.SCARED;
     this.foods = params.opt.foods;
-    // this.x = params.opt.initialX;
-    // this.y = params.opt.initialY;
     this.velocity = 100;
 
     this.findNewFood();
   }
 
   findNewFood() {
-    this.foodToEat = Food.getClosestAvailableFood(this.physicsBody.x, this.physicsBody.y);
-    if (this.foodToEat) {
-      this.foodToEat.addEatListener(() => this.findNewFood());
+    this.targetFood = Food.getClosestAvailableFood(this.physicsBody.x, this.physicsBody.y);
+    console.log(this.targetFood.id);
+    if (this.targetFood) {
+      this.targetFood.addEatListener(() => this.findNewFood());
     }
   }
 
@@ -37,8 +40,8 @@ class Villager extends Phaser.GameObjects.Graphics {
 
   setVillagerMovement() {
     const epsilson = 2;
-    var foodX = this.foodToEat.x
-    var foodY = this.foodToEat.y
+    var foodX = this.targetFood.x
+    var foodY = this.targetFood.y
 
     let direction = {
       x: 0,
@@ -106,8 +109,20 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   kill() {
+    const index = activeVillagers.indexOf(this);
+    activeVillagers.splice(index, 1);
     this.physicsBody.disableBody(true, true);
   }
 }
+
+Villager.getTargetedFood = () => {
+  const targetedFood = new Set();
+  activeVillagers.forEach((villager) => {
+    if (villager && villager.targetedFood && villager.targetFood.id) {
+      targetedFood.add(villager.targetFood.id);
+    }
+  });
+  return targetedFood;
+};
 
 export default Villager;
