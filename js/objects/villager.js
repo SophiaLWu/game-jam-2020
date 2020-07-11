@@ -7,7 +7,6 @@ let activeVillagers = [];
 class Villager extends Phaser.GameObjects.Graphics {
   constructor(params) {
     super(params.scene, params.opt);
-    console.log(params.opt)
 
     activeVillagers.push(this);
 
@@ -141,7 +140,6 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   updateMood(mood) {
-    console.log("HERE", mood)
     this.mood = mood;
 
     switch(this.mood) {
