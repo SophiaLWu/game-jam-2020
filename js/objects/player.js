@@ -106,8 +106,9 @@ class Player extends Phaser.GameObjects.Graphics {
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
-    this.player.setVelocityX(this.speed * direction.x);
-    this.player.setVelocityY(this.speed * direction.y);
+    this.player.setVelocityX(speed * direction.x);
+    this.player.setVelocityY(speed * direction.y);
+    this.player.setDepth(this.player.y);
   }
 
   kill() {

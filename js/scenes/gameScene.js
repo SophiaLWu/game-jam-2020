@@ -2,8 +2,10 @@ import Ecosystem from "../objects/ecosystem.js"
 import Player from "../objects/player.js"
 import Collectible from "../objects/collectible.js";
 import Villager from "../objects/villager.js"
+import WorldMap from "../objects/worldMap.js"
 
 import { CONSTANTS } from "../constants.js";
+import { HITBOXES } from "../hitboxes.js";
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -15,6 +17,12 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    for (const filename in HITBOXES) {
+      if (HITBOXES.hasOwnProperty(filename)) {
+        this.load.image(filename, '../../assets/' + filename);
+        console.log(filename);
+      }
+    }
     this.load.image('sky', '../../assets/sky.png');
     this.load.image('star', '../../assets/star.png');
     this.load.image('ground', '../../assets/platform.png');
@@ -40,8 +48,12 @@ class GameScene extends Phaser.Scene {
       scene: this,
       opt: {}
     });
+    this.worldMap = new WorldMap({
+      scene: this,
+      opt: {}
+    });
 
-    this.physics.add.collider(this.player.player, this.platforms);
+    this.physics.add.collider(this.player.player, this.worldMap.getObstacles());
 
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
