@@ -15,6 +15,8 @@ class Bar extends Phaser.GameObjects.Graphics {
     this.x = x;
     this.y = y;
 
+    this.setScrollFactor(0);
+
     this.barWidth = barWidth;
     this.barHeight = barHeight;
 

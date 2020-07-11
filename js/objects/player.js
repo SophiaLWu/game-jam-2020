@@ -27,9 +27,37 @@ class Player extends Phaser.GameObjects.Graphics {
     // For testing
     this.healKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
     this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
+
+
+    //Hunger variables and timer
+    this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
+    this.stomachBar = new Bar({
+      scene: this.scene,
+      x: 10,
+      y: 25,
+      startValue: this.stomachContents,
+      barHeight: 20,
+      barWidth: 100
+    })
+    
+    var hungerTimer = this.scene.time.addEvent({
+      delay: 1000,                // ms
+      callback: this.getHungry,
+      //args: [],
+      callbackScope: this,
+      loop: true
+  });
+
+    //Werewolf state variables
+    this.isWerewolf = false;
+    
   }
 
   update() {
+    //Check food status for turning
+    //if 
+
+
     let direction = {
       x: 0,
       y: 0
@@ -70,6 +98,7 @@ class Player extends Phaser.GameObjects.Graphics {
 
   kill() {
     console.log("You're dead!");
+    gameOver = true;
   }
 
   damage(amount) {
@@ -81,12 +110,52 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   heal(amount) {
+
     this.health = Math.min(this.health + amount, MAX_HEALTH);
     this.healthBar.update(this.health);
+
+  }
+
+  eat() {
+    this.stomachContents = Math.min(this.stomachContents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
+
+    this.stomachBar.update(this.stomachContents);
+  }
+
+  getHungry() {
+    this.stomachContents = Math.max(this.stomachContents - 1, 0);
+
+    this.stomachBar.update(this.stomachContents);
+
+    if (this.stomachContents == 0 && !this.isWerewolf)
+    {
+      this.turnWerewolf();
+    }
+
+  }
+
+  turnWerewolf() {
+    this.isWerewolf = true;
+
+    this.player.setTint(0xff0000);
+            
+
+    console.log("Yer a Were-wuff, 'Erry!");
+
   }
 
   onCollision() {
-    this.damage(1);
+    if (!this.isWerewolf)
+    {
+      this.damage(1);
+    } else
+    {
+      //kill villager 
+      //Calculate how many angry villagers to spawn
+      //spawn angry villagers
+      //max stomach contents
+      //turn back to human
+    }
   }
 }
 
