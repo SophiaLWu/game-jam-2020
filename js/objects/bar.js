@@ -1,3 +1,6 @@
+import { CONSTANTS } from "../constants.js"
+import { Curves, getTween } from "../utils.js"
+
 const MAX_VALUE = 100;
 const MIN_VALUE = 0;
 const MAX_DRAW = 96 / 100;
@@ -21,11 +24,12 @@ class Bar extends Phaser.GameObjects.Graphics {
     this.barWidth = barWidth;
     this.barHeight = barHeight;
 
-
     if (startValue > MAX_VALUE || startValue < MIN_VALUE) {
       throw new Error(`Invalid starting amount arg to Bar class. Must be within range: ${MIN_VALUE} - ${MAX_VALUE}`);
     }
     this.value = startValue;
+    this.renderValue = startValue;
+    this.tween = null;
 
     this.draw();
 
@@ -44,25 +48,41 @@ class Bar extends Phaser.GameObjects.Graphics {
     this.fillStyle(0xffffff);
     this.fillRect(this.x + 2, this.y + 2, this.barWidth - 4, this.barHeight - 4);
 
-    if (this.value < 30) {
+    if (this.renderValue < 30) {
       this.fillStyle(0xff0000);
     }
     else {
       this.fillStyle(0x00ff00);
     }
 
-    const fillWidth = Math.floor(MAX_DRAW * this.value);
+    const fillWidth = Math.floor(MAX_DRAW * this.renderValue);
 
     this.fillRect(this.x + 2, this.y + 2, fillWidth, this.barHeight - 4);
   }
 
   update(amount) {
-    if (amount < MIN_VALUE) {
-      this.value = MIN_VALUE;
-    } else if (amount > MAX_VALUE) {
-      this.value = MAX_VALUE
-    } else {
-      this.value = amount;
+    if (amount !== undefined) {
+      if (amount < MIN_VALUE) {
+        this.value = MIN_VALUE;
+      } else if (amount > MAX_VALUE) {
+        this.value = MAX_VALUE
+      } else {
+        this.value = amount;
+      }
+    }
+
+    if (this.renderValue != this.value && this.tween == null) {
+      this.tween = getTween(
+        /* startValue= */ this.renderValue,
+        /* endValue= */ this.value,
+        /* duration= */ CONSTANTS.BAR_ANIMATION_DURATION_MILLIS,
+        /* curve= */ Curves.EASE_OUT,
+        /* onComplete= */ () => {this.tween = null;}
+      );
+    }
+
+    if (this.tween) {
+      this.renderValue = this.tween();
     }
 
     this.draw();

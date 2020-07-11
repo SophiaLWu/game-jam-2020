@@ -121,6 +121,9 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   update() {
+    this.healthBar.update();
+    this.stomachBar.update();
+
     //Check food status for turning
     //if not wolf
 
