@@ -80,8 +80,8 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     let x = farX;
     let y = farY;
     while (manhattanDistance(x, y, farX, farY) < CONSTANTS.MIN_SPAWN_DISTANCE) {
-      x = Math.floor(Math.random() * 800);
-      y = Math.floor(Math.random() * 600);
+      x = Math.floor(Math.random() * CONSTANTS.WORLD_WIDTH);
+      y = Math.floor(Math.random() * CONSTANTS.WORLD_HEIGHT);
     }
     return { x, y };
   }

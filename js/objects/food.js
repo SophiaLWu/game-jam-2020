@@ -25,6 +25,8 @@ class Food extends Collectible {
     availableFood.splice(index, 1);
     index = allFood.indexOf(this);
     allFood.splice(index, 1);
+
+    this.destroy(true);
   }
 
   addEatListener(callback) {
