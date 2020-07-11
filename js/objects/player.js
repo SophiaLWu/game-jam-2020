@@ -10,6 +10,10 @@ class Player extends Phaser.GameObjects.Graphics {
 
     // input
     this.cursors = this.scene.input.keyboard.createCursorKeys();
+    this.WKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.AKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.SKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.DKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
     // physics
     this.physicsBody = this.scene.physics.add.sprite(400, 400, 'princess');
@@ -18,6 +22,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.health = MAX_HEALTH;
     this.healthBar = new Bar({
       scene: this.scene,
+      name: 'Health',
       x: 10,
       y: 10,
       startValue: this.health,
@@ -43,6 +48,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
     this.stomachBar = new Bar({
       scene: this.scene,
+      name: 'Stomach Contents',
       x: 10,
       y: 25,
       startValue: this.stomachContents,
@@ -97,20 +103,19 @@ class Player extends Phaser.GameObjects.Graphics {
 
     if (this.isWerewolf) {
       this.stepTowardVillager();
-    } else
-    {
-      if (this.cursors.left.isDown) {
+    } else {
+      if (this.cursors.left.isDown || this.AKey.isDown) {
         direction['x'] -= 1;
         //player.anims.play('leftPrincess', true);
       }
-      if (this.cursors.right.isDown) {
+      if (this.cursors.right.isDown || this.DKey.isDown) {
         direction['x'] += 1;
         this.physicsBody.anims.play('rightPrincess', true);
       }
-      if (this.cursors.up.isDown) {
+      if (this.cursors.up.isDown || this.WKey.isDown) {
         direction['y'] -= 1;
       }
-      if (this.cursors.down.isDown) {
+      if (this.cursors.down.isDown || this.SKey.isDown) {
         direction['y'] += 1;
       }
       if (this.healKey.isDown) {
@@ -199,20 +204,14 @@ class Player extends Phaser.GameObjects.Graphics {
     this.physicsBody.clearTint();
     this.speed = this.humanSpeed;
     this.resetVillagerToConsume();
-    console.log("You ate a big one heh. Back to a a human you go.");
+    console.log("You ate a big one heh. Back to a human you go.");
   }
 
   isWerewolf() {
     return this.isWerewolf;
   }
 
-  turnHuman(){
-    this.isWerewolf = false;
-    this.physicsBody.setTint(0x000000);
-    this.speed = this.humanSpeed;
-  }
-
-  determineVillagerToConsume(){
+  determineVillagerToConsume() {
     this.villagerToConsume = Villager.getClosestVillager(this.physicsBody.x, this.physicsBody.y);
   }
 
@@ -220,7 +219,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.villagerToConsume = null;
   }
 
-  stepTowardVillager(){
+  stepTowardVillager() {
     if (!this.villagerToConsume) { return };
 
     const epsilson = 4;

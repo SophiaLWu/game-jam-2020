@@ -1,5 +1,5 @@
 import { manhattanDistance } from "../utils.js"
-import { CONSTANTS } from "../constants.js"
+import { CONSTANTS, MoodEnum } from "../constants.js"
 import Food from "./food.js";
 import Villager from "./villager.js";
 
@@ -30,7 +30,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
 
     this.physics.add.collider(this.player.physicsBody, this.foodBodies, this.pickUpFood, null, this );
 
-    for (let i = 0; i < this.startingVillagerAmount; i++){
+    for (let i = 0; i < this.startingVillagerAmount; i++) {
       const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
       lastX = x;
       lastY = y;
@@ -54,7 +54,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.foodBodies.add(food.physicsBody); // AndrewC: can't add Food objects to groups, only physics bodies.
   }
 
-  createVillager(x, y) {
+  createVillager(x, y, mood=MoodEnum.NORMAL) {
     const villager = new Villager({
       scene: this.scene,
       opt: {
@@ -93,9 +93,9 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     return { x, y };
   }
 
-  pickUpFood(playerBody, foodBody) { //AndrewC: food here is physics body only, can't use methods from Food (or Collectible) classes.
+  pickUpFood(playerBody, foodBody) {
     foodBody.getFood().onCollision();
-    this.player.heal(1); // AndrewC: this shit only works because there's only one player
+    this.player.heal(1);
     this.player.eatFood();
 
     const {x, y} = this.getRandomSpawnLocation(playerBody.x, playerBody.y);
