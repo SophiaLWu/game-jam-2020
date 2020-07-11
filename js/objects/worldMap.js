@@ -72,17 +72,11 @@ class WorldMap {
       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ]
     ];
 
-    let instances = 0;
-    let maxInstances = 6;
     level.forEach((arr, row) => {
-      if (instances > maxInstances) return false;
       arr.forEach((id, col) => {
-        if (instances > maxInstances) return false;
         const x = CONSTANTS.OBSTACLE_DISTANCE * col;
         const y = CONSTANTS.OBSTACLE_DISTANCE * row;
-        if (this.createObstacle(id, x, y)) {
-          instances++;
-        }
+        this.createObstacle(id, x, y);
       });
     });
 

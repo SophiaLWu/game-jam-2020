@@ -1,5 +1,7 @@
 const HITBOXES = {
   '41.png': { // Red Apple
+    ox: 11,
+    oy: 11,
     x: 34,
     y: 59,
     x1: 10,
@@ -8,6 +10,8 @@ const HITBOXES = {
     y2: 65
   },
   '42.png': { // Green Apple
+    ox: 35,
+    oy: 35,
     x: 35,
     y: 49,
     x1: 9,
@@ -16,6 +20,8 @@ const HITBOXES = {
     y2: 62
   },
   'bigrock.png': {
+    ox: 192,
+    oy: 192,
     x: 210,
     y: 239,
     x1: 50,
@@ -24,6 +30,8 @@ const HITBOXES = {
     y2: 341
   },
   'block_34.png': {
+    ox: 94,
+    oy: 105,
     x: 90,
     y: 146,
     x1: 29,
@@ -32,6 +40,8 @@ const HITBOXES = {
     y2: 181
   },
   'block_35.png': {
+    ox: 113,
+    oy: 126,
     x: 105,
     y: 82,
     x1: 19,
@@ -40,6 +50,8 @@ const HITBOXES = {
     y2: 134
   },
   'branches_1.png': {
+    ox: 64,
+    oy: 64,
     x: 46,
     y: 106,
     x1: 20,
@@ -48,6 +60,8 @@ const HITBOXES = {
     y2: 117
   },
   'branches_2.png': {
+    ox: 64,
+    oy: 64,
     x: 22,
     y: 113,
     x1: 5,
@@ -56,10 +70,14 @@ const HITBOXES = {
     y2: 122
   },
   'branches_3.png': {
+    ox: 128,
+    oy: 64,
     x: 130,
     y: 64
   },
   'bush_1.png': {
+    ox: 128,
+    oy: 64,
     x: 132,
     y: 68,
     x1: 67,
@@ -68,6 +86,8 @@ const HITBOXES = {
     y2: 95
   },
   'bush_2.png': {
+    ox: 64,
+    oy: 64,
     x: 113,
     y: 63,
     x1: 56,
@@ -76,6 +96,8 @@ const HITBOXES = {
     y2: 93
   },
   'bush_3.png': {
+    ox: 64,
+    oy: 64,
     x: 62,
     y: 90,
     x1: 19,
@@ -84,26 +106,38 @@ const HITBOXES = {
     y2: 103
   },
   'bush_5.png': {
+    ox: 64,
+    oy: 64,
     x: 63,
     y: 68
   },
   'bush_6.png': {
+    ox: 64,
+    oy: 64,
     x: 60,
     y: 55
   },
   'grass_1.png': {
+    ox: 64,
+    oy: 64,
     x: 62,
     y: 82,
   },
   'grass_2.png': {
+    ox: 64,
+    oy: 64,
     x: 62,
     y: 82,
   },
   'grass_3.png': {
+    ox: 128,
+    oy: 64,
     x: 118,
     y: 73,
   },
   'hut_1.png': {
+    ox: 256,
+    oy: 256,
     x: 285,
     y: 240,
     x1: 49,
@@ -112,6 +146,8 @@ const HITBOXES = {
     y2: 426
   },
   'hut_2.png': {
+    ox: 256,
+    oy: 256,
     x: 248,
     y: 396,
     x1: 39,
@@ -120,6 +156,8 @@ const HITBOXES = {
     y2: 458
   },
   'log_1.png': {
+    ox: 128,
+    oy: 64,
     x: 126,
     y: 65,
     x1: 68,
@@ -128,6 +166,8 @@ const HITBOXES = {
     y2: 94
   },
   'log_2.png': {
+    ox: 128,
+    oy: 64,
     x: 126,
     y: 72,
     x1: 59,
@@ -136,6 +176,8 @@ const HITBOXES = {
     y2: 114
   },
   'log_3.png': {
+    ox: 128,
+    oy: 64,
     x: 142,
     y: 68,
     x1: 69,
@@ -144,6 +186,8 @@ const HITBOXES = {
     y2: 102
   },
   'plant_1.png': {
+    ox: 64,
+    oy: 64,
     x: 66,
     y: 70,
     x1: 41,
@@ -152,6 +196,8 @@ const HITBOXES = {
     y2: 86
   },
   'plant_2.png': {
+    ox: 64,
+    oy: 64,
     x: 66,
     y: 70,
     x1: 41,
@@ -160,14 +206,20 @@ const HITBOXES = {
     y2: 86
   },
   'plant_3.png': {
+    ox: 64,
+    oy: 64,
     x: 54,
     y: 79,
   },
   'plant_4.png': {
+    ox: 64,
+    oy: 64,
     x: 54,
     y: 79,
   },
   'sign_2.png': {
+    ox: 64,
+    oy: 64,
     x: 69,
     y: 106,
     x1: 32,
@@ -176,6 +228,8 @@ const HITBOXES = {
     y2: 114
   },
   'sign_3.png': {
+    ox: 64,
+    oy: 64,
     x: 67,
     y: 102,
     x1: 25,
@@ -184,6 +238,8 @@ const HITBOXES = {
     y2: 116
   },
   'snowman.png': {
+    ox: 128,
+    oy: 128,
     x: 145,
     y: 165,
     x1: 100,
@@ -192,6 +248,8 @@ const HITBOXES = {
     y2: 195
   },
   'tree_1.png': {
+    ox: 192,
+    oy: 192,
     x: 190,
     y: 350,
     x1: 149,
@@ -200,6 +258,8 @@ const HITBOXES = {
     y2: 365
   },
   'tree_2.png': {
+    ox: 192,
+    oy: 192,
     x: 195,
     y: 338,
     x1: 149,
@@ -208,6 +268,8 @@ const HITBOXES = {
     y2: 365
   },
   'tree_3.png': {
+    ox: 128,
+    oy: 192,
     x: 115,
     y: 359,
     x1: 88,
@@ -216,6 +278,8 @@ const HITBOXES = {
     y2: 369
   },
   'tree_4.png': {
+    ox: 64,
+    oy: 192,
     x: 64,
     y: 363,
     x1: 44,
@@ -224,6 +288,8 @@ const HITBOXES = {
     y2: 373
   },
   'tree_5.png': {
+    ox: 128,
+    oy: 192,
     x: 131,
     y: 356,
     x1: 103,
@@ -232,6 +298,8 @@ const HITBOXES = {
     y2: 375
   },
   'tree_6.png': {
+    ox: 128,
+    oy: 192,
     x: 121,
     y: 359,
     x1: 99,
@@ -240,6 +308,8 @@ const HITBOXES = {
     y2: 371
   },
   'tree_7.png': {
+    ox: 64,
+    oy: 128,
     x: 47,
     y: 234,
     x1: 26,
@@ -248,6 +318,8 @@ const HITBOXES = {
     y2: 244
   },
   'tree_8.png': {
+    ox: 128,
+    oy: 128,
     x: 137,
     y: 216,
     x1: 126,
@@ -256,6 +328,8 @@ const HITBOXES = {
     y2: 222
   },
   'tree_9.png': {
+    ox: 128,
+    oy: 128,
     x: 156,
     y: 216,
     x1: 135,
