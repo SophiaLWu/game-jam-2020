@@ -15,7 +15,7 @@ class Collectible extends Phaser.GameObjects.Image {
   }
 
   onCollision() {
-    this.collectible.disableBody(true, true);
+    this.collectible.disableBody(true, false);
   }
 }
 

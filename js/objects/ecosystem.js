@@ -14,11 +14,16 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.villagerOverlapTriggered = false
     this.foodOverlapTriggered = false
 
-    this.foods = [] 
-    for (let i = 0; i < this.startingFoodAmount; i++){
+    this.foods = this.physics.add.group();
+
+    for (let i = 0; i < this.startingFoodAmount; i++) {
       const {x, y} = this.getRandomSpawnLocation();
-      this.foods.push(this.createFood(x, y));
+      this.createFood(x,y);
     }
+
+    console.log(this.foods.getLength());
+
+    this.physics.add.collider(this.player.player, this.foods, this.pickUpFood, null, this )
 
     this.villagers = []
     for (let i = 0; i < this.startingVillagerAmount; i++){
@@ -36,17 +41,11 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       scene: this.scene,
       x: x,
       y: y,
-      texture: 'star',
+      texture: 'apple',
       frame: {}
     });
-    this.foodOverlapTriggered = this.physics.add.overlap(
-      this.player.player,
-      food.collectible,
-      () => this.pickUpFood(food),
-      null,
-      this,
-     );
-    return food;
+
+    this.foods.add(food);
   }
 
   createVillager(x, y) {
@@ -82,18 +81,12 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     };
   }
 
-  pickUpFood(food) {
-    if(this.foodOverlapTriggered && this.foodOverlapTrigger){
-      this.physics.world.removeCollider(this.foodOverlapTrigger);
-      return;
-    };
-
-    this.foodOverlapTriggered = true;
-
-
+  pickUpFood(player, food) {
     food.onCollision();
+
     this.player.heal(1);
     this.player.eat();
+
     const {x, y} = this.getRandomSpawnLocation();
     this.createFood(x, y);
   }
