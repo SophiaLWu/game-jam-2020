@@ -61,11 +61,11 @@ class WorldMap {
     const level = [
       [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ],
       [  1,  24,  17,  18,  25,  35,   6,   7,   8,   9,   1 ],
-      [  1,   2,  11,   0,  26,   2,  17,  18,  19,  20,   1 ],
+      [  1,   2,  11,   0,  17,   2,  17,  18,  19,  20,   1 ],
       [  1,   3,   0,   0,  27,  27,  28,  29,  30,  31,   1 ],
       [  1,   4,   0,  19,  28,  14,   0,   0,   0,   0,   1 ],
-      [  1,   5,  12,  20,  29,   0,   0,   0,   0,   0,   1 ],
-      [  1,   6,  13,  21,  30,   0,   0,   0,   0,   0,   1 ],
+      [  1,   5,  12,  20,  29,   0,   0,   7,  27,   0,   1 ],
+      [  1,   6,  13,  21,  30,   0,   0,   7,  28,   0,   1 ],
       [  1,   7,  14,  22,  31,  14,  14,   0,   0,   0,   1 ],
       [  1,   8,  15,  23,  32,   0,   0,   0,   0,  15,   1 ],
       [  1,   9,  17,   2,  33,  34,  35,   0,  15,  15,   1 ],
@@ -81,21 +81,26 @@ class WorldMap {
         this.createObstacle(id, x, y);
       });
     });
-    
+
     // Create the town
-    this.createObstacle(23, 1000, 600)
-    this.createObstacle(23, 800, 600)
-    this.createObstacle(12, 720, 710)
-    this.createObstacle(10, 835, 770)
-    this.createObstacle(24, 850, 600)
-    this.createObstacle(24, 890, 750)
+    this.createObstacle(23, 1000, 600, true)
+    this.createObstacle(23, 800, 600, true)
+    this.createObstacle(12, 720, 710, true)
+    this.createObstacle(10, 835, 770, true)
+    this.createObstacle(24, 850, 600, true)
+    this.createObstacle(24, 890, 750, true)
+    this.createObstacle(26, 840, 890, true) // Sign post
   }
 
   getObstacles() {
     return Obstacle.getObstacles();
   }
 
-  createObstacle(id, x, y) {
+  getTownObstacles() {
+    return Obstacle.getTownObstacles();
+  }
+
+  createObstacle(id, x, y, town=false) {
     let filename;
 
     if (id == 0) {
@@ -112,7 +117,7 @@ class WorldMap {
       filename = FILE_NAMES.trees[id - 27];
     }
     if (!filename) return false;
-    new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename});
+    new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename, town: town});
     return true;
   }
 

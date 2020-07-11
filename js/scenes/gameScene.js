@@ -10,6 +10,7 @@ class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' });
     this.gameOver = false;
+    this.timeStarted = Date.now();
   }
 
   preload() {
@@ -54,6 +55,7 @@ class GameScene extends Phaser.Scene {
     });
 
     this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
+    this.physics.add.collider(this.player.physicsBody, this.worldMap.getTownObstacles());
 
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
@@ -67,7 +69,12 @@ class GameScene extends Phaser.Scene {
     this.ecosystem.update();
 
     if (this.gameOver) {
-      this.scene.start("GameOverScene");
+      this.data = {
+        timeStarted: this.timeStarted,
+        foodEaten: this.player.foodEaten,
+        villagersEaten: this.player.villagersEaten
+      }
+      this.scene.start("GameOverScene", this.data);
     }
   }
 }

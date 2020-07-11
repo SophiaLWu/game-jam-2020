@@ -55,6 +55,10 @@ class Player extends Phaser.GameObjects.Graphics {
 
     this.target;
     
+    //Score tracking
+    this.foodEaten = 0;
+    this.villagersEaten = 0;
+
     // For testing
     this.healKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
     this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
@@ -121,6 +125,9 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   update() {
+    this.healthBar.update();
+    this.stomachBar.update();
+
     //Check food status for turning
     //if not wolf
 
@@ -219,6 +226,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   eatFood() {
+    this.foodEaten += 1;
     this.stomachContents = Math.min(this.stomachContents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
     this.updateStomatchBar();
   }
@@ -239,8 +247,6 @@ class Player extends Phaser.GameObjects.Graphics {
   turnWerewolf() {
     this.camera.shakeEffect.start(600, 0.01);
     this.isWerewolf = true;
-    //this.physicsBody.setTint(0xff0000);
-
     this.speed = this.werewolfSpeed;
     this.determineVillagerToConsume();
     console.log("Yer a Were-wuff, 'Erry!");

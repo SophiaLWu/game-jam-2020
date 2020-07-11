@@ -19,9 +19,6 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody.getVillager = () => this;
 
     this.updateMood(params.opt.mood || MoodEnum.NORMAL);
-    this.velocity = Math.floor(Math.random() * 100) + 50;
-    // this.velocityX;
-    // this.velocityY;
 
     this.findNewFood();
     
@@ -159,10 +156,19 @@ class Villager extends Phaser.GameObjects.Graphics {
     return this.mood == MoodEnum.ANGRY;
   }
 
+  isScared() {
+    return this.mood == MoodEnum.SCARED;
+  }
+
   kill() {
     const index = activeVillagers.indexOf(this);
     activeVillagers.splice(index, 1);
     this.physicsBody.disableBody(true, true);
+  }
+
+  reset() {
+    this.updateMood(MoodEnum.NORMAL);
+    this.findNewFood();
   }
 
   updateMood(mood) {
@@ -171,12 +177,14 @@ class Villager extends Phaser.GameObjects.Graphics {
     switch(this.mood) {
       case MoodEnum.NORMAL:
         this.physicsBody.clearTint();
+        this.velocity = Math.floor(Math.random() * 100) + 50;
         break;
       case MoodEnum.SCARED:
         this.physicsBody.setTint(0x05C6FF);
         break;
       case MoodEnum.ANGRY:
         this.physicsBody.setTint(0xff0000);
+        this.velocity = Math.floor(Math.random() * 200) + 50;
         break;
     }
   }

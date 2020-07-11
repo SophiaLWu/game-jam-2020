@@ -42,6 +42,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.physics.add.collider(this.player.physicsBody, this.villagerBodies, this.collideIntoVillager, null, this );
 
     this.physics.add.collider(this.villagerBodies, this.scene.worldMap.getObstacles());
+    this.physics.add.collider(this.villagerBodies, this.scene.worldMap.getTownObstacles(), this.villagerCollideIntoTown, null, this);
 
     this.physics.add.collider(this.villagerBodies, this.villagerBodies);
 
@@ -122,12 +123,21 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     if (this.player.isWerewolf) {
       this.player.turnHuman();
       villager.kill(); 
+      this.player.villagersEaten += 1;
       Villager.scareOtherVillagers(playerBody.x, playerBody.y);
 
       this.spawnAngryVillagers();
       
     } else if (villager.isAngry()) {
-      this.player.damage(1);
+      this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER);
+    }
+  }
+
+  villagerCollideIntoTown(villagerBody, townBody) {
+    let villager = villagerBody.getVillager();
+
+    if (villager.isScared()) {
+      villager.reset();
     }
   }
 
