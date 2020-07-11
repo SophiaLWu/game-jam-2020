@@ -100,6 +100,21 @@ class Player extends Phaser.GameObjects.Graphics {
       repeat: -1
     });
 
+    //Wolf Animations
+    this.scene.anims.create({
+      key: 'runWolf',
+      frames: this.scene.anims.generateFrameNumbers('wolfRun', { start: 0, end: 7 }),
+      frameRate: 10,
+      repeat: -1
+    })
+
+    this.scene.anims.create({
+      key: 'attackWolf',
+      frames: this.scene.anims.generateFrameNumbers('wolfRun', { start: 0, end: 7 }),
+      frameRate: 10,
+      repeat: -1
+    })
+
   
   }
 
@@ -136,9 +151,11 @@ class Player extends Phaser.GameObjects.Graphics {
       }
       if (this.cursors.up.isDown || this.WKey.isDown) {
         direction['y'] -= 1;
+        this.physicsBody.anims.play('rightPrincess', true);
       }
       if (this.cursors.down.isDown || this.SKey.isDown) {
         direction['y'] += 1;
+        this.physicsBody.anims.play('rightPrincess', true);
       }
       if (this.healKey.isDown) {
         this.heal(1);
@@ -165,8 +182,10 @@ class Player extends Phaser.GameObjects.Graphics {
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
-    if (direction.x == 0 && direction.y == 0) {
+    if ((!this.isWerewolf) && direction.x == 0 && direction.y == 0) {
       this.physicsBody.anims.play('idlePrincess', true);
+    } else if (this.isWerewolf && direction.x == 0) {
+      this.physicsBody.anims.play('attackWolf', true);
     }
     this.doMove(direction);
   }
@@ -216,7 +235,8 @@ class Player extends Phaser.GameObjects.Graphics {
 
   turnWerewolf() {
     this.isWerewolf = true;
-    this.physicsBody.setTint(0xff0000);
+    //this.physicsBody.setTint(0xff0000);
+
     this.speed = this.werewolfSpeed;
     this.determineVillagerToConsume();
     console.log("Yer a Were-wuff, 'Erry!");
@@ -258,13 +278,32 @@ class Player extends Phaser.GameObjects.Graphics {
 
     if (this.physicsBody.x < (villagerX - epsilson)) {
       direction['x'] += 1;
+
+      this.physicsBody.anims.play('runWolf', true);
+
+      if (this.physicsBody.flipX)
+      {          
+        this.physicsBody.flipX = false;
+      }
+
     } else if (this.physicsBody.x > (villagerX + epsilson)) {
       direction['x'] -= 1;
+
+      this.physicsBody.anims.play('runWolf', true);
+
+      if (!this.physicsBody.flipX)
+      {          
+        this.physicsBody.flipX = true;
+      }
     }
     if (this.physicsBody.y < (villagerY - epsilson)) {
       direction['y'] += 1;
+
+      this.physicsBody.anims.play('runWolf', true);
     } else if (this.physicsBody.y > (villagerY + epsilson)) {
       direction['y'] -= 1;
+
+      this.physicsBody.anims.play('runWolf', true);
     }
 
     this.autoMove(direction);
