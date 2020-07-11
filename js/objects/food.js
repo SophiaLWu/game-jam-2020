@@ -60,7 +60,7 @@ Food.getClosestAvailableFood = (x, y) => {
   let bestDist = Number.MAX_SAFE_INTEGER;
   const availableFood = Food.getAvailableFood();
   availableFood.forEach((food) => {
-    const dist = manhattanDistance(food.x, food.y, x, y);
+    const dist = manhattanDistance(food.physicsBody.x, food.physicsBody.y, x, y);
     if (dist < bestDist) {
       bestDist = dist;
       bestIndex = index;

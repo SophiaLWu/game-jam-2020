@@ -1,7 +1,6 @@
 import Ecosystem from "../objects/ecosystem.js"
 import Player from "../objects/player.js"
 import Collectible from "../objects/collectible.js";
-import Villager from "../objects/villager.js"
 import WorldMap from "../objects/worldMap.js"
 
 import { CONSTANTS } from "../constants.js";
@@ -10,10 +9,6 @@ import { HITBOXES } from "../hitboxes.js";
 class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' });
-  }
-
-  init() {
-    this.stomach_contents = CONSTANTS.STOMACH_CONTENTS_STARTING
   }
 
   preload() {
@@ -50,7 +45,6 @@ class GameScene extends Phaser.Scene {
 
   update() {
     this.player.update();
-    //this.stomachContentsText.setText(this.stomach_contents);
     this.ecosystem.update();
   }
 }
