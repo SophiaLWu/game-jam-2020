@@ -5,49 +5,49 @@ const FILE_NAMES = {
   GREEN_APPLE: '41.png',
   RED_APPLE: '42.png',
   rocks: [
-    'bigrock.png', // 0
-    'snowman.png', // 1
-    'block_34.png', // 2
-    'block_35.png',
-    'log_1.png',
-    'log_2.png',
-    'log_3.png',
+    'bigrock.png', // 1 - Big border rock
+    'snowman.png', // 2 - Snowman
+    'block_34.png', // 3 - Small vertical rock
+    'block_35.png', // 4 - Small flat rock
+    'log_1.png', // 5 - Single hollow log
+    'log_2.png', // 6 - Stack o' logs nw to se
+    'log_3.png', // 7 - Stack o' log sq to ne
   ],
   grasses: [
-    'grass_1.png',
-    'grass_2.png',
-    'grass_3.png',
-    'bush_5.png',
-    'bush_6.png',
-    'branches_3.png',
+    'grass_1.png', // 8 - Dark green grass patch
+    'grass_2.png', // 9 - Light green grass patch
+    'grass_3.png', // 10 - Three grass clumps
+    'bush_5.png', // 11 - Light green single grass clump
+    'bush_6.png', // 12 - Teal green single grass clump
+    'branches_3.png', // 13 - Fallen tree
   ],
   bushes: [
-    'bush_1.png',
-    'bush_2.png',
-    'bush_3.png',
-    'branches_1.png',
-    'branches_2.png',
-    'plant_1.png',
-    'plant_2.png',
-    'plant_3.png',
-    'plant_4.png',
+    'bush_1.png', // 14 - Green bush
+    'bush_2.png', // 15 - Light green bush
+    'bush_3.png', // 16 - Bush with purple flowers
+    'branches_1.png', // 17 - Dead branches clump
+    'branches_2.png', // 18 - Dead bracnhes leaning right
+    'plant_1.png', // 19 - Petal bush green top view
+    'plant_2.png', // 20 - Petal bush pink top view
+    'plant_3.png', // 21 - Petal bush green side view
+    'plant_4.png', // 22 - Petal bush teal side view
   ],
   buildings: [
-    'hut_1.png',
-    'hut_2.png',
-    'sign_2.png',
-    'sign_3.png',
+    'hut_1.png', // 23 - Hut w/ window
+    'hut_2.png', // 24 - Hut w/o window
+    'sign_2.png', // 25 - Sign directions
+    'sign_3.png', // 26 - Sign text
   ],
   trees: [
-    'tree_1.png',
-    'tree_2.png',
-    'tree_3.png',
-    'tree_4.png',
-    'tree_5.png',
-    'tree_6.png',
-    'tree_7.png',
-    'tree_8.png',
-    'tree_9.png'
+    'tree_1.png', // 27 - Squiggle mushroom tree 
+    'tree_2.png', // 28 - Big mushroom tree teal
+    'tree_3.png', // 29 - Pine tree squiggle
+    'tree_4.png', // 30 - No leaf tree
+    'tree_5.png', // 31 - Pine tree leaning
+    'tree_6.png', // 32 - Pine tree straight
+    'tree_7.png', // 33 - Dead tree
+    'tree_8.png', // 34 - Small mushroom tree green
+    'tree_9.png' // 35 - Small mushroom tree red
   ]
 };
 
@@ -59,17 +59,17 @@ class WorldMap {
     // this.physics = params.scene.physics;
 
     const level = [
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-      [  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10 ],
-      [ 11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21 ],
-      [ 22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32 ],
-      [ 33,  34,  35,   0,  13,  14,   0,   0,   0,   0,   0 ],
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-      [  0,   0,  14,  14,  14,  14,  14,   0,   0,   0,  15 ],
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,  15,  15 ],
-      [ 35,   0,   0,   0,   0,   0,   0,   0,  15,  15,  15 ],
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ]
+      [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ],
+      [  1,   1,   2,   3,   4,   5,   6,   7,   8,   9,   1 ],
+      [  1,  12,  13,  14,  15,  16,  17,  18,  19,  20,   1 ],
+      [  1,  23,  24,  25,  26,  27,  28,  29,  30,  31,   1 ],
+      [  1,  34,  35,   0,  13,  14,   0,   0,   0,   0,   1 ],
+      [  1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1 ],
+      [  1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1 ],
+      [  1,   0,  14,  14,  14,  14,  14,   0,   0,   0,   1 ],
+      [  1,   0,   0,   0,   0,   0,   0,   0,   0,  15,   1 ],
+      [  1,   0,   0,   0,   0,   0,   0,   0,  15,  15,   1 ],
+      [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ]
     ];
 
     level.forEach((arr, row) => {
