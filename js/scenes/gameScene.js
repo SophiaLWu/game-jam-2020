@@ -1,7 +1,6 @@
 import Ecosystem from "../objects/ecosystem.js"
 import Player from "../objects/player.js"
 import Collectible from "../objects/collectible.js";
-import Villager from "../objects/villager.js"
 import WorldMap from "../objects/worldMap.js"
 
 import { CONSTANTS } from "../constants.js";
@@ -10,10 +9,6 @@ import { HITBOXES } from "../hitboxes.js";
 class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' });
-  }
-
-  init() {
-    this.stomach_contents = CONSTANTS.STOMACH_CONTENTS_STARTING
   }
 
   preload() {
@@ -46,17 +41,16 @@ class GameScene extends Phaser.Scene {
       opt: {}
     });
 
-    this.physics.add.collider(this.player.player, this.worldMap.getObstacles());
+    this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
 
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
-    this.cameras.main.startFollow(this.player.player);
-    this.cameras.main.setBackgroundColor('rgb(248, 250, 252)');
+    this.cameras.main.startFollow(this.player.physicsBody);
+    this.cameras.main.setBackgroundColor('rgb(238, 240, 246)');
   }
 
   update() {
     this.player.update();
-    //this.stomachContentsText.setText(this.stomach_contents);
     this.ecosystem.update();
   }
 }
