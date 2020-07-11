@@ -1,7 +1,9 @@
-import { distanceBetweenPoints } from "../utils.js"
+import { manhattanDistance } from "../utils.js"
 import { CONSTANTS } from "../constants.js"
 import Food from "./food.js"
 
+const allVillagers = [];
+const availableVillagers = [];
 let activeVillagers = [];
 const MoodEnum = {
   NORMAL: 0,
@@ -18,10 +20,13 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.moveVillagerTick = Date.now();
     this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
     this.physicsBody.setCollideWorldBounds(true);
-    this.changeVillagerDirection();
+
+    this.physicsBody.getVillager = () => this;
+
     this.mood = MoodEnum.NORMAL;
-    this.foods = params.opt.foods;
     this.velocity = 100;
+    allVillagers.push(this);
+    availableVillagers.push(this);
 
     this.findNewFood();
   }
@@ -115,30 +120,6 @@ class Villager extends Phaser.GameObjects.Graphics {
     };
   }
 
-  changeVillagerDirection() {
-    var directions = ["left", "right", "up", "down"]
-    var direction = directions[Math.floor(Math.random() * directions.length)]
-
-    switch(direction) {
-      case "left":
-        this.physicsBody.setVelocityX(-100);
-        this.physicsBody.setVelocityY(0);
-        break;
-      case "right":
-        this.physicsBody.setVelocityX(100);
-        this.physicsBody.setVelocityY(0);
-        break;
-      case "up":
-        this.physicsBody.setVelocityX(0);
-        this.physicsBody.setVelocityY(100);
-        break;
-      case "down":
-        this.physicsBody.setVelocityX(0);
-        this.physicsBody.setVelocityY(-100);
-        break;
-    }
-  }
-
   isAngry() {
     return this.mood == MoodEnum.ANGRY;
   }
@@ -148,6 +129,29 @@ class Villager extends Phaser.GameObjects.Graphics {
     activeVillagers.splice(index, 1);
     this.physicsBody.disableBody(true, true);
   }
+}
+
+Villager.getClosestVillager = (x, y) => {
+  let index = 0;
+  let bestIndex = -1;
+  let bestDist = Number.MAX_SAFE_INTEGER;
+  availableVillagers.forEach((villager) => {
+    const dist = manhattanDistance(villager.physicsBody.x, villager.physicsBody.y, x, y);
+    if (dist < bestDist) {
+      bestDist = dist;
+      bestIndex = index;
+    }
+    index++;
+  });
+
+  let closestAvailableVillager;
+  if (bestIndex != -1) {
+    closestAvailableVillager = availableVillagers[bestIndex];
+    availableVillagers.splice(bestIndex, 1);
+  } else if (allVillagers.length > 0) {
+    return allVillagers[Math.floor(Math.random() * allVillagers.length)];
+  }
+  return closestAvailableVillager;
 }
 
 Villager.getTargetedFood = () => {
