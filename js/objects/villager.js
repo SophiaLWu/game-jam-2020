@@ -3,15 +3,15 @@ import { CONSTANTS } from "../constants.js"
 import Food from "./food.js"
 
 let activeVillagers = [];
+const MoodEnum = {
+  NORMAL: 0,
+  SCARED: 1,
+  ANGRY: 2
+};
 
 class Villager extends Phaser.GameObjects.Graphics {
   constructor(params) {
     super(params.scene, params.opt);
-
-    this.MoodEnum = {
-      SCARED: 1,
-      ANGRY: 2
-    }
 
     activeVillagers.push(this);
 
@@ -19,7 +19,7 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
     this.physicsBody.setCollideWorldBounds(true);
     this.changeVillagerDirection();
-    this.mood = this.MoodEnum.SCARED;
+    this.mood = MoodEnum.NORMAL;
     this.foods = params.opt.foods;
     this.velocity = 100;
 
@@ -80,9 +80,21 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   setVillagerMovement() {
-    const direction = this.getDirectionTowardFood()
+    let direction;
 
-    this.move(direction);
+    switch (this.mood) {
+      case MoodEnum.NORMAL:
+        direction = this.getDirectionTowardFood();
+        break;
+      case MoodEnum.SCARED:
+        break;
+      case MoodEnum.ANGRY:
+        break;
+    }
+
+    if (direction) {
+      this.move(direction);
+    }
   }
 
   move(direction) {
@@ -128,7 +140,7 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   isAngry() {
-    return this.mood == this.MoodEnum.ANGRY;
+    return this.mood == MoodEnum.ANGRY;
   }
 
   kill() {
