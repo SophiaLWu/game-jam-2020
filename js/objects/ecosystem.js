@@ -53,8 +53,9 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     const villager = new Villager({
       scene: this.scene,
       opt: {
-        x: x,
-        y: y
+        initialX: x,
+        initialY: y,
+        foods: this.foods
       }
     });
     this.villagerOverlapTrigger = this.physics.add.overlap(
