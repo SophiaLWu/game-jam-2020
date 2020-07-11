@@ -14,6 +14,7 @@ class Bar extends Phaser.GameObjects.Graphics {
 
     this.x = x;
     this.y = y;
+    this.setDepth(Number.MAX_SAFE_INTEGER);
 
     this.setScrollFactor(0);
 

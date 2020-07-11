@@ -1,3 +1,4 @@
+import { CONSTANTS } from "../constants.js";
 import Obstacle from "./obstacle.js";
 
 const FILE_NAMES = {
@@ -52,8 +53,38 @@ const FILE_NAMES = {
 
 class WorldMap {
   constructor(params) {
+    this.params = params;
+    this.obstacles = [];
     // this.scene = params.scene;
     // this.physics = params.scene.physics;
+
+    const level = [
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
+      [  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10 ],
+      [ 11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21 ],
+      [ 22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32 ],
+      [ 33,  34,  35,   0,  13,  14,   0,   0,   0,   0,   0 ],
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
+      [  0,   0,  14,  14,  14,  14,  14,   0,   0,   0,  15 ],
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,  15,  15 ],
+      [ 35,   0,   0,   0,   0,   0,   0,   0,  15,  15,  15 ],
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ]
+    ];
+
+    let instances = 0;
+    let maxInstances = 6;
+    level.forEach((arr, row) => {
+      if (instances > maxInstances) return false;
+      arr.forEach((id, col) => {
+        if (instances > maxInstances) return false;
+        const x = CONSTANTS.OBSTACLE_DISTANCE * col;
+        const y = CONSTANTS.OBSTACLE_DISTANCE * row;
+        if (this.createObstacle(id, x, y)) {
+          instances++;
+        }
+      });
+    });
 
     new Obstacle({scene: params.scene, x: 800, y: 600, filename: 'snowman.png'})
   }
@@ -62,21 +93,26 @@ class WorldMap {
     return Obstacle.getObstacles();
   }
 
-  // create() {
-  //   // Load a map from a 2D array of tile indices
-  //   const level = [
-  //     [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-  //     [  0,   1,   2,   3,   0,   0,   0,   1,   2,   3,   0 ],
-  //     [  0,   5,   6,   7,   0,   0,   0,   5,   6,   7,   0 ],
-  //     [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-  //     [  0,   0,   0,  14,  13,  14,   0,   0,   0,   0,   0 ],
-  //     [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-  //     [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-  //     [  0,   0,  14,  14,  14,  14,  14,   0,   0,   0,  15 ],
-  //     [  0,   0,   0,   0,   0,   0,   0,   0,   0,  15,  15 ],
-  //     [ 35,  36,  37,   0,   0,   0,   0,   0,  15,  15,  15 ],
-  //     [ 39,  39,  39,  39,  39,  39,  39,  39,  39,  39,  39 ]
-  //   ];
+  createObstacle(id, x, y) {
+    let filename;
+
+    if (id == 0) {
+      return false;
+    } else if (id < 8) {
+      filename = FILE_NAMES.rocks[id - 1];
+    } else if (id < 14) {
+      filename = FILE_NAMES.grasses[id - 8];
+    } else if (id < 23) {
+      filename = FILE_NAMES.bushes[id - 14];
+    } else if (id < 27) {
+      filename = FILE_NAMES.buildings[id - 14];
+    } else if (id < 36) {
+      filename = FILE_NAMES.trees[id - 27];
+    }
+    if (!filename) return false;
+    new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename});
+    return true;
+  }
 
   //   // When loading from an array, make sure to specify the tileWidth and tileHeight
   //   const map = this.make.tilemap({ data: level, tileWidth: 16, tileHeight: 16 });

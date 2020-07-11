@@ -32,11 +32,12 @@ class Obstacle extends Phaser.GameObjects.Graphics {
       sprite.x += xOffset;
       sprite.y += yOffset;
 
-      const width = hitbox.x2 - hitbox.x1;
-      const height = hitbox.y2 - hitbox.y1;
+      const width = Math.abs(hitbox.x2 - hitbox.x1);
+      const height = Math.abs(hitbox.y2 - hitbox.y1);
       sprite.body.setSize(width, height, 0, 0);
       sprite.body.x += xOffset + hitbox.x1;
       sprite.body.y += yOffset + hitbox.y1;
+      console.log(sprite.x, sprite.y, sprite.body);
 
       sprite.setDepth(y);
     }
