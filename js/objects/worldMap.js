@@ -7,7 +7,7 @@ const FILE_NAMES = {
   rocks: [
     'bigrock.png', // 0
     'snowman.png', // 1
-    'block_34.png',
+    'block_34.png', // 2
     'block_35.png',
     'log_1.png',
     'log_2.png',
