@@ -11,8 +11,8 @@ class Villager extends Phaser.GameObjects.Graphics {
     }
 
     this.moveVillagerTick = Date.now();
-    this.villager = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
-    this.villager.setCollideWorldBounds(true);
+    this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
+    this.physicsBody.setCollideWorldBounds(true);
     this.changeVillagerDirection();
     this.mood = this.MoodEnum.SCARED;
     this.foods = params.opt.foods;
@@ -24,6 +24,7 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   update() {
+    this.foodToEat = this.findClosestFood();
     this.setVillagerMovement();
   }
 
@@ -36,16 +37,16 @@ class Villager extends Phaser.GameObjects.Graphics {
       y: 0
     };
 
-    if (this.villager.x < foodX) {
+    if (this.physicsBody.x < foodX) {
       direction['x'] += 1;
     }
-    if (this.villager.x > foodX) {
+    if (this.physicsBody.x > foodX) {
       direction['x'] -= 1;
     }
-    if (this.villager.y < foodY) {
+    if (this.physicsBody.y < foodY) {
       direction['y'] += 1;
     }
-    if (this.villager.y > foodY) {
+    if (this.physicsBody.y > foodY) {
       direction['y'] -= 1;
     }
 
@@ -58,15 +59,17 @@ class Villager extends Phaser.GameObjects.Graphics {
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
-    this.villager.setVelocityX(this.velocity * direction.x);
-    this.villager.setVelocityY(this.velocity * direction.y);
+    this.physicsBody.setVelocityX(this.velocity * direction.x);
+    this.physicsBody.setVelocityY(this.velocity * direction.y);
   }
 
   findClosestFood() {
     var distancesToFoods = {};
     this.foods.children.iterate(function(food) {
-      var distance = distanceBetweenPoints(this.villager.x, food.x, this.villager.y, food.y);
-      distancesToFoods[distance] = food;
+      if(food.body.enable){ // Only check the distance to food that hasn't been eaten
+        var distance = distanceBetweenPoints(this.physicsBody.x, food.x, this.physicsBody.y, food.y);
+        distancesToFoods[distance] = food;
+      }
     }.bind(this));
 
     var min = Math.min(...Object.keys(distancesToFoods));
@@ -80,20 +83,20 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     switch(direction) {
       case "left":
-        this.villager.setVelocityX(-100);
-        this.villager.setVelocityY(0);
+        this.physicsBody.setVelocityX(-100);
+        this.physicsBody.setVelocityY(0);
         break;
       case "right":
-        this.villager.setVelocityX(100);
-        this.villager.setVelocityY(0);
+        this.physicsBody.setVelocityX(100);
+        this.physicsBody.setVelocityY(0);
         break;
       case "up":
-        this.villager.setVelocityX(0);
-        this.villager.setVelocityY(100);
+        this.physicsBody.setVelocityX(0);
+        this.physicsBody.setVelocityY(100);
         break;
       case "down":
-        this.villager.setVelocityX(0);
-        this.villager.setVelocityY(-100);
+        this.physicsBody.setVelocityX(0);
+        this.physicsBody.setVelocityY(-100);
         break;
     }
   }
@@ -103,7 +106,7 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   kill() {
-    this.villager.disableBody(true, true);
+    this.physicsBody.disableBody(true, true);
   }
 }
 
