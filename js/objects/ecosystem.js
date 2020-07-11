@@ -44,6 +44,9 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.physics.add.collider(this.villagerBodies, this.scene.worldMap.getObstacles());
     this.physics.add.collider(this.villagerBodies, this.scene.worldMap.getTownObstacles(), this.villagerCollideIntoTown, null, this);
 
+    this.physics.add.overlap(this.foodBodies, this.scene.worldMap.getObstacles(), this.replaceFoodLocation, null, this);
+    this.physics.add.overlap(this.foodBodies, this.scene.worldMap.getObstacles(), this.replaceFoodLocation, null, this);
+
     this.physics.add.collider(this.villagerBodies, this.villagerBodies);
 
     //Call villager animations function
@@ -133,11 +136,11 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     }
   }
 
-  villagerCollideIntoTown(villagerBody, townBody) {
+  villagerCollideIntoTown(villagerBody, _townBody) {
     let villager = villagerBody.getVillager();
 
     if (villager.isScared()) {
-      villager.reset();
+      villager.anger();
     }
   }
 
@@ -147,6 +150,11 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.createVillager(CONSTANTS.VILLAGE_X, CONSTANTS.VILLAGE_Y, MoodEnum.ANGRY);
       newVillagers++;
     }
+  }
+
+  replaceFoodLocation(foodBody, _obstacleBody) {
+    const {x, y} = this.getRandomSpawnLocation(0, 0);
+    foodBody.getFood().setLocation(x, y);
   }
 }
 
