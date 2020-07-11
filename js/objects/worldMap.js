@@ -81,22 +81,26 @@ class WorldMap {
         this.createObstacle(id, x, y);
       });
     });
-    
+
     // Create the town
-    this.createObstacle(23, 1000, 600)
-    this.createObstacle(23, 800, 600)
-    this.createObstacle(12, 720, 710)
-    this.createObstacle(10, 835, 770)
-    this.createObstacle(24, 850, 600)
-    this.createObstacle(24, 890, 750)
-    this.createObstacle(26, 850, 875)
+    this.createObstacle(23, 1000, 600, true)
+    this.createObstacle(23, 800, 600, true)
+    this.createObstacle(12, 720, 710, true)
+    this.createObstacle(10, 835, 770, true)
+    this.createObstacle(24, 850, 600, true)
+    this.createObstacle(24, 890, 750, true)
+    this.createObstacle(26, 840, 890, true) // Sign post
   }
 
   getObstacles() {
     return Obstacle.getObstacles();
   }
 
-  createObstacle(id, x, y) {
+  getTownObstacles() {
+    return Obstacle.getTownObstacles();
+  }
+
+  createObstacle(id, x, y, town=false) {
     let filename;
 
     if (id == 0) {
@@ -113,7 +117,7 @@ class WorldMap {
       filename = FILE_NAMES.trees[id - 27];
     }
     if (!filename) return false;
-    new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename});
+    new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename, town: town});
     return true;
   }
 
