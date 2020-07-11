@@ -5,8 +5,8 @@ const FILE_NAMES = {
   GREEN_APPLE: '41.png',
   RED_APPLE: '42.png',
   rocks: [
-    'bigrock.png',
-    'snowman.png',
+    'bigrock.png', // 0
+    'snowman.png', // 1
     'block_34.png',
     'block_35.png',
     'log_1.png',
