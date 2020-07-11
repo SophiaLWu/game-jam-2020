@@ -17,7 +17,6 @@ class Obstacle extends Phaser.GameObjects.Graphics {
       initializeObstacles(params.scene.physics);
     }
 
-    console.log(params.x, params.y);
     this.createObstacle(params.x, params.y);
   }
 

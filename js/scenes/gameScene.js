@@ -20,28 +20,14 @@ class GameScene extends Phaser.Scene {
     for (const filename in HITBOXES) {
       if (HITBOXES.hasOwnProperty(filename)) {
         this.load.image(filename, '../../assets/' + filename);
-        console.log(filename);
       }
     }
-    this.load.image('sky', '../../assets/sky.png');
-    this.load.image('star', '../../assets/star.png');
     this.load.image('apple', '../../assets/41-small.png');
-    this.load.image('ground', '../../assets/platform.png');
     this.load.spritesheet('dude', '../../assets/dude.png', { frameWidth: 32, frameHeight: 48 });
   }
 
   create() {
-    this.add.image(400, 300, 'sky');
     this.physics.world.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
-
-    this.platforms = this.physics.add.staticGroup();
-    this.platforms
-      .create(400, 568, 'ground')
-      .setScale(2)
-      .refreshBody();
-    this.platforms.create(600, 400, 'ground');
-    this.platforms.create(50, 250, 'ground');
-    this.platforms.create(750, 220, 'ground');
 
     this.player = new Player({ scene: this, opt: {} });
     this.collectible = new Collectible({ scene: this, x: 50, y: 50, texture: 'star', frame: {}});
@@ -59,6 +45,7 @@ class GameScene extends Phaser.Scene {
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
     this.cameras.main.startFollow(this.player.player);
+    this.cameras.main.setBackgroundColor('rgb(248, 250, 252)');
   }
 
   update() {
