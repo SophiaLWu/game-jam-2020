@@ -55,7 +55,6 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   }
 
   createVillager(x, y, mood=MoodEnum.NORMAL) {
-    console.log(mood)
     const villager = new Villager({
       scene: this.scene,
       opt: {

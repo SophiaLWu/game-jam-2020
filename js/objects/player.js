@@ -16,6 +16,7 @@ class Player extends Phaser.GameObjects.Graphics {
     super(params.scene, params.opt);
 
     // input
+    this.camera = params.camera;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.WKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.AKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -175,6 +176,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   damage(amount) {
+    this.camera.shakeEffect.start(110, 0.006);
     this.health = this.health - amount;
     this.healthBar.update(this.health);
     if (this.health <= 0) {
@@ -206,6 +208,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnWerewolf() {
+    this.camera.shakeEffect.start(600, 0.01);
     this.isWerewolf = true;
     this.physicsBody.setTint(0xff0000);
     this.speed = this.werewolfSpeed;

@@ -31,7 +31,7 @@ class GameScene extends Phaser.Scene {
   create() {
     this.physics.world.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
 
-    this.player = new Player({ scene: this, opt: {} });
+    this.player = new Player({camera: this.cameras.main, scene: this, opt: {} });
     
     this.ecosystem = new Ecosystem({
       scene: this,
@@ -46,8 +46,9 @@ class GameScene extends Phaser.Scene {
 
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
-    this.cameras.main.startFollow(this.player.physicsBody);
+    this.cameras.main.startFollow(this.player.physicsBody, false, 0.4, 0.4);
     this.cameras.main.setBackgroundColor('rgb(238, 240, 246)');
+    console.log(this.cameras.main);
   }
 
   update() {
