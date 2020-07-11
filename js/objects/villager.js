@@ -1,18 +1,11 @@
 import { manhattanDistance } from "../utils.js"
-import { CONSTANTS } from "../constants.js"
+import { CONSTANTS, MoodEnum } from "../constants.js"
 import Food from "./food.js"
 
-const allVillagers = [];
-const availableVillagers = [];
 let activeVillagers = [];
-const MoodEnum = {
-  NORMAL: 0,
-  SCARED: 1,
-  ANGRY: 2
-};
 
 class Villager extends Phaser.GameObjects.Graphics {
-  constructor(params) {
+  constructor(params, mood=MoodEnum.NORMAL) {
     super(params.scene, params.opt);
 
     activeVillagers.push(this);
@@ -24,10 +17,8 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     this.physicsBody.getVillager = () => this;
 
-    this.mood = MoodEnum.NORMAL;
+    this.mood = mood;
     this.velocity = 100;
-    allVillagers.push(this);
-    availableVillagers.push(this);
 
     this.findNewFood();
   }
@@ -153,7 +144,7 @@ Villager.getClosestVillager = (x, y) => {
   let index = 0;
   let bestIndex = -1;
   let bestDist = Number.MAX_SAFE_INTEGER;
-  availableVillagers.forEach((villager) => {
+  activeVillagers.forEach((villager) => {
     const dist = manhattanDistance(villager.physicsBody.x, villager.physicsBody.y, x, y);
     if (dist < bestDist) {
       bestDist = dist;
@@ -164,10 +155,10 @@ Villager.getClosestVillager = (x, y) => {
 
   let closestAvailableVillager;
   if (bestIndex != -1) {
-    closestAvailableVillager = availableVillagers[bestIndex];
-    availableVillagers.splice(bestIndex, 1);
-  } else if (allVillagers.length > 0) {
-    return allVillagers[Math.floor(Math.random() * allVillagers.length)];
+    closestAvailableVillager = activeVillagers[bestIndex];
+    activeVillagers.splice(bestIndex, 1);
+  } else if (activeVillagers.length > 0) {
+    return activeVillagers[Math.floor(Math.random() * allVillagers.length)];
   }
   return closestAvailableVillager;
 }
