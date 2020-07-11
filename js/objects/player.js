@@ -1,4 +1,7 @@
-import { CONSTANTS } from "../constants.js"
+import { CONSTANTS } from "../constants.js";
+import Bar from "../objects/bar.js";
+
+const MAX_HEALTH = 100;
 
 class Player extends Phaser.GameObjects.Graphics {
   constructor(params) {
@@ -11,14 +14,25 @@ class Player extends Phaser.GameObjects.Graphics {
     this.player = this.scene.physics.add.sprite(100, 450, 'dude');
     this.player.setCollideWorldBounds(true);
 
-    this.maxHealth = 10;
-    this.health = this.maxHealth;
+    this.health = MAX_HEALTH;
+    this.healthBar = new Bar({
+      scene: this.scene,
+      x: 10,
+      y: 10,
+      startValue: this.health,
+      barHeight: 20,
+      barWidth: 100
+    });
+
+    // For testing
+    this.healKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+    this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
   }
 
   update() {
     let direction = {
-      x : 0,
-      y : 0
+      x: 0,
+      y: 0
     };
 
     if (this.cursors.left.isDown) {
@@ -33,6 +47,13 @@ class Player extends Phaser.GameObjects.Graphics {
     if (this.cursors.down.isDown) {
       direction['y'] += 1;
     }
+    if (this.healKey.isDown) {
+      this.heal(1);
+    }
+    if (this.damageKey.isDown) {
+      this.damage(1);
+    }
+
     this.move(direction);
   }
 
@@ -53,13 +74,15 @@ class Player extends Phaser.GameObjects.Graphics {
 
   damage(amount) {
     this.health = this.health - amount;
+    this.healthBar.update(this.health);
     if (this.health <= 0) {
-      kill();
+      this.kill();
     }
   }
 
   heal(amount) {
-    this.health = Math.max(this.health + amount, this.maxHealth);
+    this.health = Math.min(this.health + amount, MAX_HEALTH);
+    this.healthBar.update(this.health);
   }
 
   onCollision() {
