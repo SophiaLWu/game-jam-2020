@@ -18,7 +18,7 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody.getVillager = () => this;
 
     this.updateMood(params.opt.mood || MoodEnum.NORMAL);
-    this.velocity = 100;
+    this.velocity = Math.floor(Math.random() * 100) + 50;
 
     this.findNewFood();
   }
@@ -88,6 +88,14 @@ class Villager extends Phaser.GameObjects.Graphics {
     );
   }
 
+  getDirectionTowardVillage() {
+    const player = this.scene.player;
+    return this.getDirectionToward(
+      CONSTANTS.VILLAGE_X,
+      CONSTANTS.VILLAGE_Y
+    );
+  }
+
   setVillagerMovement() {
     let direction;
 
@@ -96,10 +104,7 @@ class Villager extends Phaser.GameObjects.Graphics {
         direction = this.getDirectionTowardFood();
         break;
       case MoodEnum.SCARED:
-        direction = this.getDirectionTowardPlayer();
-        // Run away from player
-        direction.x *= -1;
-        direction.y *= -1;
+        direction = this.getDirectionTowardVillage();
         break;
       case MoodEnum.ANGRY:
         direction = this.getDirectionTowardPlayer();
@@ -192,7 +197,7 @@ Villager.getTargetedFood = () => {
 Villager.scareOtherVillagers = (playerX, playerY) => {
   activeVillagers.forEach((villager) => {
     const dist = distanceBetweenPoints(villager.physicsBody.x, villager.physicsBody.y, playerX, playerY);
-    if (dist <= CONSTANTS.SCARE_VILLAGER_RANGE) {
+    if (dist <= CONSTANTS.SCARE_VILLAGER_RANGE && !villager.isAngry()) {
       villager.updateMood(MoodEnum.SCARED);
     }
   });

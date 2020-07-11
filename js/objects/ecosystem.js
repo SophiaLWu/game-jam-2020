@@ -117,18 +117,18 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       villager.kill(); 
       Villager.scareOtherVillagers(playerBody.x, playerBody.y);
 
-      var newVillagers = 0;
-      var lastX = 0;
-      var lastY = 0;
-      while (newVillagers <= CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
-        const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
-        lastX = x;
-        lastY = y;
-        this.createVillager(x, y, MoodEnum.ANGRY);
-        newVillagers++;
-      }
+      this.spawnAngryVillagers();
+      
     } else if (villager.isAngry()) {
       this.player.damage(1);
+    }
+  }
+
+  spawnAngryVillagers() {
+    var newVillagers = 0;
+    while (newVillagers < CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
+      this.createVillager(CONSTANTS.VILLAGE_X, CONSTANTS.VILLAGE_Y, MoodEnum.ANGRY);
+      newVillagers++;
     }
   }
 }
