@@ -67,6 +67,14 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     this.physicsBody.setVelocityX(this.velocity * direction.x);
     this.physicsBody.setVelocityY(this.velocity * direction.y);
+    this.physicsBody.setDepth(this.getFeetLocation().y);
+  }
+
+  getFeetLocation() {
+    return {
+      x: this.physicsBody.x,
+      y: this.physicsBody.y + 20,
+    };
   }
 
   changeVillagerDirection() {

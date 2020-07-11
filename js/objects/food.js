@@ -56,9 +56,9 @@ Food.getClosestAvailableFood = (x, y) => {
   });
 
   let closestAvailableFood;
-  if (index != -1) {
+  if (bestIndex != -1) {
     closestAvailableFood = availableFood[bestIndex];
-    availableFood.splice(index, 1);
+    availableFood.splice(bestIndex, 1);
   } else if (allFood.length > 0) {
     return allFood[Math.floor(Math.random() * allFood.length)];
   }
