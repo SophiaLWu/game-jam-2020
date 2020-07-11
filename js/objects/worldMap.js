@@ -1,3 +1,5 @@
+import Obstacle from "./obstacle.js";
+
 const FILE_NAMES = {
   GREEN_APPLE: '41.png',
   RED_APPLE: '42.png',
@@ -50,9 +52,14 @@ const FILE_NAMES = {
 
 class WorldMap {
   constructor(params) {
-    super(params.scene, params.opt);
-    this.scene = params.scene;
-    this.physics = params.scene.physics;
+    // this.scene = params.scene;
+    // this.physics = params.scene.physics;
+
+    new Obstacle({scene: params.scene, x: 800, y: 600, filename: 'snowman.png'})
+  }
+
+  getObstacles() {
+    return Obstacle.getObstacles();
   }
 
   // create() {
