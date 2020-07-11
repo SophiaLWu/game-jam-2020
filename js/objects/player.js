@@ -11,7 +11,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     // physics
-    this.player = this.scene.physics.add.sprite(400, 400, 'dude');
+    this.player = this.scene.physics.add.sprite(400, 400, 'princess');
     this.player.setCollideWorldBounds(true);
 
     this.health = MAX_HEALTH;
@@ -54,11 +54,33 @@ class Player extends Phaser.GameObjects.Graphics {
       args: [1],
       callbackScope: this,
       loop: true
-  });
+    });
 
     //Werewolf state variables
     this.isWerewolf = false;
     
+
+    //Princess Animations
+    // this.runFrameNames = this.scene.anims.generateFrameNames('princessAtlas', {
+    //   start: 1, end: 8, zeroPad: 3, prefix:'Princess/inner/Run/', suffix: '.png'
+    // });
+    
+
+    // this.scene.anims.create({
+    //   key: 'rightPrincess',
+    //   frames: this.scene.anims.generateFrameNumbers('princessRun', { start: 0, end: 8 } ),
+    //   frameRate: 10,
+    //   repeat: -1
+    // });
+
+    this.scene.anims.create({
+      key: 'idlePrincess',
+      frames: this.scene.anims.generateFrameNumbers('princessIdle', { start: 0, end: 11 } ),
+      frameRate: 10,
+      repeat: -1
+    });
+
+  
   }
 
   update() {
@@ -77,9 +99,11 @@ class Player extends Phaser.GameObjects.Graphics {
     {
       if (this.cursors.left.isDown) {
         direction['x'] -= 1;
+        //player.anims.play('leftPrincess', true);
       }
       if (this.cursors.right.isDown) {
         direction['x'] += 1;
+        //this.player.anims.play('rightPrincess', true);
       }
       if (this.cursors.up.isDown) {
         direction['y'] -= 1;
@@ -109,6 +133,10 @@ class Player extends Phaser.GameObjects.Graphics {
     if (direction.x !== 0 && direction.y !== 0) {
       direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
+    }
+
+    if (direction.x == 0 && direction.y == 0) {
+      this.player.anims.play('idlePrincess', true);
     }
 
     this.player.setVelocityX(this.speed * direction.x);

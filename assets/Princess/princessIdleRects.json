@@ -1,0 +1,272 @@
+{
+	"textures": [
+		{
+			"image": "princessIdle.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1332,
+				"h": 104
+			},
+			"scale": 0.125,
+			"frames": [
+				{
+					"filename": "Idle/000.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/001.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 111,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/002.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 222,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/003.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 333,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/004.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 444,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/005.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 555,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/006.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 666,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/007.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 777,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/008.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 888,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/009.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 999,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/010.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 1110,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Idle/011.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 1221,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:6e1f983d6c96ed5ceee6f93f8053c8c7:cc9408105a2397696c389347ff78b852:99b50f65fee37a3371f3a7617020878a$"
+	}
+}

@@ -23,14 +23,20 @@ class GameScene extends Phaser.Scene {
       }
     }
     this.load.image('apple', '../../assets/41-small.png');
-    this.load.spritesheet('dude', '../../assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+
+    //this.load.multiatlas('princessIdle', '../../assets/Princess/PrincessIdle.json', '../../assets');
+    //this.load.multiatlas('princessAtlas', '../../assets/Princess.json', '../../assets/Princess');
+
+    this.load.spritesheet('princessIdle', '../../assets/Princess/princessIdle.png', { frameWidth: 111, frameHeight: 104 });
+    //this.load.spritesheet('princessRun', '../../assets/Princess/princessRun.png', { frameWidth: 111, frameHeight: 104});
+    this.load.image('princess', '../../assets/Princess/princess.png');
   }
 
   create() {
     this.physics.world.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
 
     this.player = new Player({ scene: this, opt: {} });
-    this.collectible = new Collectible({ scene: this, x: 50, y: 50, texture: 'star', frame: {}});
+    
     this.ecosystem = new Ecosystem({
       scene: this,
       opt: {}
