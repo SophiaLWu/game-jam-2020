@@ -35,7 +35,6 @@ class GameScene extends Phaser.Scene {
     this.platforms.create(750, 220, 'ground');
 
     this.player = new Player({ scene: this, opt: {} });
-    this.villager = new Villager({ scene: this, opt: {} });
     this.collectible = new Collectible({ scene: this, x: 50, y: 50, texture: 'star', frame: {}});
     this.ecosystem = new Ecosystem({
       scene: this,
@@ -51,7 +50,6 @@ class GameScene extends Phaser.Scene {
 
   update() {
     this.player.update();
-    this.villager.update();
     //this.stomachContentsText.setText(this.stomach_contents);
     this.ecosystem.update();
   }

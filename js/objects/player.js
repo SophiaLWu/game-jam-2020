@@ -144,15 +144,16 @@ class Player extends Phaser.GameObjects.Graphics {
 
   }
 
+  isWerewolf() {
+    return this.isWerewolf
+  }
+
   onCollision() {
     if (!this.isWerewolf)
     {
       this.damage(1);
     } else
     {
-      //kill villager 
-      //Calculate how many angry villagers to spawn
-      //spawn angry villagers
       //max stomach contents
       //turn back to human
     }

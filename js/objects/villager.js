@@ -2,10 +2,16 @@ class Villager extends Phaser.GameObjects.Graphics {
   constructor(params) {
     super(params.scene, params.opt);
 
+    this.MoodEnum = {
+      SCARED: 1,
+      ANGRY: 2
+    }
+
     this.moveVillagerTick = Date.now();
-    this.villager = this.scene.physics.add.sprite(300, 500, 'villager');
+    this.villager = this.scene.physics.add.sprite(this.x, this.y, 'villager');
     this.villager.setCollideWorldBounds(true);
-    this.villager.setVelocityX(100)
+    this.changeVillagerDirection();
+    this.mood = this.MoodEnum.SCARED;
   }
 
   update() {
@@ -43,8 +49,12 @@ class Villager extends Phaser.GameObjects.Graphics {
     }
   }
 
-  onCollision() {
-    this.villager.disableBody(true, true)
+  isAngry() {
+    return this.mood == this.MoodEnum.ANGRY;
+  }
+
+  kill() {
+    this.villager.disableBody(true, true);
   }
 }
 
