@@ -4,6 +4,13 @@ import Villager from "../objects/villager.js";
 
 const MAX_HEALTH = 100;
 
+const hitbox = {
+  x1: 44,
+  y1: 44,
+  x2: 65,
+  y2: 84,
+};
+
 class Player extends Phaser.GameObjects.Graphics {
   constructor(params) {
     super(params.scene, params.opt);
@@ -18,6 +25,13 @@ class Player extends Phaser.GameObjects.Graphics {
     // physics
     this.physicsBody = this.scene.physics.add.sprite(400, 400, 'princess');
     this.physicsBody.setCollideWorldBounds(true);
+
+    const width = hitbox.x2 - hitbox.x1;
+    const height = hitbox.y2 - hitbox.y1;
+    const newX = Math.floor((hitbox.x2 + hitbox.x1) * 0.5);
+    const newY = Math.floor((hitbox.y2 + hitbox.y1) * 0.5);
+    this.physicsBody.body.setSize(width, height, 0, 0);
+    this.physicsBody.body.setOffset(newX, newY);
 
     this.health = MAX_HEALTH;
     this.healthBar = new Bar({
@@ -146,11 +160,13 @@ class Player extends Phaser.GameObjects.Graphics {
     if (direction.x == 0 && direction.y == 0) {
       this.physicsBody.anims.play('idlePrincess', true);
     }
-    
+    this.doMove(direction);
+  }
+
+  doMove(direction) {
     this.physicsBody.setVelocityX(this.speed * direction.x);
     this.physicsBody.setVelocityY(this.speed * direction.y);
-    this.physicsBody.setDepth(this.physicsBody.y + (this.physicsBody.height * 0.5));
-
+    this.physicsBody.setDepth(this.getFeetLocation().y);
   }
 
   kill() {
@@ -251,15 +267,13 @@ class Player extends Phaser.GameObjects.Graphics {
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
-    this.physicsBody.setVelocityX(this.speed * direction.x);
-    this.physicsBody.setVelocityY(this.speed * direction.y);
-    this.physicsBody.setDepth(this.getFeetLocation().y);
+    this.doMove(direction);
   }
 
   getFeetLocation() {
     return {
       x: this.physicsBody.x,
-      y: this.physicsBody.y + 20,
+      y: this.physicsBody.y + hitbox.y2,
     };
   }
 }
