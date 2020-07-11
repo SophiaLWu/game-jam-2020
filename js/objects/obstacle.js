@@ -39,6 +39,7 @@ class Obstacle extends Phaser.GameObjects.Graphics {
         sprite.body.setOffset(newX, newY);
       }
       sprite.body.immovable = true;
+      sprite.body.enable = !!hitbox.x1;
 
       sprite.setDepth(hitbox.x1 ? y + hitbox.oy : 0);
     }
