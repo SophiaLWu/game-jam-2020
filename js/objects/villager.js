@@ -19,6 +19,9 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody.getVillager = () => this;
 
     this.updateMood(params.opt.mood || MoodEnum.NORMAL);
+    this.velocity = Math.floor(Math.random() * 100) + 50;
+    this.stuckEnd = null;
+    this.stuckDirection = null;
 
     this.findNewFood();
     
@@ -118,6 +121,26 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   move(direction) {
+    const touching = this.physicsBody.body.touching;
+
+    if (this.stuckEnd != null){
+      if (this.stuckEnd < new Date().getTime()) {
+        this.direction = this.stuckDirection;
+      } else {
+        this.stuckEnd = null;
+      }
+    } else if (!touching.none) {
+      this.stuckEnd = new Date().getTime() + CONSTANTS.STUCK_WALK_DURATION;
+      this.stuckDirection = {x: 0, y: 0};
+      if (touching.up || touching.bottom) {
+        this.stuckDirection.x = -1;
+        this.stuckDirection.y = touching.up ? 1 : -1;
+      } else if (touching.left || touching.right) {
+        this.stuckDirection.x = touching.right ? -1 : 1;
+        this.stuckDirection.y = 1;
+      }
+    }
+
     if (direction.x !== 0 && direction.y !== 0) {
       direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
