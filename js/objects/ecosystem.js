@@ -38,9 +38,6 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     }
 
     this.physics.add.collider(this.villagerBodies, this.foodBodies, this.villagerEatsFood, null, this );
-
-
-    // this.stomachContentsText = this.add.text(100, 100, this.stomach_contents, { fontSize: '32px', fill: '#fff' });
   }
 
   createFood(x, y) {
@@ -93,7 +90,6 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
 
   pickUpFood(playerBody, foodBody) { //AndrewC: food here is physics body only, can't use methods from Food (or Collectible) classes.
     foodBody.getFood().onCollision();
-    this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
     this.player.heal(1); // AndrewC: this shit only works because there's only one player
     this.player.eat();
 
