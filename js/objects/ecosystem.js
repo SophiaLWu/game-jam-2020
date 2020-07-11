@@ -115,6 +115,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     if (this.player.isWerewolf) {
       this.player.turnHuman();
       villager.kill(); 
+      this.player.villagersEaten += 1;
       Villager.scareOtherVillagers(playerBody.x, playerBody.y);
 
       this.spawnAngryVillagers();
