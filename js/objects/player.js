@@ -182,12 +182,6 @@ class Player extends Phaser.GameObjects.Graphics {
     return this.isWerewolf;
   }
 
-  turnHuman() {
-    this.isWerewolf = false;
-    this.physicsBody.setTint(0x000000);
-    this.speed = this.humanSpeed;
-  }
-
   determineVillagerToConsume() {
     this.villagerToConsume = Villager.getClosestVillager(this.physicsBody.x, this.physicsBody.y);
   }
