@@ -21,11 +21,11 @@ const HITBOXES = {
   },
   'bigrock.png': {
     ox: 192,
-    oy: 192,
+    oy: 120,
     x: 210,
     y: 239,
     x1: 45,
-    y1: 1,
+    y1: 20,
     x2: 362,
     y2: 341
   },
