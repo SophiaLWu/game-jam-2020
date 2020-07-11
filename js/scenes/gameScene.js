@@ -9,6 +9,7 @@ import { HITBOXES } from "../hitboxes.js";
 class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' });
+    this.gameOver = false;
   }
 
   preload() {
@@ -54,6 +55,10 @@ class GameScene extends Phaser.Scene {
   update() {
     this.player.update();
     this.ecosystem.update();
+
+    if (this.gameOver) {
+      this.scene.start("GameOverScene");
+    }
   }
 }
 
