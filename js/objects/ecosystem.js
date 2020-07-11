@@ -15,7 +15,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.foodOverlapTriggered = false
 
     this.foods = this.physics.add.group();
-
+    
     for (let i = 0; i < this.startingFoodAmount; i++) {
       const {x, y} = this.getRandomSpawnLocation();
       this.createFood(x,y);
@@ -45,7 +45,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       frame: {}
     });
 
-    this.foods.add(food);
+    this.foods.add(food.physicsBody); // AndrewC: can't add Food objects to groups, only physics bodies.
   }
 
   createVillager(x, y) {
@@ -81,10 +81,10 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     };
   }
 
-  pickUpFood(player, food) {
-    food.onCollision();
-
-    this.player.heal(1);
+  pickUpFood(player, food) { //AndrewC: food here is physics body only, can't use methods from Food (or Collectible) classes.
+    food.disableBody(true, true);
+    this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
+    this.player.heal(1); // AndrewC: this shit only works because there's only one player
     this.player.eat();
 
     const {x, y} = this.getRandomSpawnLocation();

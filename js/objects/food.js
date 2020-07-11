@@ -6,13 +6,15 @@ class Food extends Collectible {
     super(params);
 
     // physics
+    this.physicsBody = this.scene.physics.add.image(this.x, this.y, this.texture.key);
   }
 
   update() {
   }
 
   onCollision() {
-    super.onCollision();
+    //super.onCollision();
+    this.physicsBody.disableBody(true, true);
     this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
   }
 }
