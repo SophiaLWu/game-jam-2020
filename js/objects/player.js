@@ -16,7 +16,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.DKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
     // physics
-    this.physicsBody = this.scene.physics.add.sprite(400, 400, 'dude');
+    this.physicsBody = this.scene.physics.add.sprite(400, 400, 'princess');
     this.physicsBody.setCollideWorldBounds(true);
 
     this.health = MAX_HEALTH;
@@ -67,6 +67,28 @@ class Player extends Phaser.GameObjects.Graphics {
     //Werewolf state variables
     this.isWerewolf = false;
     
+
+    //Princess Animations
+    // this.runFrameNames = this.scene.anims.generateFrameNames('princessAtlas', {
+    //   start: 1, end: 8, zeroPad: 3, prefix:'Princess/inner/Run/', suffix: '.png'
+    // });
+    
+
+    this.scene.anims.create({
+      key: 'rightPrincess',
+      frames: this.scene.anims.generateFrameNumbers('princessRun', { start: 0, end: 7 } ),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.scene.anims.create({
+      key: 'idlePrincess',
+      frames: this.scene.anims.generateFrameNumbers('princessIdle', { start: 0, end: 11 } ),
+      frameRate: 10,
+      repeat: -1
+    });
+
+  
   }
 
   update() {
@@ -84,9 +106,11 @@ class Player extends Phaser.GameObjects.Graphics {
     } else {
       if (this.cursors.left.isDown || this.AKey.isDown) {
         direction['x'] -= 1;
+        //player.anims.play('leftPrincess', true);
       }
       if (this.cursors.right.isDown || this.DKey.isDown) {
         direction['x'] += 1;
+        this.physicsBody.anims.play('rightPrincess', true);
       }
       if (this.cursors.up.isDown || this.WKey.isDown) {
         direction['y'] -= 1;
@@ -119,9 +143,14 @@ class Player extends Phaser.GameObjects.Graphics {
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
+    if (direction.x == 0 && direction.y == 0) {
+      this.physicsBody.anims.play('idlePrincess', true);
+    }
+    
     this.physicsBody.setVelocityX(this.speed * direction.x);
     this.physicsBody.setVelocityY(this.speed * direction.y);
     this.physicsBody.setDepth(this.physicsBody.y + (this.physicsBody.height * 0.5));
+
   }
 
   kill() {
