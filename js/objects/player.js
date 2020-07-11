@@ -35,6 +35,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.healKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
     this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
     this.hungerKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
+    this.eatKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
 
     //Hunger variables and timer
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
@@ -95,6 +96,10 @@ class Player extends Phaser.GameObjects.Graphics {
       if (this.hungerKey.isDown) {
         this.stomachContents = 0;
       }
+      if (this.eatKey.isDown) {
+        this.eat();
+      }
+
 
     }
     this.move(direction);
