@@ -60,7 +60,7 @@ class WorldMap {
 
     const level = [
       [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ],
-      [  1,   1,   2,   3,   4,   5,   6,   7,   8,   9,   1 ],
+      [  1,  11,   2,   3,   4,   5,   6,   7,   8,   9,   1 ],
       [  1,  12,  13,  14,  15,  16,  17,  18,  19,  20,   1 ],
       [  1,  23,  24,  25,  26,  27,  28,  29,  30,  31,   1 ],
       [  1,  34,  35,   0,  13,  14,   0,   0,   0,   0,   1 ],
@@ -71,11 +71,13 @@ class WorldMap {
       [  1,   0,   0,   0,   0,   0,   0,   0,  15,  15,   1 ],
       [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ]
     ];
+    const levelNumCols = level.length
+    const levelNumRows = level[0].length
 
     level.forEach((arr, row) => {
       arr.forEach((id, col) => {
-        const x = CONSTANTS.OBSTACLE_DISTANCE * col;
-        const y = CONSTANTS.OBSTACLE_DISTANCE * row;
+        const x = (CONSTANTS.WORLD_WIDTH / (levelNumCols - 1)) * col;
+        const y = (CONSTANTS.WORLD_HEIGHT / (levelNumRows - 1)) * row;
         this.createObstacle(id, x, y);
       });
     });

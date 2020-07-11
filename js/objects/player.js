@@ -11,7 +11,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     // physics
-    this.player = this.scene.physics.add.sprite(100, 450, 'dude');
+    this.player = this.scene.physics.add.sprite(400, 400, 'dude');
     this.player.setCollideWorldBounds(true);
 
     this.health = MAX_HEALTH;
@@ -25,7 +25,7 @@ class Player extends Phaser.GameObjects.Graphics {
     });
     
     //Speeds
-    this.humanSpeed = 160;
+    this.humanSpeed = 400;
     this.werewolfSpeed = this.humanSpeed*3;
     this.speed = this.humanSpeed;
 
