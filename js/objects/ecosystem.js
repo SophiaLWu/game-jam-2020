@@ -14,23 +14,24 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.villagerOverlapTriggered = false
     this.foodOverlapTriggered = false
 
-    this.foods = this.physics.add.group();
+    this.villagers = [];
 
+    this.foodBodies = this.physics.add.group();
+    this.villagerBodies = this.physics.add.group();
+    
     for (let i = 0; i < this.startingFoodAmount; i++) {
       const {x, y} = this.getRandomSpawnLocation();
       this.createFood(x,y);
     }
 
-    console.log(this.foods.getLength());
+    this.physics.add.collider(this.player.player, this.foodBodies, this.pickUpFood, null, this );
 
-    this.physics.add.collider(this.player.player, this.foods, this.pickUpFood, null, this )
-
-    this.villagers = []
     for (let i = 0; i < this.startingVillagerAmount; i++){
       const {x, y} = this.getRandomSpawnLocation();
-      this.villagers.push(this.createVillager(x, y));
+      this.createVillager(x, y);
     }
 
+    this.physics.add.collider(this.villagerBodies, this.foodBodies, this.villagerEatsFood, null, this );
 
 
     // this.stomachContentsText = this.add.text(100, 100, this.stomach_contents, { fontSize: '32px', fill: '#fff' });
@@ -45,7 +46,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       frame: {}
     });
 
-    this.foods.add(food);
+    this.foodBodies.add(food.physicsBody); // AndrewC: can't add Food objects to groups, only physics bodies.
   }
 
   createVillager(x, y) {
@@ -54,23 +55,19 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       opt: {
         initialX: x,
         initialY: y,
-        foods: this.foods
+        foods: this.foodBodies
       }
     });
-    this.villagerOverlapTrigger = this.physics.add.overlap(
-      this.player.player,
-      villager.villager,
-      () => this.collideIntoVillager(villager),
-      null,
-      this,
-     );
-    return villager;
+    
+    this.villagers.push(villager);
+    this.villagerBodies.add(villager.physicsBody);
   }
 
   update() {
     this.villagers.forEach(function(villager) {
+      villager.foods = this.foodBodies;
       villager.update();
-    });
+    }.bind(this));
   }
 
   getRandomSpawnLocation() {
@@ -81,17 +78,23 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     };
   }
 
-  pickUpFood(player, food) {
-    food.onCollision();
-
-    this.player.heal(1);
+  pickUpFood(player, food) { //AndrewC: food here is physics body only, can't use methods from Food (or Collectible) classes.
+    food.disableBody(true, true);
+    this.scene.stomach_contents = Math.min(this.scene.stomach_contents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
+    this.player.heal(1); // AndrewC: this shit only works because there's only one player
     this.player.eat();
 
     const {x, y} = this.getRandomSpawnLocation();
     this.createFood(x, y);
   }
 
-  collideIntoVillager(villager) {
+  villagerEatsFood(villager, food) {
+    food.disableBody(true, true);
+    const {x, y} = this.getRandomSpawnLocation();
+    this.createFood(x, y);
+  }
+
+  collideIntoVillager(villager) { // AndrewC: this needs to be re-written to use colliders
     if(this.villagerOverlapTriggered && this.villagerOverlapTrigger){
       this.physics.world.removeCollider(this.villagerOverlapTrigger);
       return;
