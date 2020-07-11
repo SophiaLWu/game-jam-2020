@@ -23,11 +23,18 @@ class Player extends Phaser.GameObjects.Graphics {
       barHeight: 20,
       barWidth: 100
     });
+    
+    //Speeds
+    this.humanSpeed = 160;
+    this.werewolfSpeed = this.humanSpeed*3;
+    this.speed = this.humanSpeed;
 
+    this.target;
+    
     // For testing
     this.healKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
     this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
-
+    this.hungerKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
 
     //Hunger variables and timer
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
@@ -43,7 +50,7 @@ class Player extends Phaser.GameObjects.Graphics {
     var hungerTimer = this.scene.time.addEvent({
       delay: 1000,                // ms
       callback: this.getHungry,
-      //args: [],
+      args: [1],
       callbackScope: this,
       loop: true
   });
@@ -55,7 +62,7 @@ class Player extends Phaser.GameObjects.Graphics {
 
   update() {
     //Check food status for turning
-    //if 
+    //if not wolf
 
 
     let direction = {
@@ -63,30 +70,37 @@ class Player extends Phaser.GameObjects.Graphics {
       y: 0
     };
 
-    if (this.cursors.left.isDown) {
-      direction['x'] -= 1;
-    }
-    if (this.cursors.right.isDown) {
-      direction['x'] += 1;
-    }
-    if (this.cursors.up.isDown) {
-      direction['y'] -= 1;
-    }
-    if (this.cursors.down.isDown) {
-      direction['y'] += 1;
-    }
-    if (this.healKey.isDown) {
-      this.heal(1);
-    }
-    if (this.damageKey.isDown) {
-      this.damage(1);
-    }
+    if(this.isWerewolf){
+      this.stepTowardTarget(this.target);
+    } else
+    {
+      if (this.cursors.left.isDown) {
+        direction['x'] -= 1;
+      }
+      if (this.cursors.right.isDown) {
+        direction['x'] += 1;
+      }
+      if (this.cursors.up.isDown) {
+        direction['y'] -= 1;
+      }
+      if (this.cursors.down.isDown) {
+        direction['y'] += 1;
+      }
+      if (this.healKey.isDown) {
+        this.heal(1);
+      }
+      if (this.damageKey.isDown) {
+        this.damage(1);
+      }
+      if (this.hungerKey.isDown) {
+        this.stomachContents = 0;
+      }
 
+    }
     this.move(direction);
   }
 
   move(direction) {
-    const speed = 160;
     if (direction.x !== 0 && direction.y !== 0) {
       direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
@@ -123,8 +137,8 @@ class Player extends Phaser.GameObjects.Graphics {
     this.stomachBar.update(this.stomachContents);
   }
 
-  getHungry() {
-    this.stomachContents = Math.max(this.stomachContents - 1, 0);
+  getHungry(amount) {
+    this.stomachContents = Math.max(this.stomachContents - amount, 0);
 
     this.stomachBar.update(this.stomachContents);
 
@@ -137,16 +151,21 @@ class Player extends Phaser.GameObjects.Graphics {
 
   turnWerewolf() {
     this.isWerewolf = true;
-
     this.player.setTint(0xff0000);
-            
-
+    this.speed = this.werewolfSpeed;
+    this.determineTarget();
     console.log("Yer a Were-wuff, 'Erry!");
 
   }
 
   isWerewolf() {
     return this.isWerewolf
+  }
+
+  turnHuman(){
+    this.isWerewolf = false;
+    this.player.setTint(0x000000);
+    this.speed = this.humanSpeed;
   }
 
   onCollision() {
@@ -158,6 +177,14 @@ class Player extends Phaser.GameObjects.Graphics {
       //max stomach contents
       //turn back to human
     }
+  }
+
+  determineTarget(){
+
+  }
+
+  stepTowardTarget(target){
+
   }
 }
 
