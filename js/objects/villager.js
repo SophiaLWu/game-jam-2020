@@ -12,7 +12,8 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     this.scene = params.scene;
     this.moveVillagerTick = Date.now();
-    this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
+    this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'maleVillager1', 0);
+    this.physicsBody.setScale(2,2);
     this.physicsBody.setCollideWorldBounds(true);
 
     this.physicsBody.getVillager = () => this;
@@ -20,6 +21,7 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.updateMood(params.opt.mood || MoodEnum.NORMAL);
 
     this.findNewFood();
+    
   }
 
   findNewFood() {
@@ -123,7 +125,24 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     this.physicsBody.setVelocityX(this.velocity * direction.x);
     this.physicsBody.setVelocityY(this.velocity * direction.y);
+    // var velocityX = this.velocity * direction.x;
+    // var velocityY = this.velocity * direction.y;
     this.physicsBody.setDepth(this.getFeetLocation().y);
+
+    this.setVillagerMoveAnimation();
+  }
+
+  setVillagerMoveAnimation() {
+    if (this.physicsBody.body.velocity.x > 0) { //walking right
+      this.physicsBody.anims.play('rightMaleVillager1', true);
+    } else if (this.physicsBody.body.velocity.x < 0) { //walking left
+      this.physicsBody.anims.play('leftMaleVillager1', true);
+    } 
+    if ((this.physicsBody.body.velocity.y > 0) && (Math.abs(this.physicsBody.body.velocity.y) > Math.abs(this.physicsBody.body.velocity.x)) ) { //walking mostly down
+      this.physicsBody.anims.play('downMaleVillager1', true);
+    } else if  ((this.physicsBody.body.velocity.y < 0) && (Math.abs(this.physicsBody.body.velocity.y) > Math.abs(this.physicsBody.body.velocity.x )) ) { //walking mostly up
+      this.physicsBody.anims.play('upMaleVillager1', true);
+    }
   }
 
   getFeetLocation() {
@@ -211,6 +230,37 @@ Villager.scareOtherVillagers = (playerX, playerY) => {
       villager.updateMood(MoodEnum.SCARED);
     }
   });
+}
+
+Villager.buildVillagerAnimations = (scene) => {
+  scene.anims.create({
+    key: 'rightMaleVillager1',
+    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 6, end: 8 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'leftMaleVillager1',
+    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 3, end: 5 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'downMaleVillager1',
+    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 0, end: 2 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'upMaleVillager1',
+    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 9, end: 11 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
 };
 
 export default Villager;
