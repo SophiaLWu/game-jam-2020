@@ -40,6 +40,10 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.physics.add.collider(this.villagerBodies, this.foodBodies, this.villagerEatsFood, null, this );
 
     this.physics.add.collider(this.player.physicsBody, this.villagerBodies, this.collideIntoVillager, null, this );
+
+    this.physics.add.collider(this.villagerBodies, this.scene.worldMap.getObstacles());
+
+    this.physics.add.collider(this.villagerBodies, this.villagerBodies);
   }
 
   createFood(x, y) {
