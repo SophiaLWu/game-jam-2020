@@ -1,13 +1,13 @@
 const HITBOXES = {
   '41.png': { // Red Apple
-    ox: 11, // x-center of image
-    oy: 11, // y-center of image
-    x: 34, // x-center of place on ground
-    y: 59, // y-center of place on ground
-    x1: 10, // top-x left corner of hitbox
-    y1: 11, // top-y left corner of hitbox
-    x2: 59, // bottom-x right corner of hitbox
-    y2: 65 // bottom-y right corner of hitbox
+    ox: 13, // x-center of image
+    oy: 17, // y-center of image
+    x: 13, // x-center of place on ground
+    y: 28, // y-center of place on ground
+    x1: 0, // top-x left corner of hitbox
+    y1: 0, // top-y left corner of hitbox
+    x2: 25, // bottom-x right corner of hitbox
+    y2: 35 // bottom-y right corner of hitbox
   },
   '42.png': { // Green Apple
     ox: 35,
