@@ -150,8 +150,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.stomachContents = Math.max(this.stomachContents - amount, 0);
     this.updateStomatchBar();
 
-    if (this.stomachContents == 0 && !this.isWerewolf)
-    {
+    if (this.stomachContents == 0 && !this.isWerewolf) {
       this.turnWerewolf();
     }
   }

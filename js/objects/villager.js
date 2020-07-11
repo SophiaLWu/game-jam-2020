@@ -4,22 +4,26 @@ import Food from "./food.js"
 
 const allVillagers = [];
 const availableVillagers = [];
+let activeVillagers = [];
+const MoodEnum = {
+  NORMAL: 0,
+  SCARED: 1,
+  ANGRY: 2
+};
 
 class Villager extends Phaser.GameObjects.Graphics {
   constructor(params) {
     super(params.scene, params.opt);
 
-    this.MoodEnum = {
-      SCARED: 1,
-      ANGRY: 2
-    }
+    activeVillagers.push(this);
 
     this.moveVillagerTick = Date.now();
     this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
     this.physicsBody.setCollideWorldBounds(true);
+
     this.physicsBody.getVillager = () => this;
 
-    this.mood = this.MoodEnum.SCARED;
+    this.mood = MoodEnum.NORMAL;
     this.velocity = 100;
     allVillagers.push(this);
     availableVillagers.push(this);
@@ -28,25 +32,44 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   findNewFood() {
-    this.foodToEat = Food.getClosestAvailableFood(this.physicsBody.x, this.physicsBody.y);
-    if (this.foodToEat) {
-      this.foodToEat.addEatListener(() => this.findNewFood());
+    const lastFoodTarget = this.targetFood;
+    this.targetFood = null;
+    const targetFood = Food.getClosestAvailableFood(this.physicsBody.x, this.physicsBody.y);
+    if (targetFood) {
+      targetFood.addEatListener(() => this.findNewFood());
+      if (targetFood !== lastFoodTarget) {
+        setTimeout((() => {
+          this.targetFood = targetFood;
+        }).bind(this), CONSTANTS.FOOD_FIND_DELAY_MILLIS_MIN);
+      }
     }
+  }
+
+  getFoodFindDelay() {
+    return 
+      CONSTANTS.FOOD_FIND_DELAY_MILLIS_MIN +
+      Math.random() * 
+        (CONSTANTS.FOOD_FIND_DELAY_MILLIS_MAX -
+         CONSTANTS.FOOD_FIND_DELAY_MILLIS_MIN)
   }
 
   update() {
     this.setVillagerMovement();
   }
 
-  setVillagerMovement() {
-    const epsilson = 2;
-    var foodX = this.foodToEat.x
-    var foodY = this.foodToEat.y
-
+  getDirectionTowardFood() {
     let direction = {
       x: 0,
       y: 0
     };
+
+    if (this.targetFood === null) {
+      return direction;
+    }
+
+    const epsilson = 2;
+    var foodX = this.targetFood.x
+    var foodY = this.targetFood.y
 
     if (this.physicsBody.x < (foodX - epsilson)) {
       direction['x'] += 1;
@@ -58,8 +81,25 @@ class Villager extends Phaser.GameObjects.Graphics {
     } else if (this.physicsBody.y > (foodY + epsilson)) {
       direction['y'] -= 1;
     }
+    return direction;
+  }
 
-    this.move(direction);
+  setVillagerMovement() {
+    let direction;
+
+    switch (this.mood) {
+      case MoodEnum.NORMAL:
+        direction = this.getDirectionTowardFood();
+        break;
+      case MoodEnum.SCARED:
+        break;
+      case MoodEnum.ANGRY:
+        break;
+    }
+
+    if (direction) {
+      this.move(direction);
+    }
   }
 
   move(direction) {
@@ -81,10 +121,12 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   isAngry() {
-    return this.mood == this.MoodEnum.ANGRY;
+    return this.mood == MoodEnum.ANGRY;
   }
 
   kill() {
+    const index = activeVillagers.indexOf(this);
+    activeVillagers.splice(index, 1);
     this.physicsBody.disableBody(true, true);
   }
 }
@@ -111,5 +153,15 @@ Villager.getClosestVillager = (x, y) => {
   }
   return closestAvailableVillager;
 }
+
+Villager.getTargetedFood = () => {
+  const targetedFood = new Set();
+  activeVillagers.forEach((villager) => {
+    if (villager && villager.targetedFood && villager.targetFood.id) {
+      targetedFood.add(villager.targetFood.id);
+    }
+  });
+  return targetedFood;
+};
 
 export default Villager;

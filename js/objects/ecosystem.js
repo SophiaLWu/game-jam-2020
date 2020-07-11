@@ -76,16 +76,19 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   }
 
   getRandomSpawnLocation(farX, farY) {
-    let x = farX;
-    let y = farY;
+    let x = farX || 0;
+    let y = farY || 0;
     let withinBounds = true; //x and y are 0 the first time through, so initially set this to true
+    const minX = CONSTANTS.FOOD_BOUND_BORDER;
+    const minY = CONSTANTS.FOOD_BOUND_BORDER;
+    const maxWidth = CONSTANTS.WORLD_WIDTH - (2 * CONSTANTS.FOOD_BOUND_BORDER);
+    const maxHeight = CONSTANTS.WORLD_HEIGHT - (2 * CONSTANTS.FOOD_BOUND_BORDER);
 
-    while ((manhattanDistance(x, y, farX, farY) < CONSTANTS.MIN_SPAWN_DISTANCE) && (withinBounds)) {
-      x = Math.floor(Math.random() * CONSTANTS.WORLD_WIDTH);
-      y = Math.floor(Math.random() * CONSTANTS.WORLD_HEIGHT);
+    let distance = -1
 
-      //check that x and y are within the valid areas for food to display
-      withinBounds = (x >= CONSTANTS.FOOD_BOUND_BORDER && (x <= (CONSTANTS.WORLD_WIDTH - CONSTANTS.FOOD_BOUND_BORDER)) && (y >=CONSTANTS.FOOD_BOUND_BORDER && (y <= (CONSTANTS.WORLD_HEIGHT - CONSTANTS.FOOD_BOUND_BORDER))));
+    while (manhattanDistance(x, y, farX, farY) < CONSTANTS.MIN_SPAWN_DISTANCE) {
+      x = minX + Math.floor(Math.random() * maxWidth);
+      y = minY + Math.floor(Math.random() * maxHeight);
     }
     return { x, y };
   }
@@ -113,16 +116,16 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       villager.kill(); 
 
       var newVillagers = 0;
-
-      let {lastX, lastY} = {lastX: playerBody.x, lastY: playerBody.Y};
-      while(newVillagers <= CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
+      var lastX = 0;
+      var lastY = 0;
+      while (newVillagers <= CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_DEATH) {
         const {x, y} = this.getRandomSpawnLocation(lastX, lastY);
         lastX = x;
         lastY = y;
         this.createVillager(x, y);
         newVillagers++;
       }
-     } else if (villager.isAngry()) {
+    } else if (villager.isAngry()) {
       this.player.damage(1);
     }
   }
