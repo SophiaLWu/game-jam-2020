@@ -138,10 +138,19 @@ class Villager extends Phaser.GameObjects.Graphics {
     return this.mood == MoodEnum.ANGRY;
   }
 
+  isScared() {
+    return this.mood == MoodEnum.SCARED;
+  }
+
   kill() {
     const index = activeVillagers.indexOf(this);
     activeVillagers.splice(index, 1);
     this.physicsBody.disableBody(true, true);
+  }
+
+  reset() {
+    this.updateMood(MoodEnum.NORMAL);
+    this.findNewFood();
   }
 
   updateMood(mood) {
