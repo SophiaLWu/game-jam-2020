@@ -40,11 +40,11 @@ class GameScene extends Phaser.Scene {
 
     this.player = new Player({camera: this.cameras.main, scene: this, opt: {} });
     
-    this.ecosystem = new Ecosystem({
+    this.worldMap = new WorldMap({
       scene: this,
       opt: {}
     });
-    this.worldMap = new WorldMap({
+    this.ecosystem = new Ecosystem({
       scene: this,
       opt: {}
     });
