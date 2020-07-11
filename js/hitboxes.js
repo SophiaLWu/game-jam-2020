@@ -7,7 +7,7 @@ const HITBOXES = {
     x1: 0, // top-x left corner of hitbox
     y1: 0, // top-y left corner of hitbox
     x2: 25, // bottom-x right corner of hitbox
-    y2: 35 // bottom-y right corner of hitbox
+    y2: 31 // bottom-y right corner of hitbox
   },
   '42.png': { // Green Apple
     ox: 35,

@@ -6,7 +6,7 @@ const MAX_HEALTH = 100;
 
 const hitbox = {
   x1: 44,
-  y1: 44,
+  y1: 24,
   x2: 65,
   y2: 84,
 };
@@ -28,6 +28,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.physicsBody = this.scene.physics.add.sprite(400, 400, 'princess');
     this.physicsBody.setCollideWorldBounds(true);
 
+    // hitbox size
     const width = hitbox.x2 - hitbox.x1;
     const height = hitbox.y2 - hitbox.y1;
     const newX = Math.floor((hitbox.x2 + hitbox.x1) * 0.5);
