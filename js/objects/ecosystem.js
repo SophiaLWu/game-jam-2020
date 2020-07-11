@@ -79,9 +79,14 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   getRandomSpawnLocation(farX, farY) {
     let x = farX;
     let y = farY;
-    while (manhattanDistance(x, y, farX, farY) < CONSTANTS.MIN_SPAWN_DISTANCE) {
+    let withinBounds = true; //x and y are 0 the first time through, so initially set this to true
+
+    while ((manhattanDistance(x, y, farX, farY) < CONSTANTS.MIN_SPAWN_DISTANCE) && (withinBounds)) {
       x = Math.floor(Math.random() * CONSTANTS.WORLD_WIDTH);
       y = Math.floor(Math.random() * CONSTANTS.WORLD_HEIGHT);
+
+      //check that x and y are within the valid areas for food to display
+      withinBounds = (x >= CONSTANTS.FOOD_BOUND_BORDER && (x <= (CONSTANTS.WORLD_WIDTH - CONSTANTS.FOOD_BOUND_BORDER)) && (y >=CONSTANTS.FOOD_BOUND_BORDER && (y <= (CONSTANTS.WORLD_HEIGHT - CONSTANTS.FOOD_BOUND_BORDER))));
     }
     return { x, y };
   }
