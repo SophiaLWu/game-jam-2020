@@ -143,10 +143,6 @@ class Player extends Phaser.GameObjects.Graphics {
     this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
   }
 
-  isGamePaused() {
-    return this.isGamePaused;
-  }
-
   handleKeyboardInput(direction) {
     if (this.cursors.left.isDown || this.AKey.isDown) {
       direction['x'] -= 1;
@@ -320,6 +316,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   transformToWerewolf() {
+    this.isGamePaused = true;
     this.playerState = PlayerState.TO_WEREWOLF;
     this.camera.shakeEffect.start(200, 0.02);
     this.shakeInterval = setInterval(() => {
@@ -344,6 +341,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   beWerewolf() {
+    this.isGamePaused = false;
     this.playerState = PlayerState.WEREWOLF;
     this.physicsBody.setScale(2, 2);
     this.speed = this.werewolfSpeed;
@@ -352,6 +350,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnHuman() {
+    this.isGamePaused = true;
     const transformToHumanDurationMillis = 1000;
 
     this.playerState = PlayerState.FROM_WEREWOLF;
@@ -367,6 +366,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   finishBecomingHuman() {
+    this.isGamePaused = false;
     this.playerState = PlayerState.NORMAL;
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX / 2;
     this.updateStomatchBar();
