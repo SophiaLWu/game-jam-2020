@@ -79,7 +79,7 @@ class Player extends Phaser.GameObjects.Graphics {
     })
     
     var hungerTimer = this.scene.time.addEvent({
-      delay: 200,                // ms
+      delay: 100,                // ms
       callback: this.getHungry,
       args: [1],
       callbackScope: this,
