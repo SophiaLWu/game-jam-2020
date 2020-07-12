@@ -1,17 +1,18 @@
 import { CONSTANTS } from "../constants.js";
+import MainMenuScene from "./mainMenuScene.js";
 
 class GameOverScene extends Phaser.Scene {
   constructor() {
-    super({ key: 'GameOverScene'});
+    super('GameOverScene');
   }
 
   init(data) {
     this.timeSurvived = new Date(Date.now() - data.timeStarted);
     this.foodEaten = data.foodEaten;
     this.villagersEaten = data.villagersEaten;
-    this.restartKey = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.S
-    );
+    this.input.keyboard.once('keyup_SPACE', function(){
+      this.scene.start('MainMenuScene');
+    }, this);
   }
 
   preload() {
@@ -23,9 +24,9 @@ class GameOverScene extends Phaser.Scene {
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 50, `Time Survived: ${this.formatTimeString(this.timeSurvived)}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 74, `Food Eaten: ${this.foodEaten}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 98, `Villagers Eaten: ${this.villagersEaten}`, { fontSize: '24px', fill: '#fff' });
-    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 122, 'Press S to restart', { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 122, 'Press Space to restart', { fontSize: '24px', fill: '#fff' });
 
-    let sfx = this.sound.add('gameEndSound', { volume: 0.3, loop: false });
+    let sfx = this.sound.add('gameEndSound', { volume: 0.2, loop: false });
     sfx.play();
   }
 

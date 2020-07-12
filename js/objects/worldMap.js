@@ -54,7 +54,9 @@ const FILE_NAMES = {
 class WorldMap {
   constructor(params) {
     this.params = params;
-    this.obstacles = [];
+    Obstacle.setObstacles(null);
+    Obstacle.setTownObstacles(null);
+    // this.obstacles = [];
     // this.scene = params.scene;
     // this.physics = params.scene.physics;
 
@@ -106,6 +108,14 @@ class WorldMap {
 
   getTownObstacles() {
     return Obstacle.getTownObstacles();
+  }
+
+  setObstacles(setVal) {
+    Obstacle.setObstacles(setVal);
+  }
+
+  setTownObstacles(setVal) {
+    Obstacle.setTownObstacles(setVal);
   }
 
   createObstacle(id, x, y, town=false) {

@@ -321,4 +321,8 @@ Villager.buildVillagerAnimations = (scene) => {
 
 };
 
+Villager.clearActiveVillagers = () => {
+  activeVillagers.length = 0;
+}
+
 export default Villager;
