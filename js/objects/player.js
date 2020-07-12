@@ -134,8 +134,8 @@ class Player extends Phaser.GameObjects.Graphics {
     })
 
     this.scene.anims.create({ 
-      key: 'wolfPrincessTransform', 
-      frames: this.scene.anims.generateFrameNames('wolfToPrincess'), 
+      key: 'princessWolfTransform', 
+      frames: this.scene.anims.generateFrameNames('princessToWolf'), 
       frameRate: 10,
       repeat: -1 
     });
@@ -335,6 +335,8 @@ class Player extends Phaser.GameObjects.Graphics {
     this.setCollisions(false);
     this.speed = 0;
     this.doMove({x: 0, y: 0});
+    
+    this.physicsBody.anims.play('princessWolfTransform', true);
 
     const transformToWerewolfDurationMillis = 1000;
 
@@ -357,7 +359,8 @@ class Player extends Phaser.GameObjects.Graphics {
     this.playerState = PlayerState.FROM_WEREWOLF;
     this.doMove({x: 0, y: 0});
 
-    this.physicsBody.anims.play('wolfPrincessTransform', true);
+    this.physicsBody.anims.play('princessWolfTransform', true);
+    this.physicsBody.anims.forward = false;
     this.setCollisions(true);
     this.speed = 0;
     this.resetVillagerToConsume();
