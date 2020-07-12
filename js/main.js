@@ -17,12 +17,22 @@ const config = {
   scene: [MainMenuScene, GameScene, GameOverScene]
 };
 
-export class Game extends Phaser.Game {
+let game = null;
+
+export default class Game extends Phaser.Game {
   constructor(config) {
     super(config);
   }
 }
 
+Game.toggleSound = () => {
+  if (game.sound.mute) {
+    game.sound.mute = false;
+  } else {
+    game.sound.mute = true;
+  }
+}
+
 window.addEventListener("load", () => {
-  var game = new Game(config);
+  game = new Game(config);
 });

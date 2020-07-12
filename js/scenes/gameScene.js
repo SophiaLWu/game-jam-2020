@@ -3,6 +3,7 @@ import Player from "../objects/player.js"
 import Collectible from "../objects/collectible.js";
 import WorldMap from "../objects/worldMap.js"
 import Overlay from "../objects/overlay.js"
+import Game from "../main.js"
 
 import { CONSTANTS } from "../constants.js";
 import { HITBOXES } from "../hitboxes.js";
@@ -10,7 +11,6 @@ import { HITBOXES } from "../hitboxes.js";
 class GameScene extends Phaser.Scene {
   constructor() {
     super('GameScene');
-    
   }
 
   preload() {
@@ -83,6 +83,11 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
+    this.input.keyboard.once('keydown_M', function(){
+      console.log("toggle")
+      Game.toggleSound();
+    }, this);
+
     if (this.gameOver) {
       this.sound.stopAll();
       this.data = {
