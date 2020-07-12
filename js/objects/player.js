@@ -9,7 +9,7 @@ const hitbox = {
   x1: 44,
   y1: 24,
   x2: 65,
-  y2: 73,
+  y2: 53,
 };
 
 const PlayerState = {

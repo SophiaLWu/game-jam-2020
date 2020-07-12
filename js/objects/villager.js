@@ -227,7 +227,7 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   slowDown() {
-    this.velocity *= 0.9;
+    this.velocity *= 0.95;
   }
 
   updateMood(mood) {
