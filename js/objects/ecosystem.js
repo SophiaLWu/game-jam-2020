@@ -139,7 +139,6 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
         }.bind(this));
       }
 
-
       this.player.turnHuman();
       Villager.scareOtherVillagers(playerBody.x, playerBody.y);
       this.spawnAngryVillagers();

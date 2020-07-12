@@ -208,11 +208,11 @@ class Villager extends Phaser.GameObjects.Graphics {
         break;
       case MoodEnum.SCARED:
         this.physicsBody.setTint(0x05C6FF);
-        this.velocity += 75
+        this.velocity += 200
         break;
       case MoodEnum.ANGRY:
         this.physicsBody.setTint(0xff0000);
-        this.velocity = Math.floor(Math.random() * 75) + 200;
+        this.velocity = Math.floor(Math.random() * 50) + 200 + 5 * (activeVillagers.length - CONSTANTS.STARTING_VILLAGER_AMOUNT); 
         break;
     }
   }
