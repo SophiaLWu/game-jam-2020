@@ -45,6 +45,11 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet('upMilitary1', '../../assets/Villagers/upMilitary1.png', {frameWidth: 17, frameHeight: 28});
     this.load.spritesheet('leftMilitary1', '../../assets/Villagers/leftMilitary1.png', {frameWidth: 15, frameHeight: 28});
 
+    // Sound FX
+    this.load.audio('transformSound', '../../assets/sound/transform_Sound.wav');
+    this.load.audio('eatSound', '../../assets/sound/eat.mp3');
+    this.load.audio('eatVillagerSound', '../../assets/sound/eat_villager.mp3');
+    this.load.audio('humanFootstepsSnowSound', '../../assets/sound/human_footsteps_snow.mp3');
   }
 
   create() {

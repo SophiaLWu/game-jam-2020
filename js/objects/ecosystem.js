@@ -124,7 +124,9 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     let villager = villagerBody.getVillager();
 
     if (this.player.isWerewolf) {
-      this.player.turnHuman();
+      let sfx = this.scene.sound.add('eatVillagerSound', { volume: 0.4, loop: false });
+      sfx.play();
+
       villager.kill(); 
       this.player.villagersEaten += 1;
 
@@ -135,10 +137,9 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
         }
       }.bind(this));
 
+      this.player.turnHuman();
       Villager.scareOtherVillagers(playerBody.x, playerBody.y);
-
       this.spawnAngryVillagers();
-      
     } else if (villager.isAngry()) {
       this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER);
     }

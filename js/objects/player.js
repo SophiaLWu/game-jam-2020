@@ -120,7 +120,12 @@ class Player extends Phaser.GameObjects.Graphics {
       frameRate: 10,
       repeat: -1
     })
+<<<<<<< HEAD
  
+=======
+
+    this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
+>>>>>>> 08cf33b... Sounds
   }
 
   update() {
@@ -180,11 +185,24 @@ class Player extends Phaser.GameObjects.Graphics {
       if (this.turnWerewolfKey.isDown) {
         this.turnWerewolf();
       }
+
       this.move(direction);
     }
   }
 
   move(direction) {
+    if (direction.x == 0 && direction.y == 0) {
+      if (this.snowSound.isPlaying) {
+        this.snowSound.pause();
+      }
+    } else {
+      if (this.snowSound.isPaused) {
+        this.snowSound.resume();
+      } else if (!this.snowSound.isPlaying) {
+        this.snowSound.play();
+      }
+    }
+
     if (direction.x !== 0 && direction.y !== 0) {
       direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
@@ -225,6 +243,8 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   eatFood() {
+    let sfx = this.scene.sound.add('eatSound', { volume: 0.4, loop: false });
+    sfx.play();
     this.foodEaten += 1;
     this.stomachContents = Math.min(this.stomachContents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
     this.updateStomatchBar();
@@ -244,9 +264,12 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnWerewolf() {
+    let sfx = this.scene.sound.add('transformSound', { volume: 0.3, loop: false });
+    sfx.play();
     this.damage(1);
     this.setCollisions(false);
     this.camera.shakeEffect.start(600, 0.01);
+    this.physicsBody.anims.play('runWolf', true);
     this.isWerewolf = true;
     this.speed = this.werewolfSpeed;
     this.physicsBody.setScale(2,2);
@@ -293,17 +316,12 @@ class Player extends Phaser.GameObjects.Graphics {
     if (this.physicsBody.x < (villagerX - epsilson)) {
       direction['x'] += 1;
 
-      this.physicsBody.anims.play('runWolf', true);
-
       if (this.physicsBody.flipX)
       {          
         this.physicsBody.flipX = false;
       }
-
     } else if (this.physicsBody.x > (villagerX + epsilson)) {
       direction['x'] -= 1;
-
-      this.physicsBody.anims.play('runWolf', true);
 
       if (!this.physicsBody.flipX)
       {          
@@ -312,12 +330,8 @@ class Player extends Phaser.GameObjects.Graphics {
     }
     if (this.physicsBody.y < (villagerY - epsilson)) {
       direction['y'] += 1;
-
-      this.physicsBody.anims.play('runWolf', true);
     } else if (this.physicsBody.y > (villagerY + epsilson)) {
       direction['y'] -= 1;
-
-      this.physicsBody.anims.play('runWolf', true);
     }
 
     this.autoMove(direction);
