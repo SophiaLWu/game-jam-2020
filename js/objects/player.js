@@ -152,8 +152,8 @@ class Player extends Phaser.GameObjects.Graphics {
     this.scene.anims.create({ 
       key: 'princessWolfTransform', 
       frames: this.scene.anims.generateFrameNames('princessToWolf'), 
-      duration: 270,
-      repeat: 5
+      duration: 300,
+      repeat: 4
     });
 
     this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.05, loop: true });  
@@ -350,13 +350,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.doMove({x: 0, y: 0});
     
     this.physicsBody.anims.play('princessWolfTransform', true);
-    this.physicsBody.once('animationcomplete', this.beWerewolf, this)
-
-    // const transformToWerewolfDurationMillis = 1000;
-
-    // setTimeout(() => {
-    //   this.beWerewolf();
-    // }, transformToWerewolfDurationMillis);
+    this.physicsBody.once('animationcomplete', this.beWerewolf, this);
   }
 
   beWerewolf() {
@@ -370,7 +364,6 @@ class Player extends Phaser.GameObjects.Graphics {
 
   turnHuman() {
     this.isGamePaused = true;
-    const transformToHumanDurationMillis = 1000;
 
     this.physicsBody.anims.play('princessWolfTransform', true);
     this.physicsBody.setScale(1,1);
@@ -382,9 +375,9 @@ class Player extends Phaser.GameObjects.Graphics {
     this.setCollisions(true);
     this.speed = 0;
     this.resetVillagerToConsume();
-    setTimeout(() => {
-      this.finishBecomingHuman();
-    }, transformToHumanDurationMillis);
+
+    this.physicsBody.anims.play('princessWolfTransform', true);
+    this.physicsBody.once('animationcomplete', this.finishBecomingHuman, this);
   }
 
   finishBecomingHuman() {
