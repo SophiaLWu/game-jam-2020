@@ -63,7 +63,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     const numShovelSounds = 3;
     for (let i = 0; i < numShovelSounds; i++) {
       this.villagerShovelSounds.push(
-        this.scene.sound.add('villagerShovelSound', { volume: 0.3, loop: false })
+        this.scene.sound.add('villagerShovelSound', { volume: 0.1, loop: false })
       );
     }
   }
@@ -139,7 +139,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     let villager = villagerBody.getVillager();
 
     if (this.player.isWerewolf()) {
-      let sfx = this.scene.sound.add('eatVillagerSound', { volume: 0.4, loop: false });
+      let sfx = this.scene.sound.add('eatVillagerSound', { volume: 0.2, loop: false });
       sfx.play();
 
       villager.kill(); 
