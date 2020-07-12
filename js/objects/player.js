@@ -248,6 +248,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.camera.shakeEffect.start(600, 0.01);
     this.isWerewolf = true;
     this.speed = this.werewolfSpeed;
+    this.physicsBody.setScale(2,2);
     this.determineVillagerToConsume();
     console.log("Yer a Were-wuff, 'Erry!");
   }
@@ -259,6 +260,7 @@ class Player extends Phaser.GameObjects.Graphics {
     this.physicsBody.clearTint();
     this.speed = this.humanSpeed;
     this.resetVillagerToConsume();
+    this.physicsBody.setScale(1,1);
     console.log("You ate a big one heh. Back to a human you go.");
   }
 
