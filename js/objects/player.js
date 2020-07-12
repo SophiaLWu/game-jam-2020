@@ -36,7 +36,6 @@ class Player extends Phaser.GameObjects.Graphics {
     this.physicsBody.body.setSize(width, height, 0, 0);
     this.physicsBody.body.setOffset(newX, newY);
 
-
     this.health = MAX_HEALTH;
     this.healthBar = new Bar({
       scene: this.scene,
@@ -131,7 +130,6 @@ class Player extends Phaser.GameObjects.Graphics {
     //Check food status for turning
     //if not wolf
 
-
     let direction = {
       x: 0,
       y: 0
@@ -139,7 +137,7 @@ class Player extends Phaser.GameObjects.Graphics {
 
     if (this.isWerewolf) {
       this.stepTowardVillager();
-    } else {
+    } else if (!this.scene.isPlayerDead) {
       if (this.cursors.left.isDown || this.AKey.isDown) {
         direction['x'] -= 1;
         this.physicsBody.anims.play('rightPrincess', true);
@@ -183,6 +181,16 @@ class Player extends Phaser.GameObjects.Graphics {
       }
 
       this.move(direction);
+    } else {
+      // Player is dead.
+      if (this.physicsBody.angle > -90) {
+        this.physicsBody.body.immovable = true;
+        this.physicsBody.anims.play('idlePrincess', true);
+        this.physicsBody.flipX = false
+        this.physicsBody.setVelocityX(0);
+        this.physicsBody.setVelocityY(0);
+        this.physicsBody.angle -= 9;
+      }
     }
   }
 
@@ -216,15 +224,16 @@ class Player extends Phaser.GameObjects.Graphics {
     this.physicsBody.setVelocityX(this.speed * direction.x);
     this.physicsBody.setVelocityY(this.speed * direction.y);
     this.physicsBody.setDepth(this.getFeetLocation().y);
-
   }
 
   kill() {
-    console.log("You've been killed!");
-    this.scene.gameOver = true;
+    this.scene.isPlayerDead = true;
+    setTimeout(() => {
+      this.scene.gameOver = true;
+    }, 3000);
   }
 
-  damage(amount) {
+  damage(amount, enableShake = true) {
     this.camera.shakeEffect.start(110, 0.006);
     this.health = this.health - amount;
     this.healthBar.update(this.health);
@@ -251,26 +260,34 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   getHungry(amount) {
-    this.stomachContents = Math.max(this.stomachContents - amount, 0);
-    this.updateStomatchBar();
+    if (!this.scene.isPlayerDead) {
+      this.stomachContents = Math.max(this.stomachContents - amount, 0);
+      this.updateStomatchBar();
 
-    if (this.stomachContents == 0 && !this.isWerewolf) {
-      this.turnWerewolf();
+      if (this.stomachContents == 0 && !this.isWerewolf) {
+        this.turnWerewolf();
+      }
     }
   }
 
   turnWerewolf() {
+    this.camera.shakeEffect.start(200, 0.02);
+    this.shakeInterval = setInterval(() => {
+      if (this.isWerewolf) {
+        this.camera.shakeEffect.start(200, 0.01);
+      } else {
+        clearInterval(this.shakeInterval);
+      }
+    }, 200);
     let sfx = this.scene.sound.add('transformSound', { volume: 0.3, loop: false });
     sfx.play();
-    this.damage(1);
+    this.damage(1, /* enableShake= */ false);
     this.setCollisions(false);
-    this.camera.shakeEffect.start(600, 0.01);
     this.physicsBody.anims.play('runWolf', true);
     this.isWerewolf = true;
     this.speed = this.werewolfSpeed;
     this.physicsBody.setScale(2,2);
     this.determineVillagerToConsume();
-    // console.log("Yer a Were-wuff, 'Erry!");
   }
 
   turnHuman() {
@@ -282,7 +299,6 @@ class Player extends Phaser.GameObjects.Graphics {
     this.speed = this.humanSpeed;
     this.resetVillagerToConsume();
     this.physicsBody.setScale(1,1);
-    // console.log("You ate a big one heh. Back to a human you go.");
   }
 
   isWerewolf() {

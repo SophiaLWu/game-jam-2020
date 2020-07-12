@@ -2,6 +2,7 @@ import Ecosystem from "../objects/ecosystem.js"
 import Player from "../objects/player.js"
 import Collectible from "../objects/collectible.js";
 import WorldMap from "../objects/worldMap.js"
+import Overlay from "../objects/overlay.js"
 
 import { CONSTANTS } from "../constants.js";
 import { HITBOXES } from "../hitboxes.js";
@@ -53,12 +54,13 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
-    console.log(this.physics);
+    this.isPlayerDead = false;
     this.gameOver = false;
     this.timeStarted = Date.now();
     this.physics.world.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
 
     this.player = new Player({camera: this.cameras.main, scene: this, opt: {} });
+    this.redOverlay = new Overlay({scene: this});
     
     this.worldMap = new WorldMap({
       scene: this,
@@ -73,6 +75,7 @@ class GameScene extends Phaser.Scene {
     this.player.setCollisions = (enable) => {
       collider1.active = enable;
       collider2.active = enable;
+      this.redOverlay.setShow(!enable);
     };
 
     //Create camera and set to follow player
@@ -92,10 +95,12 @@ class GameScene extends Phaser.Scene {
       this.gameOver = false;
       this.scene.manager.start('GameOverScene', this.data);
       this.scene.manager.stop('GameScene');
-    }
-    else{
+    } else {
       this.player.update();
-      this.ecosystem.update();
+      this.redOverlay.update();
+      if (!this.isPlayerDead) {
+        this.ecosystem.update();
+      }
     }
   }
 }
