@@ -62,7 +62,7 @@ class WorldMap {
 
     const level = [
       [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ],
-      [  1,  23,  12,  34,  27,  14,  13,  33,   0,   0,   1 ],
+      [  1,  0,  12,  34,  27,  14,  13,  33,   0,   0,   1 ],
       [  1,   9,   8,   8,  10,  16,   0,  17,  18,  30,   1 ],
       [  1,  10,   2,   9,   8,  11,   0,   4,  13,  17,   1 ],
       [  1,  11,   3,  11,  12,   9,   0,  30,   0,   0,   1 ],
@@ -87,6 +87,9 @@ class WorldMap {
         this.createObstacle(id, x, y);
       });
     });
+
+    // Starting house
+    this.createObstacle(23, 360, 335)
 
     // Create the town
     this.createObstacle(23, 1000, 600, true)
