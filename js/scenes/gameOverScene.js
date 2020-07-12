@@ -8,9 +8,7 @@ class GameOverScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.timeSurvived = new Date(Date.now() - data.timeStarted);
-    this.foodEaten = data.foodEaten;
-    this.villagersEaten = data.villagersEaten;
+    
     this.input.keyboard.once('keyup_SPACE', function(){
       this.scene.start('MainMenuScene');
     }, this);
@@ -19,14 +17,30 @@ class GameOverScene extends Phaser.Scene {
   preload() {
     this.load.audio('gameEndSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/game_end.mp3');
   }
-
-  create() {
+ 
+  create(data) {
+    this.timeSurvived = new Date(Date.now() - data.timeStarted);
+    this.foodEaten = data.foodEaten;
+    this.villagersEaten = data.villagersEaten;
+    const stringTimeSurvived = localStorage.getItem('highScoreTimeSurvived');
+    this.highScoreTimeSurvived = new Date(JSON.parse(stringTimeSurvived));
+    this.highScoreFoodEaten = localStorage.getItem('highScoreFoodEaten');
+    this.highScoreVillagersEaten = localStorage.getItem('highScoreVillagersEaten');
+    this.newTimeHighScore = false;
+    this.newFoodHighScore = false;
+    this.newVillagersHighScore = false;
+    this.checkSetHighScores();
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3, "You have been slain.", { fontSize: '32px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 50, `Time Survived: ${this.formatTimeString(this.timeSurvived)}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 74, `Food Eaten: ${this.foodEaten}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 98, `Villagers Eaten: ${this.villagersEaten}`, { fontSize: '24px', fill: '#fff' });
-    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 122, 'Press Space to restart', { fontSize: '24px', fill: '#fff' });
-
+    if(this.newTimeHighScore) this.add.text(600, CONSTANTS.SCREEN_HEIGHT / 3 + 50, 'New High Score', { fontSize: '24px', fill: '#fff' });
+    if(this.newVillagersHighScore) this.add.text(600, CONSTANTS.SCREEN_HEIGHT / 3 + 98, 'New High Score', { fontSize: '24px', fill: '#fff' });
+    if(this.newFoodHighScore) this.add.text(600, CONSTANTS.SCREEN_HEIGHT / 3 + 74, 'New High Score', { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 146, `Time Survived High Score: ${this.formatTimeString(this.timeSurvived)}`, { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 170, `Food Eaten High Score: ${this.foodEaten}`, { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 194, `Villagers Eaten High Score: ${this.villagersEaten}`, { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 266, 'Press Space to restart', { fontSize: '24px', fill: '#fff' });
     let sfx = this.sound.add('gameEndSound', { volume: 0.1, loop: false });
     sfx.play();
   }
@@ -59,6 +73,24 @@ class GameOverScene extends Phaser.Scene {
     return `${minutes}m:${seconds}s:${milliseconds}ms`;
   }
 
+  checkSetHighScores(){
+    if(this.timeSurvived > this.highScoreTimeSurvived){
+      const stringTimeSurvived = JSON.stringify(this.timeSurvived.getTime());
+      localStorage.setItem('highScoreTimeSurvived', stringTimeSurvived);
+      this.highScoreTimeSurvived = this.timeSurvived;
+      this.newTimeHighScore = true;
+    }
+    if(this.foodEaten > this.highScoreFoodEaten){
+      localStorage.setItem('highScoreFoodEaten', this.foodEaten);
+      this.highScoreFoodEaten = this.foodEaten;
+      this.newFoodHighScore = true;
+    }
+    if(this.villagersEaten > this.highScoreVillagersEaten){
+      localStorage.setItem('highScoreVillagersEaten', this.villagersEaten);
+      this.highScoreVillagersEaten = this.villagersEaten;
+      this.newVillagersHighScore = true;
+    }
+  }
 }
 
 export default GameOverScene;
