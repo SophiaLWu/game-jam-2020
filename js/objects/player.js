@@ -27,6 +27,7 @@ class Player extends Phaser.GameObjects.Graphics {
 
     this.physicsBody = this.scene.physics.add.sprite(400, 400, 'princess');
     this.physicsBody.setCollideWorldBounds(true);
+    this.nextValidHitTime = 0;
 
     // hitbox size
     const width = hitbox.x2 - hitbox.x1;
@@ -235,13 +236,19 @@ class Player extends Phaser.GameObjects.Graphics {
 
   damage(amount, enableShake = true) {
     if (!this.scene.isPlayerDead) {
+      if (this.nextValidHitTime > new Date().getTime()) {
+        return false;
+      }
+      this.nextValidHitTime = new Date().getTime() + CONSTANTS.PLAYER_TIME_BETWEEN_DAMAGE_MILLS;
       this.camera.shakeEffect.start(110, 0.006);
       this.health = this.health - amount;
       this.healthBar.update(this.health);
       if (this.health <= 0) {
         this.kill();
       }
+      return true;
     }
+    return false;
   }
 
   heal(amount) {

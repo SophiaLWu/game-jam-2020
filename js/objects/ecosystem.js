@@ -58,7 +58,14 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     //Call villager animations function
     Villager.buildVillagerAnimations(this.scene);
 
-    this.villagerShovelSound = this.scene.sound.add('villagerShovelSound', { volume: 0.3, loop: false });
+    this.villagerShovelSounds = [];
+
+    const numShovelSounds = 3;
+    for (let i = 0; i < numShovelSounds; i++) {
+      this.villagerShovelSounds.push(
+        this.scene.sound.add('villagerShovelSound', { volume: 0.3, loop: false })
+      );
+    }
   }
 
   createFood(x, y) {
@@ -151,8 +158,15 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       Villager.scareOtherVillagers(playerBody.x, playerBody.y);
       this.spawnAngryVillagers();
     } else if (villager.isAngry()) {
-      if (!this.villagerShovelSound.isPlaying) this.villagerShovelSound.play();
-      this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER);
+      if (this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER)) {
+        for (let i = 0; i < this.villagerShovelSounds.length; i++) {
+          const villagerShovelSound = this.villagerShovelSounds[i];
+          if (!villagerShovelSound.isPlaying) {
+            villagerShovelSound.play();
+            break;
+          }
+        }
+      }
     }
   }
 
