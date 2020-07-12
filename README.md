@@ -1,7 +1,10 @@
 # gamejam2020
 Game Jam 2020
 
-Setup:
+## Play the game:
+https://sophialwu.github.io/game-jam-2020/
+
+## Local Setup:
 
 [Install Node Package Manager (npm)](https://www.npmjs.com/get-npm)
 

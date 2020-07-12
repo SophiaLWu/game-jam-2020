@@ -14,6 +14,7 @@ class MainMenuScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('keyboard', 'https://sophialwu.github.io/game-jam-2020/assets/keyboard-input.png');
   }
 
   create() {
@@ -24,6 +25,7 @@ class MainMenuScene extends Phaser.Scene {
     this.add.text(20, CONSTANTS.SCREEN_HEIGHT / 3 + 140, "Press 's' to start the day", { fontSize: '22px', fill: '#fff' });
 
     this.add.text(CONSTANTS.SCREEN_WIDTH - 275, CONSTANTS.SCREEN_HEIGHT - 275, "Press 'm' to toggle sound", { fontSize: '16px', fill: "#fff" });
+    const keyboard = this.add.image(330, 200, 'keyboard');
   }
 
   update() {
