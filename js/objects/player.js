@@ -270,19 +270,19 @@ class Player extends Phaser.GameObjects.Graphics {
     this.speed = this.werewolfSpeed;
     this.physicsBody.setScale(2,2);
     this.determineVillagerToConsume();
-    console.log("Yer a Were-wuff, 'Erry!");
+    // console.log("Yer a Were-wuff, 'Erry!");
   }
 
   turnHuman() {
     this.setCollisions(true);
-    this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX;
+    this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX / 2;
     this.updateStomatchBar();
     this.isWerewolf = false;
     this.physicsBody.clearTint();
     this.speed = this.humanSpeed;
     this.resetVillagerToConsume();
     this.physicsBody.setScale(1,1);
-    console.log("You ate a big one heh. Back to a human you go.");
+    // console.log("You ate a big one heh. Back to a human you go.");
   }
 
   isWerewolf() {

@@ -49,6 +49,7 @@ class GameScene extends Phaser.Scene {
     this.load.audio('eatSound', '../../assets/sound/eat.mp3');
     this.load.audio('eatVillagerSound', '../../assets/sound/eat_villager.mp3');
     this.load.audio('humanFootstepsSnowSound', '../../assets/sound/human_footsteps_snow.mp3');
+    this.load.audio('villagerShovelSound', '../../assets/sound/villager_shovel.mp3');
   }
 
   create() {
