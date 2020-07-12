@@ -22,13 +22,10 @@ class GameOverScene extends Phaser.Scene {
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 50, `Time Survived: ${this.formatTimeString(this.timeSurvived)}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 74, `Food Eaten: ${this.foodEaten}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 98, `Villagers Eaten: ${this.villagersEaten}`, { fontSize: '24px', fill: '#fff' });
-    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 122, `Villagers Eaten: ${this.villagersEaten}`, { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 122, 'Press S to restart', { fontSize: '24px', fill: '#fff' });
   }
 
   update() {
-    if (this.restartKey.isDown) {
-      this.scene.start("GameScene");
-    }
   }
 
   formatTimeString(time){ // Adds zeroes to front of minutes, seconds, milliseconds if needed
