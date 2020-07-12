@@ -188,15 +188,15 @@ class Villager extends Phaser.GameObjects.Graphics {
     switch(this.mood) {
       case MoodEnum.NORMAL:
         this.physicsBody.clearTint();
-        this.velocity = Math.floor(Math.random() * 100) + 100;
+        this.velocity = Math.floor(Math.random() * 50) + 150;
         break;
       case MoodEnum.SCARED:
         this.physicsBody.setTint(0x05C6FF);
-        this.velocity += 50
+        this.velocity += 75
         break;
       case MoodEnum.ANGRY:
         this.physicsBody.setTint(0xff0000);
-        this.velocity = Math.floor(Math.random() * 175) + 100;
+        this.velocity = Math.floor(Math.random() * 75) + 200;
         break;
     }
   }
