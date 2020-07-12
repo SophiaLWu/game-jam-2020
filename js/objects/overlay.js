@@ -39,17 +39,17 @@ class Overlay extends Phaser.GameObjects.Graphics {
   }
 
   setShow(isShown) {
-    this.targetOpacity = isShown ? 0.8 : 0;
+    this.targetOpacity = isShown ? 1.0 : 0;
   }
 
   update() {
     if (this.targetOpacity != this.opacity && this.tween == null) {
       const isShow = this.targetOpacity === 1;
-      this.setBlendMode(isShow ? 5 : 2);
+      this.setBlendMode(isShow ? 2 : 5);
       this.tween = getTween(
-        /* startValue= */ this.opacity,
+        /* startValue= */ this.opacity * 0.7,
         /* endValue= */ this.targetOpacity,
-        /* duration= */ CONSTANTS.OVERLAY_ANIMATE_MILLIS * (isShow ? 1 : 1.4),
+        /* duration= */ CONSTANTS.OVERLAY_ANIMATE_MILLIS * (isShow ? 2 : 1.4),
         /* curve= */ Curves.EASE_OUT,
         /* onComplete= */ () => {this.tween = null;}
       );

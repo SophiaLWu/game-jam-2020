@@ -234,11 +234,13 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   damage(amount, enableShake = true) {
-    this.camera.shakeEffect.start(110, 0.006);
-    this.health = this.health - amount;
-    this.healthBar.update(this.health);
-    if (this.health <= 0) {
-      this.kill();
+    if (!this.scene.isPlayerDead) {
+      this.camera.shakeEffect.start(110, 0.006);
+      this.health = this.health - amount;
+      this.healthBar.update(this.health);
+      if (this.health <= 0) {
+        this.kill();
+      }
     }
   }
 
