@@ -120,12 +120,8 @@ class Player extends Phaser.GameObjects.Graphics {
       frameRate: 10,
       repeat: -1
     })
-<<<<<<< HEAD
- 
-=======
 
     this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
->>>>>>> 08cf33b... Sounds
   }
 
   update() {
