@@ -17,6 +17,7 @@ class Food extends Collectible {
     this.physicsBody = this.scene.physics.add.image(this.x, this.y, this.texture.key);
     this.physicsBody.getFood = () => this;
     this.onEatListeners = [];
+    this.physicsBody.setDepth(this.y);
     allFood.push(this);
     this.setupHitbox();
   }
