@@ -98,7 +98,7 @@ class GameScene extends Phaser.Scene {
     } else {
       this.player.update();
       this.redOverlay.update();
-      if (!this.isPlayerDead) {
+      if (!this.isPlayerDead || !this.player.isGamePaused || !this.player.isGamePaused()) {
         this.ecosystem.update();
       }
     }
