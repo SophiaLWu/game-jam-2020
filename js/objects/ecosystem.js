@@ -60,12 +60,20 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
 
     this.villagerShovelSounds = [];
 
-    const numShovelSounds = 3;
-    for (let i = 0; i < numShovelSounds; i++) {
-      this.villagerShovelSounds.push(
-        this.scene.sound.add('villagerShovelSound', { volume: 0.1, loop: false })
-      );
-    }
+    const numShovelSounds = 4;
+    this.villagerShovelSounds.push(
+      this.scene.sound.add('villagerShovelSound', { volume: 0.1, loop: false })
+    );
+    this.villagerShovelSounds.push(
+      this.scene.sound.add('baseballSound', { volume: 0.3, loop: false })
+    );
+    this.villagerShovelSounds.push(
+      this.scene.sound.add('smallImpactSound', { volume: 0.4, loop: false })
+    );
+    this.villagerShovelSounds.push(
+      this.scene.sound.add('punchSound', { volume: 0.2, loop: false })
+    );
+    this.lastSoundPlayedIndex = null;
   }
 
   createFood(x, y) {
@@ -161,8 +169,12 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       if (this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER)) {
         villager.slowDown();
         for (let i = 0; i < this.villagerShovelSounds.length; i++) {
-          const villagerShovelSound = this.villagerShovelSounds[i];
+          let i = Math.floor(Math.random() * this.villagerShovelSounds.length)
+          if (i == this.lastSoundPlayedIndex) break;
+
+          const villagerShovelSound = this.villagerShovelSounds[i]
           if (!villagerShovelSound.isPlaying) {
+            this.lastSoundPlayedIndex = i
             villagerShovelSound.play();
             break;
           }
