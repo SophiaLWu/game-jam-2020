@@ -128,7 +128,7 @@ class Player extends Phaser.GameObjects.Graphics {
 
     this.scene.anims.create({
       key: 'attackWolf',
-      frames: this.scene.anims.generateFrameNumbers('wolfRun', { start: 0, end: 7 }),
+      frames: this.scene.anims.generateFrameNames('wolfAttack'),
       frameRate: 10,
       repeat: -1
     })
@@ -136,8 +136,8 @@ class Player extends Phaser.GameObjects.Graphics {
     this.scene.anims.create({ 
       key: 'princessWolfTransform', 
       frames: this.scene.anims.generateFrameNames('princessToWolf'), 
-      frameRate: 10,
-      repeat: -1 
+      frameRate: 45,
+      repeat: 5 
     });
 
     this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
@@ -249,7 +249,7 @@ class Player extends Phaser.GameObjects.Graphics {
     if ((this.playerState === PlayerState.NORMAL) && direction.x == 0 && direction.y == 0) {
       this.physicsBody.anims.play('idlePrincess', true);
     } else if (this.playerState === PlayerState.WEREWOLF && direction.x == 0) {
-      this.physicsBody.anims.play('attackWolf', true);
+      this.physicsBody.anims.play('runWolf', true);
     }
     this.doMove(direction);
   }
@@ -334,12 +334,13 @@ class Player extends Phaser.GameObjects.Graphics {
     this.doMove({x: 0, y: 0});
     
     this.physicsBody.anims.play('princessWolfTransform', true);
+    this.physicsBody.once('animationcomplete', this.beWerewolf, this)
 
-    const transformToWerewolfDurationMillis = 1000;
+    // const transformToWerewolfDurationMillis = 1000;
 
-    setTimeout(() => {
-      this.beWerewolf();
-    }, transformToWerewolfDurationMillis);
+    // setTimeout(() => {
+    //   this.beWerewolf();
+    // }, transformToWerewolfDurationMillis);
   }
 
   beWerewolf() {
@@ -355,11 +356,13 @@ class Player extends Phaser.GameObjects.Graphics {
     this.isGamePaused = true;
     const transformToHumanDurationMillis = 1000;
 
+    this.physicsBody.anims.play('princessWolfTransform', true);
+    this.physicsBody.setScale(1,1);
+
     this.playerState = PlayerState.FROM_WEREWOLF;
     this.doMove({x: 0, y: 0});
 
-    this.physicsBody.anims.play('princessWolfTransform', true);
-    this.physicsBody.anims.forward = false;
+    
     this.setCollisions(true);
     this.speed = 0;
     this.resetVillagerToConsume();
