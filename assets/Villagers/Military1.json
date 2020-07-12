@@ -1,0 +1,272 @@
+{
+	"textures": [
+		{
+			"image": "Military1.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 204,
+				"h": 29
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "down_stand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 29
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 29
+					}
+				},
+				{
+					"filename": "down_walk1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 28
+					},
+					"frame": {
+						"x": 17,
+						"y": 0,
+						"w": 17,
+						"h": 28
+					}
+				},
+				{
+					"filename": "down_walk2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 28
+					},
+					"frame": {
+						"x": 34,
+						"y": 0,
+						"w": 17,
+						"h": 28
+					}
+				},
+				{
+					"filename": "left_stand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 51,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "left_walk1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 28
+					},
+					"frame": {
+						"x": 68,
+						"y": 0,
+						"w": 15,
+						"h": 28
+					}
+				},
+				{
+					"filename": "left_walk2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 28
+					},
+					"frame": {
+						"x": 85,
+						"y": 0,
+						"w": 15,
+						"h": 28
+					}
+				},
+				{
+					"filename": "right_stand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 102,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "right_walk1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 28
+					},
+					"frame": {
+						"x": 119,
+						"y": 0,
+						"w": 15,
+						"h": 28
+					}
+				},
+				{
+					"filename": "right_walk2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 28
+					},
+					"frame": {
+						"x": 136,
+						"y": 0,
+						"w": 15,
+						"h": 28
+					}
+				},
+				{
+					"filename": "up_stand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 29
+					},
+					"frame": {
+						"x": 153,
+						"y": 0,
+						"w": 17,
+						"h": 29
+					}
+				},
+				{
+					"filename": "up_walk1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 28
+					},
+					"frame": {
+						"x": 170,
+						"y": 0,
+						"w": 17,
+						"h": 28
+					}
+				},
+				{
+					"filename": "up_walk2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 28
+					},
+					"frame": {
+						"x": 187,
+						"y": 0,
+						"w": 17,
+						"h": 28
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e50beb5f81d7a543dd94b341d6d2ca79:ba0735481c0ba9ad7240f284cfd7b397:11a1d69d66b2cb328593001324339cdb$"
+	}
+}

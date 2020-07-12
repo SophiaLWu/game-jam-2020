@@ -1,5 +1,6 @@
 import { CONSTANTS } from "../constants.js";
 import MainMenuScene from "./mainMenuScene.js";
+import Game from "../main.js";
 
 class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -16,7 +17,7 @@ class GameOverScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.audio('gameEndSound', '../../assets/sound/game_end.mp3');
+    this.load.audio('gameEndSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/game_end.mp3');
   }
 
   create() {
@@ -26,11 +27,15 @@ class GameOverScene extends Phaser.Scene {
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 98, `Villagers Eaten: ${this.villagersEaten}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 122, 'Press Space to restart', { fontSize: '24px', fill: '#fff' });
 
-    let sfx = this.sound.add('gameEndSound', { volume: 0.2, loop: false });
+    let sfx = this.sound.add('gameEndSound', { volume: 0.1, loop: false });
     sfx.play();
   }
 
   update() {
+    this.input.keyboard.once('keydown_M', function(){
+      console.log("toggle")
+      Game.toggleSound();
+    }, this);
   }
 
   formatTimeString(time){ // Adds zeroes to front of minutes, seconds, milliseconds if needed

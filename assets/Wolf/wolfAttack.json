@@ -1,37 +1,16 @@
 {
 	"textures": [
 		{
-			"image": "wolfAttack.png",
+			"image": "WolfAttack.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 777,
+				"w": 888,
 				"h": 104
 			},
 			"scale": 0.125,
 			"frames": [
 				{
 					"filename": "__Wolf_Attack_000.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 111,
-						"h": 104
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 111,
-						"h": 104
-					},
-					"frame": {
-						"x": 0,
-						"y": 0,
-						"w": 111,
-						"h": 104
-					}
-				},
-				{
-					"filename": "__Wolf_Attack_007.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -176,6 +155,27 @@
 						"w": 111,
 						"h": 104
 					}
+				},
+				{
+					"filename": "__Wolf_Attack_007.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 111,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					},
+					"frame": {
+						"x": 777,
+						"y": 0,
+						"w": 111,
+						"h": 104
+					}
 				}
 			]
 		}
@@ -183,6 +183,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:ee00f4d83d7beab392d5f85ab86e8e7c:5a59253c12499e0803455fd5fddbc768:2791568c3b23d33e795c93b08c1bc06a$"
+		"smartupdate": "$TexturePacker:SmartUpdate:f9721c0516d5d6e2499ab64b6115c603:5a59253c12499e0803455fd5fddbc768:f8ce20412c00c8077d21e1a349a69ac1$"
 	}
 }

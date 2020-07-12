@@ -3,6 +3,7 @@ import Player from "../objects/player.js"
 import Collectible from "../objects/collectible.js";
 import WorldMap from "../objects/worldMap.js"
 import Overlay from "../objects/overlay.js"
+import Game from "../main.js"
 
 import { CONSTANTS } from "../constants.js";
 import { HITBOXES } from "../hitboxes.js";
@@ -10,47 +11,44 @@ import { HITBOXES } from "../hitboxes.js";
 class GameScene extends Phaser.Scene {
   constructor() {
     super('GameScene');
-    
   }
 
   preload() {
     for (const filename in HITBOXES) {
       if (HITBOXES.hasOwnProperty(filename)) {
-        this.load.image(filename, '../../assets/' + filename);
+        this.load.image(filename, 'https://sophialwu.github.io/game-jam-2020/assets/' + filename);
       }
     }
-    this.load.image('villager', '../../assets/star.png');
-    this.load.image('apple', '../../assets/41-small.png');
+    this.load.image('villager', 'https://sophialwu.github.io/game-jam-2020/assets/star.png');
+    this.load.image('apple', 'https://sophialwu.github.io/game-jam-2020/assets/41-small.png');
+    this.load.image('heart', 'https://sophialwu.github.io/game-jam-2020/assets/heart2.png');
 
-    //this.load.multiatlas('princessIdle', '../../assets/Princess/PrincessIdle.json', '../../assets');
-    //this.load.multiatlas('princessAtlas', '../../assets/Princess.json', '../../assets/Princess');
+    //this.load.multiatlas('princessIdle', 'https://sophialwu.github.io/game-jam-2020/assets/Princess/PrincessIdle.json', 'https://sophialwu.github.io/game-jam-2020/assets');
+    //this.load.multiatlas('princessAtlas', 'https://sophialwu.github.io/game-jam-2020/assets/Princess.json', 'https://sophialwu.github.io/game-jam-2020/assets/Princess');
 
     //Princess Animations
-	  this.load.spritesheet('princessIdle', '../../assets/Princess/princessIdle.png', { frameWidth: 111, frameHeight: 104 });
-    this.load.spritesheet('princessRun', '../../assets/Princess/princessRun.png', { frameWidth: 111, frameHeight: 104});
-    this.load.image('princess', '../../assets/Princess/princess.png');
+	  this.load.spritesheet('princessIdle', 'https://sophialwu.github.io/game-jam-2020/assets/Princess/princessIdle.png', { frameWidth: 111, frameHeight: 104 });
+    this.load.spritesheet('princessRun', 'https://sophialwu.github.io/game-jam-2020/assets/Princess/princessRun.png', { frameWidth: 111, frameHeight: 104});
+    this.load.image('princess', 'https://sophialwu.github.io/game-jam-2020/assets/Princess/princess.png');
 
     //Wolf Animations
-    this.load.spritesheet('wolfRun', '../../assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
-    this.load.spritesheet('wolfAttack', '../../assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
+    this.load.spritesheet('wolfRun', 'https://sophialwu.github.io/game-jam-2020/assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
+    this.load.atlas('wolfAttack', 'https://sophialwu.github.io/game-jam-2020/assets/Wolf/wolfAttack.png', 'https://sophialwu.github.io/game-jam-2020/assets/Wolf/wolfAttack.json');
+    this.load.atlas('princessToWolf', 'https://sophialwu.github.io/game-jam-2020/assets/PtoW.png', 'https://sophialwu.github.io/game-jam-2020/assets/PtoW.json');
 
     //Villager Animations    
-    this.load.spritesheet('maleVillager1', '../../assets/Villagers/MaleVillager1.png', { frameWidth: 17, frameHeight: 29});
-    this.load.spritesheet('angryMaleVillager1', '../../assets/Villagers/AngryMaleVillager1.png', { frameWidth: 17, frameHeight: 30});
+    this.load.atlas('maleVillager1', 'https://sophialwu.github.io/game-jam-2020/assets/Villagers/MaleVillager1.png', 'https://sophialwu.github.io/game-jam-2020/assets/Villagers/MaleVillager1.json');
+    this.load.atlas('angryMaleVillager1', 'https://sophialwu.github.io/game-jam-2020/assets/Villagers/AngryMaleVillager1.png', 'https://sophialwu.github.io/game-jam-2020/assets/Villagers/AngryMaleVillager1.json');
 
     //Angry Villager Animations
-    this.load.spritesheet('military1', '../../assets/Villagers/Military1.png', {frameWidth: 16, frameHeight: 29});
-    this.load.spritesheet('downMilitary1', '../../assets/Villagers/downMilitary1.png', {frameWidth: 17, frameHeight: 28});
-    this.load.spritesheet('rightMilitary1', '../../assets/Villagers/rightMilitary1.png', {frameWidth: 15, frameHeight: 28});
-    this.load.spritesheet('upMilitary1', '../../assets/Villagers/upMilitary1.png', {frameWidth: 17, frameHeight: 28});
-    this.load.spritesheet('leftMilitary1', '../../assets/Villagers/leftMilitary1.png', {frameWidth: 15, frameHeight: 28});
+    this.load.atlas('military1', 'https://sophialwu.github.io/game-jam-2020/assets/Villagers/Military1.png', 'https://sophialwu.github.io/game-jam-2020/assets/Villagers/Military1.json');
 
     // Sound FX
-    this.load.audio('transformSound', '../../assets/sound/transform_Sound.wav');
-    this.load.audio('eatSound', '../../assets/sound/eat.mp3');
-    this.load.audio('eatVillagerSound', '../../assets/sound/eat_villager.mp3');
-    this.load.audio('humanFootstepsSnowSound', '../../assets/sound/human_footsteps_snow.mp3');
-    this.load.audio('villagerShovelSound', '../../assets/sound/villager_shovel.mp3');
+    this.load.audio('transformSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/Transform_Sound.wav');
+    this.load.audio('eatSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat.mp3');
+    this.load.audio('eatVillagerSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat_villager.mp3');
+    this.load.audio('humanFootstepsSnowSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/human_footsteps_snow.mp3');
+    this.load.audio('villagerShovelSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/villager_shovel.mp3');
   }
 
   create() {
@@ -85,6 +83,10 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
+    this.input.keyboard.once('keydown_M', function(){
+      Game.toggleSound();
+    }, this);
+
     if (this.gameOver) {
       this.sound.stopAll();
       this.data = {
@@ -98,7 +100,7 @@ class GameScene extends Phaser.Scene {
     } else {
       this.player.update();
       this.redOverlay.update();
-      if (!this.isPlayerDead || !this.player.isGamePaused || !this.player.isGamePaused()) {
+      if (!this.isPlayerDead) {
         this.ecosystem.update();
       }
     }
