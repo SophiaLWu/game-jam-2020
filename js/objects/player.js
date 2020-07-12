@@ -79,7 +79,7 @@ class Player extends Phaser.GameObjects.Graphics {
     })
     
     var hungerTimer = this.scene.time.addEvent({
-      delay: 1000,                // ms
+      delay: 100,                // ms
       callback: this.getHungry,
       args: [1],
       callbackScope: this,
@@ -120,8 +120,7 @@ class Player extends Phaser.GameObjects.Graphics {
       frameRate: 10,
       repeat: -1
     })
-
-  
+ 
   }
 
   update() {
@@ -245,6 +244,8 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnWerewolf() {
+    this.damage(1);
+    this.setCollisions(false);
     this.camera.shakeEffect.start(600, 0.01);
     this.isWerewolf = true;
     this.speed = this.werewolfSpeed;
@@ -254,6 +255,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnHuman() {
+    this.setCollisions(true);
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX;
     this.updateStomatchBar();
     this.isWerewolf = false;

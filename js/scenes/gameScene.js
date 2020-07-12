@@ -61,8 +61,12 @@ class GameScene extends Phaser.Scene {
       opt: {}
     });
 
-    this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
-    this.physics.add.collider(this.player.physicsBody, this.worldMap.getTownObstacles());
+    const collider1 = this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
+    const collider2 = this.physics.add.collider(this.player.physicsBody, this.worldMap.getTownObstacles());
+    this.player.setCollisions = (enable) => {
+      collider1.active = enable;
+      collider2.active = enable;
+    };
 
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);

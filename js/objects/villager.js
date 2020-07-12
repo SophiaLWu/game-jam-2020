@@ -19,9 +19,10 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody.getVillager = () => this;
 
     this.updateMood(params.opt.mood || MoodEnum.NORMAL);
+    this.velocity = Math.floor(Math.random() * 100) + 50;
+    this.stuckEnd = null;
 
     this.findNewFood();
-    
   }
 
   findNewFood() {
@@ -118,6 +119,19 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   move(direction) {
+    const touching = this.physicsBody.body.touching;
+
+    if (this.stuckEnd != null){
+      if (this.stuckEnd < new Date().getTime()) {
+        if (!touching.none) {
+          this.findNewFood();
+          this.stuckEnd = null;
+        }
+      }
+    } else if (!touching.none) {
+      this.stuckEnd = new Date().getTime() + CONSTANTS.STUCK_WALK_DURATION;
+    }
+
     if (direction.x !== 0 && direction.y !== 0) {
       direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
@@ -125,8 +139,6 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     this.physicsBody.setVelocityX(this.velocity * direction.x);
     this.physicsBody.setVelocityY(this.velocity * direction.y);
-    // var velocityX = this.velocity * direction.x;
-    // var velocityY = this.velocity * direction.y;
     this.physicsBody.setDepth(this.getFeetLocation().y);
 
     this.setVillagerMoveAnimation();
@@ -182,9 +194,8 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody.disableBody(true, true);
   }
 
-  reset() {
-    this.updateMood(MoodEnum.NORMAL);
-    this.findNewFood();
+  anger() {
+    this.updateMood(MoodEnum.ANGRY);
   }
 
   updateMood(mood) {
@@ -193,14 +204,15 @@ class Villager extends Phaser.GameObjects.Graphics {
     switch(this.mood) {
       case MoodEnum.NORMAL:
         this.physicsBody.clearTint();
-        this.velocity = Math.floor(Math.random() * 100) + 50;
+        this.velocity = Math.floor(Math.random() * 100) + 100;
         break;
       case MoodEnum.SCARED:
         this.physicsBody.setTint(0x05C6FF);
+        this.velocity += 50
         break;
       case MoodEnum.ANGRY:
         this.physicsBody.setTint(0xff0000);
-        this.velocity = Math.floor(Math.random() * 200) + 50;
+        this.velocity = Math.floor(Math.random() * 175) + 100;
         break;
     }
   }
