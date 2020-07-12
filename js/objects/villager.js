@@ -63,11 +63,11 @@ class Villager extends Phaser.GameObjects.Graphics {
         /* endValue */ -90,
         /* duration */ 800,
         /* ucrve */ Curves.EASE_OUT_BOUNCE,
-        /* onComplete */ (() => {
+        /* onComplete  (() => {
           setTimeout(() => {
             this.physicsBody.disableBody(true, true);
           }, 3000)
-        })
+        }) */
       )
     } else {
       this.physicsBody.angle = this.villagerDeadTween();
