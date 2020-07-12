@@ -17,7 +17,7 @@ class GameOverScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.audio('gameEndSound', '../../assets/sound/game_end.mp3');
+    this.load.audio('gameEndSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/game_end.mp3');
   }
 
   create() {
