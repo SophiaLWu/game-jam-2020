@@ -49,6 +49,9 @@ class GameScene extends Phaser.Scene {
     this.load.audio('eatVillagerSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat_villager.mp3');
     this.load.audio('humanFootstepsSnowSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/human_footsteps_snow.mp3');
     this.load.audio('villagerShovelSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/villager_shovel.mp3');
+    this.load.audio('baseballSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/baseball.mp3');
+    this.load.audio('punchSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/punch.mp3');
+    this.load.audio('smallImpactSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/small_impact.mp3');
   }
 
   create() {
