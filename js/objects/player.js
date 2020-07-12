@@ -133,6 +133,13 @@ class Player extends Phaser.GameObjects.Graphics {
       repeat: -1
     })
 
+    this.scene.anims.create({ 
+      key: 'wolfPrincessTransform', 
+      frames: this.scene.anims.generateFrameNames('wolfToPrincess'), 
+      frameRate: 10,
+      repeat: -1 
+    });
+
     this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
   }
 
@@ -198,7 +205,6 @@ class Player extends Phaser.GameObjects.Graphics {
       y: 0
     };
 
-    console.log(this.playerState);
     if (this.playerState === PlayerState.WEREWOLF) {
       this.stepTowardVillager();
     } else if (this.playerState === PlayerState.NORMAL) {
@@ -350,6 +356,8 @@ class Player extends Phaser.GameObjects.Graphics {
 
     this.playerState = PlayerState.FROM_WEREWOLF;
     this.doMove({x: 0, y: 0});
+
+    this.physicsBody.anims.play('wolfPrincessTransform', true);
     this.setCollisions(true);
     this.speed = 0;
     this.resetVillagerToConsume();
