@@ -1,5 +1,6 @@
 import { CONSTANTS } from "../constants.js";
 import MainMenuScene from "./mainMenuScene.js";
+import Game from "../main.js";
 
 class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -31,6 +32,10 @@ class GameOverScene extends Phaser.Scene {
   }
 
   update() {
+    this.input.keyboard.once('keydown_M', function(){
+      console.log("toggle")
+      Game.toggleSound();
+    }, this);
   }
 
   formatTimeString(time){ // Adds zeroes to front of minutes, seconds, milliseconds if needed
