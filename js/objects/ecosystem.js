@@ -131,11 +131,14 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.player.villagersEaten += 1;
 
       // Make villagers faster over time
-      this.villagers.forEach(function(villager) {
-        if (villager.isAngry()) {
-          villager.velocity += 20
-        }
-      }.bind(this));
+      if (this.player.villagersEaten % 2 == 0){
+        this.villagers.forEach(function(villager) {
+          if (villager.isAngry()) {
+            villager.velocity += 60
+          }
+        }.bind(this));
+      }
+
 
       this.player.turnHuman();
       Villager.scareOtherVillagers(playerBody.x, playerBody.y);
