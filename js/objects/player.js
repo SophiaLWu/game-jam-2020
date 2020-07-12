@@ -72,13 +72,6 @@ class Player extends Phaser.GameObjects.Graphics {
     this.foodEaten = 0;
     this.villagersEaten = 0;
 
-    // For testing
-    this.healKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
-    this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
-    this.hungerKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
-    this.eatKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
-    this.turnWerewolfKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE);
-
     //Hunger variables and timer
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
 
@@ -152,8 +145,8 @@ class Player extends Phaser.GameObjects.Graphics {
     this.scene.anims.create({ 
       key: 'princessWolfTransform', 
       frames: this.scene.anims.generateFrameNames('princessToWolf'), 
-      duration: 300,
-      repeat: 4
+      duration: 280,
+      repeat: 3
     });
 
     this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.05, loop: true });  
@@ -185,21 +178,6 @@ class Player extends Phaser.GameObjects.Graphics {
     if (this.cursors.down.isDown || this.SKey.isDown) {
       direction['y'] += 1;
       this.physicsBody.anims.play('rightPrincess', true);
-    }
-    if (this.healKey.isDown) {
-      this.heal(1);
-    }
-    if (this.damageKey.isDown) {
-      this.damage(20);
-    }
-    if (this.hungerKey.isDown) {
-      this.stomachContents = 0;
-    }
-    if (this.eatKey.isDown) {
-      this.eatFood();
-    }
-    if (this.turnWerewolfKey.isDown) {
-      this.transformToWerewolf();
     }
 
     this.move(direction);
@@ -344,6 +322,8 @@ class Player extends Phaser.GameObjects.Graphics {
     }, 200);
     let sfx = this.scene.sound.add('transformSound', { volume: 0.1, loop: false });
     sfx.play();
+    let howl = this.scene.sound.add('wolfHowl', { volume: 0.1, loop: false });
+    howl.play();
     this.damage(1, /* enableShake= */ false);
     this.setCollisions(false);
     this.speed = 0;

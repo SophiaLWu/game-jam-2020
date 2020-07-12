@@ -45,6 +45,7 @@ class GameScene extends Phaser.Scene {
 
     // Sound FX
     this.load.audio('transformSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/Transform_Sound.wav');
+    this.load.audio('wolfHowl', 'https://sophialwu.github.io/game-jam-2020/assets/sound/fadewolf.mp3');
     this.load.audio('eatSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat.mp3');
     this.load.audio('eatVillagerSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat_villager.mp3');
     this.load.audio('humanFootstepsSnowSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/human_footsteps_snow.mp3');
@@ -52,6 +53,7 @@ class GameScene extends Phaser.Scene {
     this.load.audio('baseballSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/baseball.mp3');
     this.load.audio('punchSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/punch.mp3');
     this.load.audio('smallImpactSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/small_impact.mp3');
+    this.load.audio('doorSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/door.mp3');
   }
 
   create() {
@@ -83,6 +85,8 @@ class GameScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
     this.cameras.main.startFollow(this.player.physicsBody, false, 0.4, 0.4);
     this.cameras.main.setBackgroundColor('rgb(238, 240, 246)');
+
+    this.sound.add('doorSound', { volume: 0.4, loop: false }).play();
   }
 
   update() {
