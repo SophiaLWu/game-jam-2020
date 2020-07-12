@@ -9,7 +9,7 @@ const hitbox = {
   x1: 44,
   y1: 24,
   x2: 65,
-  y2: 73,
+  y2: 53,
 };
 
 const PlayerState = {
@@ -81,6 +81,22 @@ class Player extends Phaser.GameObjects.Graphics {
 
     //Hunger variables and timer
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
+
+    // Icons
+    this.appleIcon = this.scene.add.image(10, 60, 'apple');
+    this.appleIcon.displayWidth = 17;
+    this.appleIcon.displayHeight = 17;
+    this.appleIcon.setDepth(Number.MAX_SAFE_INTEGER);
+    this.appleIcon.setScrollFactor(0);
+    this.appleIcon.setActive(true);
+
+    this.heartIcon = this.scene.add.image(9, 32, 'heart');
+    this.heartIcon.displayWidth = 50;
+    this.heartIcon.displayHeight = 50;
+    this.heartIcon.setDepth(Number.MAX_SAFE_INTEGER);
+    this.heartIcon.setScrollFactor(0);
+    this.heartIcon.setActive(true);
+
     this.stomachBar = new Bar({
       scene: this.scene,
       name: 'Stomach Contents',
@@ -128,23 +144,19 @@ class Player extends Phaser.GameObjects.Graphics {
 
     this.scene.anims.create({
       key: 'attackWolf',
-      frames: this.scene.anims.generateFrameNumbers('wolfRun', { start: 0, end: 7 }),
+      frames: this.scene.anims.generateFrameNames('wolfAttack'),
       frameRate: 10,
       repeat: -1
     })
 
     this.scene.anims.create({ 
-      key: 'wolfPrincessTransform', 
-      frames: this.scene.anims.generateFrameNames('wolfToPrincess'), 
-      frameRate: 10,
-      repeat: -1 
+      key: 'princessWolfTransform', 
+      frames: this.scene.anims.generateFrameNames('princessToWolf'), 
+      frameRate: 45,
+      repeat: 5 
     });
 
-    this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
-  }
-
-  isGamePaused() {
-    return this.isGamePaused;
+    this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.05, loop: true });  
   }
 
   handleKeyboardInput(direction) {
@@ -253,7 +265,7 @@ class Player extends Phaser.GameObjects.Graphics {
     if ((this.playerState === PlayerState.NORMAL) && direction.x == 0 && direction.y == 0) {
       this.physicsBody.anims.play('idlePrincess', true);
     } else if (this.playerState === PlayerState.WEREWOLF && direction.x == 0) {
-      this.physicsBody.anims.play('attackWolf', true);
+      this.physicsBody.anims.play('runWolf', true);
     }
     this.doMove(direction);
   }
@@ -297,7 +309,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   eatFood() {
-    let sfx = this.scene.sound.add('eatSound', { volume: 0.4, loop: false });
+    let sfx = this.scene.sound.add('eatSound', { volume: 0.2, loop: false });
     sfx.play();
     this.foodEaten += 1;
     this.stomachContents = Math.min(this.stomachContents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
@@ -320,6 +332,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   transformToWerewolf() {
+    this.isGamePaused = true;
     this.playerState = PlayerState.TO_WEREWOLF;
     this.camera.shakeEffect.start(200, 0.02);
     this.shakeInterval = setInterval(() => {
@@ -329,21 +342,25 @@ class Player extends Phaser.GameObjects.Graphics {
         clearInterval(this.shakeInterval);
       }
     }, 200);
-    let sfx = this.scene.sound.add('transformSound', { volume: 0.3, loop: false });
+    let sfx = this.scene.sound.add('transformSound', { volume: 0.1, loop: false });
     sfx.play();
     this.damage(1, /* enableShake= */ false);
     this.setCollisions(false);
     this.speed = 0;
     this.doMove({x: 0, y: 0});
+    
+    this.physicsBody.anims.play('princessWolfTransform', true);
+    this.physicsBody.once('animationcomplete', this.beWerewolf, this)
 
-    const transformToWerewolfDurationMillis = 1000;
+    // const transformToWerewolfDurationMillis = 1000;
 
-    setTimeout(() => {
-      this.beWerewolf();
-    }, transformToWerewolfDurationMillis);
+    // setTimeout(() => {
+    //   this.beWerewolf();
+    // }, transformToWerewolfDurationMillis);
   }
 
   beWerewolf() {
+    this.isGamePaused = false;
     this.playerState = PlayerState.WEREWOLF;
     this.physicsBody.setScale(2, 2);
     this.speed = this.werewolfSpeed;
@@ -352,12 +369,16 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnHuman() {
+    this.isGamePaused = true;
     const transformToHumanDurationMillis = 1000;
+
+    this.physicsBody.anims.play('princessWolfTransform', true);
+    this.physicsBody.setScale(1,1);
 
     this.playerState = PlayerState.FROM_WEREWOLF;
     this.doMove({x: 0, y: 0});
 
-    this.physicsBody.anims.play('wolfPrincessTransform', true);
+    
     this.setCollisions(true);
     this.speed = 0;
     this.resetVillagerToConsume();
@@ -367,6 +388,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   finishBecomingHuman() {
+    this.isGamePaused = false;
     this.playerState = PlayerState.NORMAL;
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX / 2;
     this.updateStomatchBar();

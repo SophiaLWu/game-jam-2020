@@ -21,6 +21,7 @@ class Villager extends Phaser.GameObjects.Graphics {
     // Death animation
     this.isVillagerDead = null;
     this.villagerDeadTween = null;
+    this.wasPaused = false;
 
     this.physicsBody.getVillager = () => this;
 
@@ -56,22 +57,20 @@ class Villager extends Phaser.GameObjects.Graphics {
   update() {
     if (!this.isVillagerDead){
       this.setVillagerMovement();
-    }
-    else if (this.villagerDeadTween === null) {
+    } else if (this.villagerDeadTween === null) {
       // villager dead, do animation
       this.villagerDeadTween = getTween(
         /* startValue */ 0,
         /* endValue */ -90,
         /* duration */ 800,
         /* ucrve */ Curves.EASE_OUT_BOUNCE,
-        /* onComplete */ (() => {
+        /* onComplete  (() => {
           setTimeout(() => {
             this.physicsBody.disableBody(true, true);
           }, 3000)
-        })
+        }) */
       )
-    }
-    else {
+    } else {
       this.physicsBody.angle = this.villagerDeadTween();
     }
   }
@@ -126,16 +125,27 @@ class Villager extends Phaser.GameObjects.Graphics {
   setVillagerMovement() {
     let direction;
 
-    switch (this.mood) {
-      case MoodEnum.NORMAL:
-        direction = this.getDirectionTowardFood();
-        break;
-      case MoodEnum.SCARED:
-        direction = this.getDirectionTowardVillage();
-        break;
-      case MoodEnum.ANGRY:
-        direction = this.getDirectionTowardPlayer();
-        break;
+    if (this.scene.player.isGamePaused) {
+      if (!this.wasPaused) {
+        this.wasPaused = true;
+
+        this.move({x: 0, y: 0});
+        this.physicsBody.anims.pause();
+      }
+      return;
+    } else {
+      this.wasPaused = false;
+      switch (this.mood) {
+        case MoodEnum.NORMAL:
+          direction = this.getDirectionTowardFood();
+          break;
+        case MoodEnum.SCARED:
+          direction = this.getDirectionTowardVillage();
+          break;
+        case MoodEnum.ANGRY:
+          direction = this.getDirectionTowardPlayer();
+          break;
+      }
     }
 
     if (direction) {
@@ -166,36 +176,28 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody.setVelocityY(this.velocity * direction.y);
     this.physicsBody.setDepth(this.getFeetLocation().y);
 
-    this.setVillagerMoveAnimation();
+    this.setVillagerMoveAnimation(direction);
   }
 
-  setVillagerMoveAnimation() {
-    if (this.physicsBody.body.velocity.x > 0) { //walking right
-      if (this.isAngry()) {
-        this.physicsBody.anims.play('rightMilitary1', true);
-      } else {
-        this.physicsBody.anims.play('rightMaleVillager1', true);
-      }
-    } else if (this.physicsBody.body.velocity.x < 0) { //walking left
-      if (this.isAngry()) {
-        this.physicsBody.anims.play('leftMilitary1', true);
-      } else {
-        this.physicsBody.anims.play('leftMaleVillager1', true);
-      }
-    } 
-    if ((this.physicsBody.body.velocity.y > 0) && (Math.abs(this.physicsBody.body.velocity.y) > Math.abs(this.physicsBody.body.velocity.x)) ) { //walking mostly down
-      if (this.isAngry()) {
-        this.physicsBody.anims.play('downMilitary1', true);
-      } else {
-        this.physicsBody.anims.play('downMaleVillager1', true);
-      }
-    } else if  ((this.physicsBody.body.velocity.y < 0) && (Math.abs(this.physicsBody.body.velocity.y) > Math.abs(this.physicsBody.body.velocity.x )) ) { //walking mostly up
-      if (this.isAngry()) {
-        this.physicsBody.anims.play('upMilitary1', true);
-      } else {
-        this.physicsBody.anims.play('upMaleVillager1', true);
-      }
+  getAnimationNameFromDirection(direction) {
+    const mostlyVertical = direction.x === 0;
+    const isAngry = this.isAngry();
+    
+    if (direction.x > 0) {
+      return isAngry ? 'rightMilitary1' : 'rightMaleVillager1';
+    } else if (direction.x < 0) {
+      return isAngry ? 'leftMilitary1' : 'leftMaleVillager1';
+    } else if (direction.y < 0) {
+      return isAngry ? 'upMilitary1' : 'upMaleVillager1';
+    } else {
+      return isAngry ? 'downMilitary1' : 'downMaleVillager1';
     }
+  }
+
+  setVillagerMoveAnimation(direction) {
+    let isMoving = direction.x != 0 || direction.y != 0;
+    const animName = this.getAnimationNameFromDirection(direction);
+    this.physicsBody.anims.play(animName, true);
   }
 
   getFeetLocation() {
