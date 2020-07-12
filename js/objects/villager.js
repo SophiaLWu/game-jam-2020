@@ -198,6 +198,10 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.updateMood(MoodEnum.ANGRY);
   }
 
+  slowDown() {
+    this.velocity *= 0.9;
+  }
+
   updateMood(mood) {
     this.mood = mood;
 

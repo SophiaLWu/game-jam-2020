@@ -159,6 +159,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.spawnAngryVillagers();
     } else if (villager.isAngry()) {
       if (this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER)) {
+        villager.slowDown();
         for (let i = 0; i < this.villagerShovelSounds.length; i++) {
           const villagerShovelSound = this.villagerShovelSounds[i];
           if (!villagerShovelSound.isPlaying) {

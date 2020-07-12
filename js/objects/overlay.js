@@ -33,6 +33,8 @@ class Overlay extends Phaser.GameObjects.Graphics {
   }
 
   setColor(color) {
+    this.opacity = 0;
+    this.targetOpacity = 0;
     this.color = color;
   }
 
