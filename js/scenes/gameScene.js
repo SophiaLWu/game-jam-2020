@@ -33,7 +33,7 @@ class GameScene extends Phaser.Scene {
 
     //Wolf Animations
     this.load.spritesheet('wolfRun', 'https://sophialwu.github.io/game-jam-2020/assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
-    this.load.atlas('wolfAttack', 'https://sophialwu.github.io/game-jam-2020/assets/Wolf/WolfAttack.png', 'https://sophialwu.github.io/game-jam-2020/assets/Wolf/WolfAttack.json');
+    this.load.atlas('wolfAttack', 'https://sophialwu.github.io/game-jam-2020/assets/Wolf/wolfAttack.png', 'https://sophialwu.github.io/game-jam-2020/assets/Wolf/wolfAttack.json');
     this.load.atlas('princessToWolf', 'https://sophialwu.github.io/game-jam-2020/assets/PtoW.png', 'https://sophialwu.github.io/game-jam-2020/assets/PtoW.json');
 
     //Villager Animations    
@@ -44,7 +44,7 @@ class GameScene extends Phaser.Scene {
     this.load.atlas('military1', 'https://sophialwu.github.io/game-jam-2020/assets/Villagers/Military1.png', 'https://sophialwu.github.io/game-jam-2020/assets/Villagers/Military1.json');
 
     // Sound FX
-    this.load.audio('transformSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/transform_Sound.wav');
+    this.load.audio('transformSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/Transform_Sound.wav');
     this.load.audio('eatSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat.mp3');
     this.load.audio('eatVillagerSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat_villager.mp3');
     this.load.audio('humanFootstepsSnowSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/human_footsteps_snow.mp3');

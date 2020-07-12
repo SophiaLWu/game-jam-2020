@@ -29,7 +29,7 @@ const HITBOXES = {
     x2: 362,
     y2: 341
   },
-  'block_34.png': {
+  'Block_34.png': {
     ox: 94,
     oy: 105,
     x: 90,
@@ -39,7 +39,7 @@ const HITBOXES = {
     x2: 162,
     y2: 181
   },
-  'block_35.png': {
+  'Block_35.png': {
     ox: 113,
     oy: 82,
     x: 105,
