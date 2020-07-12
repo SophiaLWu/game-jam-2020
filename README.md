@@ -18,9 +18,9 @@ http-server
 Then in your browser, go [here](http://127.0.0.1:8080/).
 
 ## Contributers
-Andrew Casper
-Sam Smith
-Scott Steinmetz
-Andrew Sweet
-Caleb Taylor
-Sophia Wu
+- Andrew Casper
+- Sam Smith
+- Scott Steinmetz
+- Andrew Sweet
+- Caleb Taylor
+- Sophia Wu
