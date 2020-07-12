@@ -4,6 +4,8 @@ let obstacles = null;
 let townObstacles = null;
 
 function initializeObstacles(physics) {
+  obstacles = null;
+  townObstacles = null;
   obstacles = physics.add.staticGroup();
   townObstacles = physics.add.staticGroup();
 }
@@ -17,6 +19,7 @@ class Obstacle extends Phaser.GameObjects.Graphics {
     this.town = params.town;
 
     if (obstacles === null) {
+      console.log('Obstacles Initialized');
       initializeObstacles(params.scene.physics);
     }
 
@@ -61,5 +64,7 @@ class Obstacle extends Phaser.GameObjects.Graphics {
 
 Obstacle.getObstacles = () => obstacles;
 Obstacle.getTownObstacles = () => townObstacles;
+Obstacle.setObstacles = (setVal) => obstacles = setVal;
+Obstacle.setTownObstacles = (setVal) => townObstacles = setVal;
 
 export default Obstacle;

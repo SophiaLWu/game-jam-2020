@@ -8,9 +8,8 @@ import { HITBOXES } from "../hitboxes.js";
 
 class GameScene extends Phaser.Scene {
   constructor() {
-    super({ key: 'GameScene' });
-    this.gameOver = false;
-    this.timeStarted = Date.now();
+    super('GameScene');
+    
   }
 
   preload() {
@@ -53,6 +52,9 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
+    console.log(this.physics);
+    this.gameOver = false;
+    this.timeStarted = Date.now();
     this.physics.world.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
 
     this.player = new Player({camera: this.cameras.main, scene: this, opt: {} });
@@ -65,7 +67,6 @@ class GameScene extends Phaser.Scene {
       scene: this,
       opt: {}
     });
-
     const collider1 = this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
     const collider2 = this.physics.add.collider(this.player.physicsBody, this.worldMap.getTownObstacles());
     this.player.setCollisions = (enable) => {
@@ -77,13 +78,9 @@ class GameScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
     this.cameras.main.startFollow(this.player.physicsBody, false, 0.4, 0.4);
     this.cameras.main.setBackgroundColor('rgb(238, 240, 246)');
-    console.log(this.cameras.main);
   }
 
   update() {
-    this.player.update();
-    this.ecosystem.update();
-
     if (this.gameOver) {
       this.sound.stopAll();
       this.data = {
@@ -91,7 +88,13 @@ class GameScene extends Phaser.Scene {
         foodEaten: this.player.foodEaten,
         villagersEaten: this.player.villagersEaten
       }
-      this.scene.start("GameOverScene", this.data);
+      this.gameOver = false;
+      this.scene.manager.start('GameOverScene', this.data);
+      this.scene.manager.stop('GameScene');
+    }
+    else{
+      this.player.update();
+      this.ecosystem.update();
     }
   }
 }

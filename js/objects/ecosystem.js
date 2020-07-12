@@ -16,7 +16,13 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.foodOverlapTriggered = false
 
     this.villagers = [];
+    Villager.setActiveVillagers
+    Villager.clearActiveVillagers([]); // Reset the active villagers global var in villager.js
+    this.villagerBodies = null;
 
+    Food.clearAllFood(); // Reset the all food global var in food.js
+    this.foodBodies = null;
+    
     this.foodBodies = this.physics.add.group();
     this.villagerBodies = this.physics.add.group();
     

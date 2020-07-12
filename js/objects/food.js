@@ -96,4 +96,8 @@ Food.getClosestAvailableFood = (x, y) => {
   return closestAvailableFood;
 }
 
+Food.clearAllFood = () => {
+  allFood.length = 0;
+}
+
 export default Food;
