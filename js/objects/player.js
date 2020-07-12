@@ -198,7 +198,6 @@ class Player extends Phaser.GameObjects.Graphics {
       y: 0
     };
 
-    console.log(this.playerState);
     if (this.playerState === PlayerState.WEREWOLF) {
       this.stepTowardVillager();
     } else if (this.playerState === PlayerState.NORMAL) {
