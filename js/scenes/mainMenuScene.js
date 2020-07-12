@@ -14,7 +14,7 @@ class MainMenuScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('keyboard', '../../assets/keyboard-input.png');
+    this.load.image('keyboard', 'https://sophialwu.github.io/game-jam-2020/assets/keyboard-input.png');
   }
 
   create() {
