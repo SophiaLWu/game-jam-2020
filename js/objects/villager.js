@@ -1,6 +1,7 @@
 import { manhattanDistance, distanceBetweenPoints } from "../utils.js"
 import { CONSTANTS, MoodEnum } from "../constants.js"
 import Food from "./food.js"
+import { Curves, getTween } from "../utils.js"
 
 let activeVillagers = [];
 
@@ -15,6 +16,11 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'maleVillager1', 0);
     this.physicsBody.setScale(2,2);
     this.physicsBody.setCollideWorldBounds(true);
+    this.physicsBody.setOrigin(0.5, 0.75);
+
+    // Death animation
+    this.isVillagerDead = null;
+    this.villagerDeadTween = null;
 
     this.physicsBody.getVillager = () => this;
 
@@ -48,7 +54,26 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   update() {
-    this.setVillagerMovement();
+    if (!this.isVillagerDead){
+      this.setVillagerMovement();
+    }
+    else if (this.villagerDeadTween === null) {
+      // villager dead, do animation
+      this.villagerDeadTween = getTween(
+        /* startValue */ 0,
+        /* endValue */ -90,
+        /* duration */ 800,
+        /* ucrve */ Curves.EASE_OUT_BOUNCE,
+        /* onComplete */ (() => {
+          setTimeout(() => {
+            this.physicsBody.disableBody(true, true);
+          }, 3000)
+        })
+      )
+    }
+    else {
+      this.physicsBody.angle = this.villagerDeadTween();
+    }
   }
 
   getDirectionToward(x, y) {
@@ -189,9 +214,10 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   kill() {
+    this.isVillagerDead = 1
+    this.physicsBody.disableBody(true, false);
     const index = activeVillagers.indexOf(this);
     activeVillagers.splice(index, 1);
-    this.physicsBody.disableBody(true, true);
   }
 
   anger() {

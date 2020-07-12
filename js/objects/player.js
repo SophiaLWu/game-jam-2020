@@ -178,7 +178,7 @@ class Player extends Phaser.GameObjects.Graphics {
       this.heal(1);
     }
     if (this.damageKey.isDown) {
-      this.damage(1);
+      this.damage(20);
     }
     if (this.hungerKey.isDown) {
       this.stomachContents = 0;
