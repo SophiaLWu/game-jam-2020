@@ -38,6 +38,13 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet('maleVillager1', '../../assets/Villagers/MaleVillager1.png', { frameWidth: 17, frameHeight: 29});
     this.load.spritesheet('angryMaleVillager1', '../../assets/Villagers/AngryMaleVillager1.png', { frameWidth: 17, frameHeight: 30});
 
+    //Angry Villager Animations
+    this.load.spritesheet('military1', '../../assets/Villagers/Military1.png', {frameWidth: 16, frameHeight: 29});
+    this.load.spritesheet('downMilitary1', '../../assets/Villagers/downMilitary1.png', {frameWidth: 17, frameHeight: 28});
+    this.load.spritesheet('rightMilitary1', '../../assets/Villagers/rightMilitary1.png', {frameWidth: 15, frameHeight: 28});
+    this.load.spritesheet('upMilitary1', '../../assets/Villagers/upMilitary1.png', {frameWidth: 17, frameHeight: 28});
+    this.load.spritesheet('leftMilitary1', '../../assets/Villagers/leftMilitary1.png', {frameWidth: 15, frameHeight: 28});
+
   }
 
   create() {
@@ -54,8 +61,12 @@ class GameScene extends Phaser.Scene {
       opt: {}
     });
 
-    this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
-    this.physics.add.collider(this.player.physicsBody, this.worldMap.getTownObstacles());
+    const collider1 = this.physics.add.collider(this.player.physicsBody, this.worldMap.getObstacles());
+    const collider2 = this.physics.add.collider(this.player.physicsBody, this.worldMap.getTownObstacles());
+    this.player.setCollisions = (enable) => {
+      collider1.active = enable;
+      collider2.active = enable;
+    };
 
     //Create camera and set to follow player
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);

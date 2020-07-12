@@ -146,14 +146,30 @@ class Villager extends Phaser.GameObjects.Graphics {
 
   setVillagerMoveAnimation() {
     if (this.physicsBody.body.velocity.x > 0) { //walking right
-      this.physicsBody.anims.play('rightMaleVillager1', true);
+      if (this.isAngry()) {
+        this.physicsBody.anims.play('rightMilitary1', true);
+      } else {
+        this.physicsBody.anims.play('rightMaleVillager1', true);
+      }
     } else if (this.physicsBody.body.velocity.x < 0) { //walking left
-      this.physicsBody.anims.play('leftMaleVillager1', true);
+      if (this.isAngry()) {
+        this.physicsBody.anims.play('leftMilitary1', true);
+      } else {
+        this.physicsBody.anims.play('leftMaleVillager1', true);
+      }
     } 
     if ((this.physicsBody.body.velocity.y > 0) && (Math.abs(this.physicsBody.body.velocity.y) > Math.abs(this.physicsBody.body.velocity.x)) ) { //walking mostly down
-      this.physicsBody.anims.play('downMaleVillager1', true);
+      if (this.isAngry()) {
+        this.physicsBody.anims.play('downMilitary1', true);
+      } else {
+        this.physicsBody.anims.play('downMaleVillager1', true);
+      }
     } else if  ((this.physicsBody.body.velocity.y < 0) && (Math.abs(this.physicsBody.body.velocity.y) > Math.abs(this.physicsBody.body.velocity.x )) ) { //walking mostly up
-      this.physicsBody.anims.play('upMaleVillager1', true);
+      if (this.isAngry()) {
+        this.physicsBody.anims.play('upMilitary1', true);
+      } else {
+        this.physicsBody.anims.play('upMaleVillager1', true);
+      }
     }
   }
 
@@ -269,6 +285,36 @@ Villager.buildVillagerAnimations = (scene) => {
   scene.anims.create({
     key: 'upMaleVillager1',
     frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 9, end: 11 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  ////
+
+  scene.anims.create({
+    key: 'rightMilitary1',
+    frames: scene.anims.generateFrameNumbers('rightMilitary1', { start: 0, end: 1 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'leftMilitary1',
+    frames: scene.anims.generateFrameNumbers('leftMilitary1', { start: 0, end: 1 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'downMilitary1',
+    frames: scene.anims.generateFrameNumbers('downMilitary1', { start: 0, end: 1 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'upMilitary1',
+    frames: scene.anims.generateFrameNumbers('upMilitary1', { start: 0, end: 1 } ),
     frameRate: 10,
     repeat: -1
   });
