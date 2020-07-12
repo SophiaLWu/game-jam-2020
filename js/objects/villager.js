@@ -56,8 +56,7 @@ class Villager extends Phaser.GameObjects.Graphics {
   update() {
     if (!this.isVillagerDead){
       this.setVillagerMovement();
-    }
-    else if (this.villagerDeadTween === null) {
+    } else if (this.villagerDeadTween === null) {
       // villager dead, do animation
       this.villagerDeadTween = getTween(
         /* startValue */ 0,
@@ -70,10 +69,14 @@ class Villager extends Phaser.GameObjects.Graphics {
           }, 3000)
         })
       )
-    }
-    else {
+    } else {
       this.physicsBody.angle = this.villagerDeadTween();
     }
+  }
+
+  pause() {
+    console.log('PAUSED!');
+    this.move({x: 0, y: 0});
   }
 
   getDirectionToward(x, y) {
@@ -126,16 +129,20 @@ class Villager extends Phaser.GameObjects.Graphics {
   setVillagerMovement() {
     let direction;
 
-    switch (this.mood) {
-      case MoodEnum.NORMAL:
-        direction = this.getDirectionTowardFood();
-        break;
-      case MoodEnum.SCARED:
-        direction = this.getDirectionTowardVillage();
-        break;
-      case MoodEnum.ANGRY:
-        direction = this.getDirectionTowardPlayer();
-        break;
+    if (this.scene.player.isGamePaused) {
+      direction = {x: 0, y: 0};
+    } else {
+      switch (this.mood) {
+        case MoodEnum.NORMAL:
+          direction = this.getDirectionTowardFood();
+          break;
+        case MoodEnum.SCARED:
+          direction = this.getDirectionTowardVillage();
+          break;
+        case MoodEnum.ANGRY:
+          direction = this.getDirectionTowardPlayer();
+          break;
+      }
     }
 
     if (direction) {
