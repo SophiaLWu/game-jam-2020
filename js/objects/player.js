@@ -145,8 +145,8 @@ class Player extends Phaser.GameObjects.Graphics {
     this.scene.anims.create({ 
       key: 'princessWolfTransform', 
       frames: this.scene.anims.generateFrameNames('princessToWolf'), 
-      duration: 300,
-      repeat: 4
+      duration: 280,
+      repeat: 3
     });
 
     this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.05, loop: true });  
