@@ -49,6 +49,7 @@ class GameScene extends Phaser.Scene {
     this.load.audio('eatVillagerSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat_villager.mp3');
     this.load.audio('humanFootstepsSnowSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/human_footsteps_snow.mp3');
     this.load.audio('villagerShovelSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/villager_shovel.mp3');
+    this.load.audio('doorSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/door.mp3');
   }
 
   create() {
@@ -80,6 +81,8 @@ class GameScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, CONSTANTS.WORLD_WIDTH, CONSTANTS.WORLD_HEIGHT);
     this.cameras.main.startFollow(this.player.physicsBody, false, 0.4, 0.4);
     this.cameras.main.setBackgroundColor('rgb(238, 240, 246)');
+
+    this.sound.add('doorSound', { volume: 0.4, loop: false }).play();
   }
 
   update() {
