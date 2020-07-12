@@ -1,6 +1,7 @@
 import { manhattanDistance, distanceBetweenPoints } from "../utils.js"
 import { CONSTANTS, MoodEnum } from "../constants.js"
 import Food from "./food.js"
+import { Curves, getTween } from "../utils.js"
 
 let activeVillagers = [];
 
@@ -15,6 +16,11 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'maleVillager1', 0);
     this.physicsBody.setScale(2,2);
     this.physicsBody.setCollideWorldBounds(true);
+    this.physicsBody.setOrigin(0.5, 0.75);
+
+    // Death animation
+    this.isVillagerDead = null;
+    this.villagerDeadTween = null;
 
     this.physicsBody.getVillager = () => this;
 
@@ -48,7 +54,29 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   update() {
-    this.setVillagerMovement();
+    if (!this.isVillagerDead){
+      this.setVillagerMovement();
+    } else if (this.villagerDeadTween === null) {
+      // villager dead, do animation
+      this.villagerDeadTween = getTween(
+        /* startValue */ 0,
+        /* endValue */ -90,
+        /* duration */ 800,
+        /* ucrve */ Curves.EASE_OUT_BOUNCE,
+        /* onComplete  (() => {
+          setTimeout(() => {
+            this.physicsBody.disableBody(true, true);
+          }, 3000)
+        }) */
+      )
+    } else {
+      this.physicsBody.angle = this.villagerDeadTween();
+    }
+  }
+
+  pause() {
+    console.log('PAUSED!');
+    this.move({x: 0, y: 0});
   }
 
   getDirectionToward(x, y) {
@@ -101,16 +129,20 @@ class Villager extends Phaser.GameObjects.Graphics {
   setVillagerMovement() {
     let direction;
 
-    switch (this.mood) {
-      case MoodEnum.NORMAL:
-        direction = this.getDirectionTowardFood();
-        break;
-      case MoodEnum.SCARED:
-        direction = this.getDirectionTowardVillage();
-        break;
-      case MoodEnum.ANGRY:
-        direction = this.getDirectionTowardPlayer();
-        break;
+    if (this.scene.player.isGamePaused) {
+      direction = {x: 0, y: 0};
+    } else {
+      switch (this.mood) {
+        case MoodEnum.NORMAL:
+          direction = this.getDirectionTowardFood();
+          break;
+        case MoodEnum.SCARED:
+          direction = this.getDirectionTowardVillage();
+          break;
+        case MoodEnum.ANGRY:
+          direction = this.getDirectionTowardPlayer();
+          break;
+      }
     }
 
     if (direction) {
@@ -189,9 +221,10 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   kill() {
+    this.isVillagerDead = 1
+    this.physicsBody.disableBody(true, false);
     const index = activeVillagers.indexOf(this);
     activeVillagers.splice(index, 1);
-    this.physicsBody.disableBody(true, true);
   }
 
   anger() {
@@ -267,28 +300,28 @@ Villager.scareOtherVillagers = (playerX, playerY) => {
 Villager.buildVillagerAnimations = (scene) => {
   scene.anims.create({
     key: 'rightMaleVillager1',
-    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 6, end: 8 } ),
+    frames: scene.anims.generateFrameNames('maleVillager1', { prefix: 'right_walk', end: 2, suffix: '.png'}), //scene.anims.generateFrameNumbers('maleVillager1', { start: 6, end: 8 } ),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'leftMaleVillager1',
-    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 3, end: 5 } ),
+    frames: scene.anims.generateFrameNames('maleVillager1', { prefix: 'left_walk', end: 2, suffix: '.png'}), //scene.anims.generateFrameNumbers('maleVillager1', { start: 3, end: 5 } ),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'downMaleVillager1',
-    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 0, end: 2 } ),
+    frames: scene.anims.generateFrameNames('maleVillager1', { prefix: 'down_walk', end: 2, suffix: '.png'}), //scene.anims.generateFrameNumbers('maleVillager1', { start: 0, end: 2 } ),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'upMaleVillager1',
-    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 9, end: 11 } ),
+    frames: scene.anims.generateFrameNames('maleVillager1', { prefix: 'up_walk', end: 2, suffix: '.png'}), //scene.anims.generateFrameNumbers('maleVillager1', { start: 9, end: 11 } ),
     frameRate: 10,
     repeat: -1
   });
@@ -297,28 +330,28 @@ Villager.buildVillagerAnimations = (scene) => {
 
   scene.anims.create({
     key: 'rightMilitary1',
-    frames: scene.anims.generateFrameNumbers('rightMilitary1', { start: 0, end: 1 } ),
+    frames: scene.anims.generateFrameNames('military1', { prefix: 'right_walk', end: 2, suffix: '.png'} ),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'leftMilitary1',
-    frames: scene.anims.generateFrameNumbers('leftMilitary1', { start: 0, end: 1 } ),
+    frames: scene.anims.generateFrameNames('military1', { prefix: 'left_walk', end: 2, suffix: '.png'}),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'downMilitary1',
-    frames: scene.anims.generateFrameNumbers('downMilitary1', { start: 0, end: 1 } ),
+    frames: scene.anims.generateFrameNames('military1', { prefix: 'down_walk', end: 2, suffix: '.png'}),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'upMilitary1',
-    frames: scene.anims.generateFrameNumbers('upMilitary1', { start: 0, end: 1 } ),
+    frames: scene.anims.generateFrameNames('military1', { prefix: 'up_walk', end: 2, suffix: '.png'}),
     frameRate: 10,
     repeat: -1
   });

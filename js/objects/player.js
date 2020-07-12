@@ -149,11 +149,14 @@ class Player extends Phaser.GameObjects.Graphics {
       repeat: -1
     })
 
-    this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.05, loop: true });  
-  }
+    this.scene.anims.create({ 
+      key: 'wolfPrincessTransform', 
+      frames: this.scene.anims.generateFrameNames('wolfToPrincess'), 
+      frameRate: 10,
+      repeat: -1 
+    });
 
-  isGamePaused() {
-    return this.isGamePaused;
+    this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.05, loop: true });  
   }
 
   handleKeyboardInput(direction) {
@@ -187,7 +190,7 @@ class Player extends Phaser.GameObjects.Graphics {
       this.heal(1);
     }
     if (this.damageKey.isDown) {
-      this.damage(1);
+      this.damage(20);
     }
     if (this.hungerKey.isDown) {
       this.stomachContents = 0;
@@ -329,6 +332,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   transformToWerewolf() {
+    this.isGamePaused = true;
     this.playerState = PlayerState.TO_WEREWOLF;
     this.camera.shakeEffect.start(200, 0.02);
     this.shakeInterval = setInterval(() => {
@@ -353,6 +357,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   beWerewolf() {
+    this.isGamePaused = false;
     this.playerState = PlayerState.WEREWOLF;
     this.physicsBody.setScale(2, 2);
     this.speed = this.werewolfSpeed;
@@ -361,10 +366,13 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnHuman() {
+    this.isGamePaused = true;
     const transformToHumanDurationMillis = 1000;
 
     this.playerState = PlayerState.FROM_WEREWOLF;
     this.doMove({x: 0, y: 0});
+
+    this.physicsBody.anims.play('wolfPrincessTransform', true);
     this.setCollisions(true);
     this.speed = 0;
     this.resetVillagerToConsume();
@@ -374,6 +382,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   finishBecomingHuman() {
+    this.isGamePaused = false;
     this.playerState = PlayerState.NORMAL;
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX / 2;
     this.updateStomatchBar();

@@ -34,17 +34,14 @@ class GameScene extends Phaser.Scene {
     //Wolf Animations
     this.load.spritesheet('wolfRun', '../../assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
     this.load.spritesheet('wolfAttack', '../../assets/Wolf/wolfRun.png', { frameWidth: 111, frameHeight: 104});
+    this.load.atlas('wolfToPrincess', '../../assets/WolfToPrincess.png', '../../assets/WolfToPrincess.json');
 
     //Villager Animations    
-    this.load.spritesheet('maleVillager1', '../../assets/Villagers/MaleVillager1.png', { frameWidth: 17, frameHeight: 29});
-    this.load.spritesheet('angryMaleVillager1', '../../assets/Villagers/AngryMaleVillager1.png', { frameWidth: 17, frameHeight: 30});
+    this.load.atlas('maleVillager1', '../../assets/Villagers/MaleVillager1.png', '../../assets/Villagers/MaleVillager1.json');
+    this.load.atlas('angryMaleVillager1', '../../assets/Villagers/AngryMaleVillager1.png', '../../assets/Villagers/AngryMaleVillager1.json');
 
     //Angry Villager Animations
-    this.load.spritesheet('military1', '../../assets/Villagers/Military1.png', {frameWidth: 16, frameHeight: 29});
-    this.load.spritesheet('downMilitary1', '../../assets/Villagers/downMilitary1.png', {frameWidth: 17, frameHeight: 28});
-    this.load.spritesheet('rightMilitary1', '../../assets/Villagers/rightMilitary1.png', {frameWidth: 15, frameHeight: 28});
-    this.load.spritesheet('upMilitary1', '../../assets/Villagers/upMilitary1.png', {frameWidth: 17, frameHeight: 28});
-    this.load.spritesheet('leftMilitary1', '../../assets/Villagers/leftMilitary1.png', {frameWidth: 15, frameHeight: 28});
+    this.load.atlas('military1', '../../assets/Villagers/Military1.png', '../../assets/Villagers/Military1.json');
 
     // Sound FX
     this.load.audio('transformSound', '../../assets/sound/transform_Sound.wav');
@@ -99,7 +96,7 @@ class GameScene extends Phaser.Scene {
     } else {
       this.player.update();
       this.redOverlay.update();
-      if (!this.isPlayerDead || !this.player.isGamePaused || !this.player.isGamePaused()) {
+      if (!this.isPlayerDead) {
         this.ecosystem.update();
       }
     }
