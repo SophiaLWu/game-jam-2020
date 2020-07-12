@@ -7,6 +7,7 @@ const Curves = {
   EASE_IN: 1,
   EASE_OUT: 2,
   EASE_IN_OUT: 3,
+  EASE_OUT_BOUNCE: 4,
 };
 
 function easeIn(x) {
@@ -19,6 +20,21 @@ function easeOut(x) {
 
 function easeInOut(x) {
   return -(Math.cos(Math.PI * x) - 1) / 2;
+}
+
+function easeOutBounce(x) {
+  const n1 = 7.5625;
+  const d1 = 2.75;
+
+  if (x < 1 / d1) {
+    return n1 * x * x;
+  } else if (x < 2 / d1) {
+    return n1 * (x -= 1.5 / d1) * x + 0.75;
+  } else if (x < 2.5 / d1) {
+    return n1 * (x -= 2.25 / d1) * x + 0.9375;
+  } else {
+    return n1 * (x -= 2.625 / d1) * x + 0.984375;
+  }
 }
 
 /**
@@ -46,6 +62,9 @@ function getTween(startValue, endValue, duration, curve, onComplete) {
         break;
       case Curves.EASE_IN_OUT:
         progress = easeInOut(progress);
+        break;
+      case Curves.EASE_OUT_BOUNCE:
+        progress = easeOutBounce(progress);
         break;
     }
     // Linear is the default/implied

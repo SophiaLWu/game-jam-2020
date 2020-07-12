@@ -1,4 +1,5 @@
 import { CONSTANTS } from "../constants.js";
+import { Curves, getTween } from "../utils.js"
 import Bar from "../objects/bar.js";
 import Villager from "../objects/villager.js";
 
@@ -26,8 +27,10 @@ class Player extends Phaser.GameObjects.Graphics {
     // physics
 
     this.physicsBody = this.scene.physics.add.sprite(400, 400, 'princess');
+    this.physicsBody.setOrigin(0.5, 0.75);
     this.physicsBody.setCollideWorldBounds(true);
     this.nextValidHitTime = 0;
+    this.playerDeadTween = null
 
     // hitbox size
     const width = hitbox.x2 - hitbox.x1;
@@ -184,13 +187,23 @@ class Player extends Phaser.GameObjects.Graphics {
       this.move(direction);
     } else {
       // Player is dead.
-      if (this.physicsBody.angle > -90) {
+      if (this.playerDeadTween === null) {
         this.physicsBody.body.immovable = true;
         this.physicsBody.anims.play('idlePrincess', true);
         this.physicsBody.flipX = false
         this.physicsBody.setVelocityX(0);
         this.physicsBody.setVelocityY(0);
-        this.physicsBody.angle -= 9;
+        this.playerDeadTween = getTween(
+          /* startValue= */ 0,
+          /* endValue= */ -90,
+          /* duration= */ 1200,
+          /* curve= */ Curves.EASE_OUT_BOUNCE,
+          /* onComplete = */ () => {
+            // Whatever should happen after player falls down.
+          }
+        );
+      } else {
+        this.physicsBody.angle = this.playerDeadTween();
       }
     }
   }
