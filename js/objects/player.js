@@ -244,6 +244,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnWerewolf() {
+    this.damage(1);
     this.setCollisions(false);
     this.camera.shakeEffect.start(600, 0.01);
     this.isWerewolf = true;

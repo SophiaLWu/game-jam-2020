@@ -76,8 +76,11 @@ class WorldMap {
 
     level.forEach((arr, row) => {
       arr.forEach((id, col) => {
-        const x = (CONSTANTS.WORLD_WIDTH / (levelNumCols - 1)) * col;
-        const y = (CONSTANTS.WORLD_HEIGHT / (levelNumRows - 1)) * row;
+        let x = (CONSTANTS.WORLD_WIDTH / (levelNumCols - 1)) * col;
+        let y = (CONSTANTS.WORLD_HEIGHT / (levelNumRows - 1)) * row;
+        const maxRand = id == 1 ? 30 : 110;
+        x += this.randomOffset(maxRand);
+        y += this.randomOffset(maxRand);
         this.createObstacle(id, x, y);
       });
     });
@@ -90,6 +93,10 @@ class WorldMap {
     this.createObstacle(24, 850, 600, true)
     this.createObstacle(24, 890, 750, true)
     this.createObstacle(26, 840, 890, true) // Sign post
+  }
+
+  randomOffset(maxOffset) {
+    return -maxOffset + Math.random() * (2 * maxOffset);
   }
 
   getObstacles() {
