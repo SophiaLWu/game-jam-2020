@@ -18,6 +18,8 @@ class MainMenuScene extends Phaser.Scene {
   }
 
   create() {
+    console.warn = () => {};
+    console.log = () => {};
     this.add.text(20, CONSTANTS.SCREEN_HEIGHT / 3, "You are a princess with a terrible secret.", { fontSize: '22px', fill: '#fff' });
     this.add.text(20, CONSTANTS.SCREEN_HEIGHT / 3 + 22, "When you get hungry, an evil curse takes hold of you.", { fontSize: '22px', fill: '#fff' });
     this.add.text(20, CONSTANTS.SCREEN_HEIGHT / 3 + 44, "Find food around the village to hold off the curse, and keep your people safe...", { fontSize: '22px', fill: '#fff' });

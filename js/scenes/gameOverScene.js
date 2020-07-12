@@ -19,6 +19,8 @@ class GameOverScene extends Phaser.Scene {
   }
  
   create(data) {
+    console.warn = () => {};
+    console.log = () => {};
     this.timeSurvived = new Date(Date.now() - data.timeStarted);
     this.foodEaten = data.foodEaten;
     this.villagersEaten = data.villagersEaten;

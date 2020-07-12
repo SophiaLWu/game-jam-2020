@@ -90,6 +90,8 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
+    console.warn = () => {};
+    console.log = () => {};
     this.input.keyboard.once('keydown_M', function(){
       Game.toggleSound();
     }, this);
