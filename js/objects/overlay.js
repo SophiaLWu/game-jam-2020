@@ -28,18 +28,27 @@ class Overlay extends Phaser.GameObjects.Graphics {
     this.y = -buffer;
     this.width = CONSTANTS.SCREEN_WIDTH + (2 * buffer);
     this.height = CONSTANTS.SCREEN_HEIGHT + (2 * buffer);
+    this.color = 0xff0000;
+    this.duration = CONSTANTS.OVERLAY_ANIMATE_MILLIS;
+  }
+
+  setColor(color) {
+    this.color = color;
   }
 
   draw() {
     this.clear();
 
     //  BG
-    this.fillStyle(0xff0000, this.opacity);
+    this.fillStyle(this.color, this.opacity);
     this.fillRect(this.x, this.y, this.width, this.height);
   }
 
-  setShow(isShown) {
+  setShow(isShown, duration) {
     this.targetOpacity = isShown ? 1.0 : 0;
+    if (duration) {
+      this.duration = duration;
+    }
   }
 
   update() {
@@ -49,7 +58,7 @@ class Overlay extends Phaser.GameObjects.Graphics {
       this.tween = getTween(
         /* startValue= */ this.opacity * 0.7,
         /* endValue= */ this.targetOpacity,
-        /* duration= */ CONSTANTS.OVERLAY_ANIMATE_MILLIS * (isShow ? 2 : 1.4),
+        /* duration= */ this.duration,
         /* curve= */ Curves.EASE_OUT,
         /* onComplete= */ () => {this.tween = null;}
       );

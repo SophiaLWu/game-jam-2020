@@ -229,6 +229,8 @@ class Player extends Phaser.GameObjects.Graphics {
 
   kill() {
     this.scene.isPlayerDead = true;
+    this.scene.redOverlay.setColor(0x000000);
+    this.scene.redOverlay.setShow(true, 3000);
     setTimeout(() => {
       this.scene.gameOver = true;
     }, 3000);
