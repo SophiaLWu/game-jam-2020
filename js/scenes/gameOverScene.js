@@ -37,9 +37,9 @@ class GameOverScene extends Phaser.Scene {
     if(this.newTimeHighScore) this.add.text(600, CONSTANTS.SCREEN_HEIGHT / 3 + 50, 'New High Score', { fontSize: '24px', fill: '#fff' });
     if(this.newVillagersHighScore) this.add.text(600, CONSTANTS.SCREEN_HEIGHT / 3 + 98, 'New High Score', { fontSize: '24px', fill: '#fff' });
     if(this.newFoodHighScore) this.add.text(600, CONSTANTS.SCREEN_HEIGHT / 3 + 74, 'New High Score', { fontSize: '24px', fill: '#fff' });
-    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 146, `Time Survived High Score: ${this.formatTimeString(this.timeSurvived)}`, { fontSize: '24px', fill: '#fff' });
-    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 170, `Food Eaten High Score: ${this.foodEaten}`, { fontSize: '24px', fill: '#fff' });
-    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 194, `Villagers Eaten High Score: ${this.villagersEaten}`, { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 146, `Time Survived High Score: ${this.formatTimeString(this.highScoreTimeSurvived)}`, { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 170, `Food Eaten High Score: ${this.highScoreFoodEaten}`, { fontSize: '24px', fill: '#fff' });
+    this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 194, `Villagers Eaten High Score: ${this.highScoreVillagersEaten}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 266, 'Press Space to restart', { fontSize: '24px', fill: '#fff' });
     let sfx = this.sound.add('gameEndSound', { volume: 0.1, loop: false });
     sfx.play();
