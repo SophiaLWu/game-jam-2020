@@ -138,7 +138,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   collideIntoVillager(playerBody, villagerBody) {
     let villager = villagerBody.getVillager();
 
-    if (this.player.isWerewolf) {
+    if (this.player.isWerewolf()) {
       let sfx = this.scene.sound.add('eatVillagerSound', { volume: 0.4, loop: false });
       sfx.play();
 
@@ -157,7 +157,7 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.player.turnHuman();
       Villager.scareOtherVillagers(playerBody.x, playerBody.y);
       this.spawnAngryVillagers();
-    } else if (villager.isAngry()) {
+    } else if (this.player.isHuman() && villager.isAngry()) {
       if (this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER)) {
         villager.slowDown();
         for (let i = 0; i < this.villagerShovelSounds.length; i++) {
