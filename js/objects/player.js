@@ -72,13 +72,6 @@ class Player extends Phaser.GameObjects.Graphics {
     this.foodEaten = 0;
     this.villagersEaten = 0;
 
-    // For testing
-    this.healKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
-    this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
-    this.hungerKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
-    this.eatKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
-    this.turnWerewolfKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE);
-
     //Hunger variables and timer
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
 
@@ -185,21 +178,6 @@ class Player extends Phaser.GameObjects.Graphics {
     if (this.cursors.down.isDown || this.SKey.isDown) {
       direction['y'] += 1;
       this.physicsBody.anims.play('rightPrincess', true);
-    }
-    if (this.healKey.isDown) {
-      this.heal(1);
-    }
-    if (this.damageKey.isDown) {
-      this.damage(20);
-    }
-    if (this.hungerKey.isDown) {
-      this.stomachContents = 0;
-    }
-    if (this.eatKey.isDown) {
-      this.eatFood();
-    }
-    if (this.turnWerewolfKey.isDown) {
-      this.transformToWerewolf();
     }
 
     this.move(direction);
