@@ -1,9 +1,13 @@
 import { HITBOXES } from "../hitboxes.js";
 
 let obstacles = null;
+let townObstacles = null;
 
 function initializeObstacles(physics) {
+  obstacles = null;
+  townObstacles = null;
   obstacles = physics.add.staticGroup();
+  townObstacles = physics.add.staticGroup();
 }
 
 class Obstacle extends Phaser.GameObjects.Graphics {
@@ -12,8 +16,10 @@ class Obstacle extends Phaser.GameObjects.Graphics {
 
     this.scene = params.scene;
     this.filename = params.filename;
+    this.town = params.town;
 
     if (obstacles === null) {
+      console.log('Obstacles Initialized');
       initializeObstacles(params.scene.physics);
     }
 
@@ -25,7 +31,14 @@ class Obstacle extends Phaser.GameObjects.Graphics {
     if (hitbox) {
       x -= hitbox.x - hitbox.ox;
       y -= hitbox.y - hitbox.oy;
-      const sprite = obstacles.create(x, y, this.filename);
+
+      let sprite;
+      if (this.town) {
+        sprite = townObstacles.create(x, y, this.filename);
+      } else {
+        sprite = obstacles.create(x, y, this.filename);
+      }
+      
       let width = 0;
       let height = 0;
       if (hitbox.x2) {
@@ -50,5 +63,8 @@ class Obstacle extends Phaser.GameObjects.Graphics {
 }
 
 Obstacle.getObstacles = () => obstacles;
+Obstacle.getTownObstacles = () => townObstacles;
+Obstacle.setObstacles = (setVal) => obstacles = setVal;
+Obstacle.setTownObstacles = (setVal) => townObstacles = setVal;
 
 export default Obstacle;

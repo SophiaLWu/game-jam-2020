@@ -16,7 +16,13 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.foodOverlapTriggered = false
 
     this.villagers = [];
+    Villager.setActiveVillagers
+    Villager.clearActiveVillagers([]); // Reset the active villagers global var in villager.js
+    this.villagerBodies = null;
 
+    Food.clearAllFood(); // Reset the all food global var in food.js
+    this.foodBodies = null;
+    
     this.foodBodies = this.physics.add.group();
     this.villagerBodies = this.physics.add.group();
     
@@ -40,6 +46,26 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
     this.physics.add.collider(this.villagerBodies, this.foodBodies, this.villagerEatsFood, null, this );
 
     this.physics.add.collider(this.player.physicsBody, this.villagerBodies, this.collideIntoVillager, null, this );
+
+    this.physics.add.collider(this.villagerBodies, this.scene.worldMap.getObstacles());
+    this.physics.add.collider(this.villagerBodies, this.scene.worldMap.getTownObstacles(), this.villagerCollideIntoTown, null, this);
+
+    this.physics.add.overlap(this.foodBodies, this.scene.worldMap.getObstacles(), this.replaceFoodLocation, null, this);
+    this.physics.add.overlap(this.foodBodies, this.scene.worldMap.getTownObstacles(), this.replaceFoodLocation, null, this);
+
+    this.physics.add.collider(this.villagerBodies, this.villagerBodies);
+
+    //Call villager animations function
+    Villager.buildVillagerAnimations(this.scene);
+
+    this.villagerShovelSounds = [];
+
+    const numShovelSounds = 3;
+    for (let i = 0; i < numShovelSounds; i++) {
+      this.villagerShovelSounds.push(
+        this.scene.sound.add('villagerShovelSound', { volume: 0.3, loop: false })
+      );
+    }
   }
 
   createFood(x, y) {
@@ -112,15 +138,49 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
   collideIntoVillager(playerBody, villagerBody) {
     let villager = villagerBody.getVillager();
 
-    if (this.player.isWerewolf) {
-      this.player.turnHuman();
-      villager.kill(); 
-      Villager.scareOtherVillagers(playerBody.x, playerBody.y);
+    if (this.player.isWerewolf()) {
+      let sfx = this.scene.sound.add('eatVillagerSound', { volume: 0.4, loop: false });
+      sfx.play();
 
+      villager.kill(); 
+      this.player.villagersEaten += 1;
+
+      // Make villagers faster over time
+      if (this.player.villagersEaten % 2 == 0){
+        this.villagers.forEach(function(villager) {
+          if (villager.isAngry()) {
+            villager.velocity += 60
+          }
+        }.bind(this));
+      }
+
+      this.player.turnHuman();
+      Villager.scareOtherVillagers(playerBody.x, playerBody.y);
       this.spawnAngryVillagers();
-      
-    } else if (villager.isAngry()) {
-      this.player.damage(1);
+    } else if (this.player.isHuman() && villager.isAngry()) {
+      if (this.player.damage(CONSTANTS.VILLAGER_DAMAGE_TO_PLAYER)) {
+        villager.slowDown();
+        for (let i = 0; i < this.villagerShovelSounds.length; i++) {
+          const villagerShovelSound = this.villagerShovelSounds[i];
+          if (!villagerShovelSound.isPlaying) {
+            villagerShovelSound.play();
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  villagerCollideIntoTown(villagerBody, _townBody) {
+    let villager = villagerBody.getVillager();
+
+    if (villager.isScared()) {
+      villager.anger();
+      var newVillagers = 0;
+      while (newVillagers < CONSTANTS.VILLAGER_SPAWN_COUNT_UPON_SCARED_VILLAGER_RETURNING) {
+        this.createVillager(CONSTANTS.VILLAGE_X, CONSTANTS.VILLAGE_Y, MoodEnum.NORMAL);
+        newVillagers++;
+      }
     }
   }
 
@@ -130,6 +190,11 @@ class Ecosystem extends Phaser.GameObjects.Graphics {
       this.createVillager(CONSTANTS.VILLAGE_X, CONSTANTS.VILLAGE_Y, MoodEnum.ANGRY);
       newVillagers++;
     }
+  }
+
+  replaceFoodLocation(foodBody, _obstacleBody) {
+    const {x, y} = this.getRandomSpawnLocation(0, 0);
+    foodBody.getFood().setLocation(x, y);
   }
 }
 

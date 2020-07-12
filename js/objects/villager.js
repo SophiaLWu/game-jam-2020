@@ -12,13 +12,15 @@ class Villager extends Phaser.GameObjects.Graphics {
 
     this.scene = params.scene;
     this.moveVillagerTick = Date.now();
-    this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'villager');
+    this.physicsBody = this.scene.physics.add.sprite(params.opt.initialX, params.opt.initialY, 'maleVillager1', 0);
+    this.physicsBody.setScale(2,2);
     this.physicsBody.setCollideWorldBounds(true);
 
     this.physicsBody.getVillager = () => this;
 
     this.updateMood(params.opt.mood || MoodEnum.NORMAL);
     this.velocity = Math.floor(Math.random() * 100) + 50;
+    this.stuckEnd = null;
 
     this.findNewFood();
   }
@@ -117,6 +119,19 @@ class Villager extends Phaser.GameObjects.Graphics {
   }
 
   move(direction) {
+    const touching = this.physicsBody.body.touching;
+
+    if (this.stuckEnd != null){
+      if (this.stuckEnd < new Date().getTime()) {
+        if (!touching.none) {
+          this.findNewFood();
+          this.stuckEnd = null;
+        }
+      }
+    } else if (!touching.none) {
+      this.stuckEnd = new Date().getTime() + CONSTANTS.STUCK_WALK_DURATION;
+    }
+
     if (direction.x !== 0 && direction.y !== 0) {
       direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
@@ -125,6 +140,37 @@ class Villager extends Phaser.GameObjects.Graphics {
     this.physicsBody.setVelocityX(this.velocity * direction.x);
     this.physicsBody.setVelocityY(this.velocity * direction.y);
     this.physicsBody.setDepth(this.getFeetLocation().y);
+
+    this.setVillagerMoveAnimation();
+  }
+
+  setVillagerMoveAnimation() {
+    if (this.physicsBody.body.velocity.x > 0) { //walking right
+      if (this.isAngry()) {
+        this.physicsBody.anims.play('rightMilitary1', true);
+      } else {
+        this.physicsBody.anims.play('rightMaleVillager1', true);
+      }
+    } else if (this.physicsBody.body.velocity.x < 0) { //walking left
+      if (this.isAngry()) {
+        this.physicsBody.anims.play('leftMilitary1', true);
+      } else {
+        this.physicsBody.anims.play('leftMaleVillager1', true);
+      }
+    } 
+    if ((this.physicsBody.body.velocity.y > 0) && (Math.abs(this.physicsBody.body.velocity.y) > Math.abs(this.physicsBody.body.velocity.x)) ) { //walking mostly down
+      if (this.isAngry()) {
+        this.physicsBody.anims.play('downMilitary1', true);
+      } else {
+        this.physicsBody.anims.play('downMaleVillager1', true);
+      }
+    } else if  ((this.physicsBody.body.velocity.y < 0) && (Math.abs(this.physicsBody.body.velocity.y) > Math.abs(this.physicsBody.body.velocity.x )) ) { //walking mostly up
+      if (this.isAngry()) {
+        this.physicsBody.anims.play('upMilitary1', true);
+      } else {
+        this.physicsBody.anims.play('upMaleVillager1', true);
+      }
+    }
   }
 
   getFeetLocation() {
@@ -138,10 +184,22 @@ class Villager extends Phaser.GameObjects.Graphics {
     return this.mood == MoodEnum.ANGRY;
   }
 
+  isScared() {
+    return this.mood == MoodEnum.SCARED;
+  }
+
   kill() {
     const index = activeVillagers.indexOf(this);
     activeVillagers.splice(index, 1);
     this.physicsBody.disableBody(true, true);
+  }
+
+  anger() {
+    this.updateMood(MoodEnum.ANGRY);
+  }
+
+  slowDown() {
+    this.velocity *= 0.9;
   }
 
   updateMood(mood) {
@@ -150,12 +208,15 @@ class Villager extends Phaser.GameObjects.Graphics {
     switch(this.mood) {
       case MoodEnum.NORMAL:
         this.physicsBody.clearTint();
+        this.velocity = Math.floor(Math.random() * 50) + 150;
         break;
       case MoodEnum.SCARED:
         this.physicsBody.setTint(0x05C6FF);
+        this.velocity += 200
         break;
       case MoodEnum.ANGRY:
         this.physicsBody.setTint(0xff0000);
+        this.velocity = Math.floor(Math.random() * 50) + 200 + 5 * (activeVillagers.length - CONSTANTS.STARTING_VILLAGER_AMOUNT); 
         break;
     }
   }
@@ -201,6 +262,71 @@ Villager.scareOtherVillagers = (playerX, playerY) => {
       villager.updateMood(MoodEnum.SCARED);
     }
   });
+}
+
+Villager.buildVillagerAnimations = (scene) => {
+  scene.anims.create({
+    key: 'rightMaleVillager1',
+    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 6, end: 8 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'leftMaleVillager1',
+    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 3, end: 5 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'downMaleVillager1',
+    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 0, end: 2 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'upMaleVillager1',
+    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 9, end: 11 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  ////
+
+  scene.anims.create({
+    key: 'rightMilitary1',
+    frames: scene.anims.generateFrameNumbers('rightMilitary1', { start: 0, end: 1 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'leftMilitary1',
+    frames: scene.anims.generateFrameNumbers('leftMilitary1', { start: 0, end: 1 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'downMilitary1',
+    frames: scene.anims.generateFrameNumbers('downMilitary1', { start: 0, end: 1 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  scene.anims.create({
+    key: 'upMilitary1',
+    frames: scene.anims.generateFrameNumbers('upMilitary1', { start: 0, end: 1 } ),
+    frameRate: 10,
+    repeat: -1
+  });
+
 };
+
+Villager.clearActiveVillagers = () => {
+  activeVillagers.length = 0;
+}
 
 export default Villager;

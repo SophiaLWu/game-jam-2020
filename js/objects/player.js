@@ -1,4 +1,5 @@
 import { CONSTANTS } from "../constants.js";
+import { Curves, getTween } from "../utils.js"
 import Bar from "../objects/bar.js";
 import Villager from "../objects/villager.js";
 
@@ -8,12 +9,22 @@ const hitbox = {
   x1: 44,
   y1: 24,
   x2: 65,
-  y2: 84,
+  y2: 73,
+};
+
+const PlayerState = {
+  NORMAL: 0,
+  DEAD: 1,
+  TO_WEREWOLF: 2,
+  WEREWOLF: 3,
+  FROM_WEREWOLF: 4
 };
 
 class Player extends Phaser.GameObjects.Graphics {
   constructor(params) {
     super(params.scene, params.opt);
+
+    this.isGamePaused = false;
 
     // input
     this.camera = params.camera;
@@ -26,7 +37,10 @@ class Player extends Phaser.GameObjects.Graphics {
     // physics
 
     this.physicsBody = this.scene.physics.add.sprite(400, 400, 'princess');
+    this.physicsBody.setOrigin(0.5, 0.75);
     this.physicsBody.setCollideWorldBounds(true);
+    this.nextValidHitTime = 0;
+    this.playerDeadTween = null
 
     // hitbox size
     const width = hitbox.x2 - hitbox.x1;
@@ -35,7 +49,6 @@ class Player extends Phaser.GameObjects.Graphics {
     const newY = Math.floor((hitbox.y2 + hitbox.y1) * 0.5);
     this.physicsBody.body.setSize(width, height, 0, 0);
     this.physicsBody.body.setOffset(newX, newY);
-
 
     this.health = MAX_HEALTH;
     this.healthBar = new Bar({
@@ -55,6 +68,10 @@ class Player extends Phaser.GameObjects.Graphics {
 
     this.target;
     
+    //Score tracking
+    this.foodEaten = 0;
+    this.villagersEaten = 0;
+
     // For testing
     this.healKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
     this.damageKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
@@ -75,7 +92,7 @@ class Player extends Phaser.GameObjects.Graphics {
     })
     
     var hungerTimer = this.scene.time.addEvent({
-      delay: 1000,                // ms
+      delay: 100,                // ms
       callback: this.getHungry,
       args: [1],
       callbackScope: this,
@@ -83,8 +100,7 @@ class Player extends Phaser.GameObjects.Graphics {
     });
 
     //Werewolf state variables
-    this.isWerewolf = false;
-    
+    this.playerState = PlayerState.NORMAL;
 
     //Princess Animations
     
@@ -117,76 +133,119 @@ class Player extends Phaser.GameObjects.Graphics {
       repeat: -1
     })
 
-  
+    this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
+  }
+
+  isGamePaused() {
+    return this.isGamePaused;
+  }
+
+  handleKeyboardInput(direction) {
+    if (this.cursors.left.isDown || this.AKey.isDown) {
+      direction['x'] -= 1;
+      this.physicsBody.anims.play('rightPrincess', true);
+
+      if (!this.physicsBody.flipX)
+      {          
+        this.physicsBody.flipX = true;
+      }
+    }
+    if (this.cursors.right.isDown || this.DKey.isDown) {
+      direction['x'] += 1;
+      this.physicsBody.anims.play('rightPrincess', true);
+
+      if (this.physicsBody.flipX)
+      {          
+        this.physicsBody.flipX = false;
+      }
+    }
+    if (this.cursors.up.isDown || this.WKey.isDown) {
+      direction['y'] -= 1;
+      this.physicsBody.anims.play('rightPrincess', true);
+    }
+    if (this.cursors.down.isDown || this.SKey.isDown) {
+      direction['y'] += 1;
+      this.physicsBody.anims.play('rightPrincess', true);
+    }
+    if (this.healKey.isDown) {
+      this.heal(1);
+    }
+    if (this.damageKey.isDown) {
+      this.damage(1);
+    }
+    if (this.hungerKey.isDown) {
+      this.stomachContents = 0;
+    }
+    if (this.eatKey.isDown) {
+      this.eatFood();
+    }
+    if (this.turnWerewolfKey.isDown) {
+      this.transformToWerewolf();
+    }
+
+    this.move(direction);
   }
 
   update() {
+    this.healthBar.update();
+    this.stomachBar.update();
+
     //Check food status for turning
     //if not wolf
-
 
     let direction = {
       x: 0,
       y: 0
     };
 
-    if (this.isWerewolf) {
+    if (this.playerState === PlayerState.WEREWOLF) {
       this.stepTowardVillager();
-    } else {
-      if (this.cursors.left.isDown || this.AKey.isDown) {
-        direction['x'] -= 1;
-        this.physicsBody.anims.play('rightPrincess', true);
-
-        if (!this.physicsBody.flipX)
-        {          
-          this.physicsBody.flipX = true;
-        }
+    } else if (this.playerState === PlayerState.NORMAL) {
+      this.handleKeyboardInput(direction);
+    } else if (this.playerState === PlayerState.DEAD) {
+      // Player is dead.
+      if (this.playerDeadTween === null) {
+        this.physicsBody.body.immovable = true;
+        this.physicsBody.anims.play('idlePrincess', true);
+        this.physicsBody.flipX = false
+        this.physicsBody.setVelocityX(0);
+        this.physicsBody.setVelocityY(0);
+        this.playerDeadTween = getTween(
+          /* startValue= */ 0,
+          /* endValue= */ -90,
+          /* duration= */ 1200,
+          /* curve= */ Curves.EASE_OUT_BOUNCE,
+          /* onComplete = */ () => {
+            // Whatever should happen after player falls down.
+          }
+        );
+      } else {
+        this.physicsBody.angle = this.playerDeadTween();
       }
-      if (this.cursors.right.isDown || this.DKey.isDown) {
-        direction['x'] += 1;
-        this.physicsBody.anims.play('rightPrincess', true);
-
-        if (this.physicsBody.flipX)
-        {          
-          this.physicsBody.flipX = false;
-        }
-      }
-      if (this.cursors.up.isDown || this.WKey.isDown) {
-        direction['y'] -= 1;
-        this.physicsBody.anims.play('rightPrincess', true);
-      }
-      if (this.cursors.down.isDown || this.SKey.isDown) {
-        direction['y'] += 1;
-        this.physicsBody.anims.play('rightPrincess', true);
-      }
-      if (this.healKey.isDown) {
-        this.heal(1);
-      }
-      if (this.damageKey.isDown) {
-        this.damage(1);
-      }
-      if (this.hungerKey.isDown) {
-        this.stomachContents = 0;
-      }
-      if (this.eatKey.isDown) {
-        this.eatFood();
-      }
-      if (this.turnWerewolfKey.isDown) {
-        this.turnWerewolf();
-      }
-      this.move(direction);
     }
   }
 
   move(direction) {
+    if (direction.x == 0 && direction.y == 0) {
+      if (this.snowSound.isPlaying) {
+        this.snowSound.pause();
+      }
+    } else {
+      if (this.snowSound.isPaused) {
+        this.snowSound.resume();
+      } else if (!this.snowSound.isPlaying) {
+        this.snowSound.play();
+      }
+    }
+
     if (direction.x !== 0 && direction.y !== 0) {
       direction.x *= CONSTANTS.ONE_OVER_SQRT_TWO;
       direction.y *= CONSTANTS.ONE_OVER_SQRT_TWO;
     }
 
-    if ((!this.isWerewolf) && direction.x == 0 && direction.y == 0) {
+    if ((this.playerState === PlayerState.NORMAL) && direction.x == 0 && direction.y == 0) {
       this.physicsBody.anims.play('idlePrincess', true);
-    } else if (this.isWerewolf && direction.x == 0) {
+    } else if (this.playerState === PlayerState.WEREWOLF && direction.x == 0) {
       this.physicsBody.anims.play('attackWolf', true);
     }
     this.doMove(direction);
@@ -196,21 +255,33 @@ class Player extends Phaser.GameObjects.Graphics {
     this.physicsBody.setVelocityX(this.speed * direction.x);
     this.physicsBody.setVelocityY(this.speed * direction.y);
     this.physicsBody.setDepth(this.getFeetLocation().y);
-
   }
 
   kill() {
-    console.log("You're dead!");
-    this.scene.gameOver = true;
+    this.scene.isPlayerDead = true;
+    this.playerState = PlayerState.DEAD;
+    this.scene.redOverlay.setColor(0x000000);
+    this.scene.redOverlay.setShow(true, 3000);
+    setTimeout(() => {
+      this.scene.gameOver = true;
+    }, 3000);
   }
 
-  damage(amount) {
-    this.camera.shakeEffect.start(110, 0.006);
-    this.health = this.health - amount;
-    this.healthBar.update(this.health);
-    if (this.health <= 0) {
-      this.kill();
+  damage(amount, enableShake = true) {
+    if (!this.scene.isPlayerDead) {
+      if (this.nextValidHitTime > new Date().getTime()) {
+        return false;
+      }
+      this.nextValidHitTime = new Date().getTime() + CONSTANTS.PLAYER_TIME_BETWEEN_DAMAGE_MILLS;
+      this.camera.shakeEffect.start(110, 0.006);
+      this.health = this.health - amount;
+      this.healthBar.update(this.health);
+      if (this.health <= 0) {
+        this.kill();
+      }
+      return true;
     }
+    return false;
   }
 
   heal(amount) {
@@ -219,6 +290,9 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   eatFood() {
+    let sfx = this.scene.sound.add('eatSound', { volume: 0.4, loop: false });
+    sfx.play();
+    this.foodEaten += 1;
     this.stomachContents = Math.min(this.stomachContents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
     this.updateStomatchBar();
   }
@@ -228,36 +302,76 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   getHungry(amount) {
-    this.stomachContents = Math.max(this.stomachContents - amount, 0);
-    this.updateStomatchBar();
+    if (this.playerState === PlayerState.NORMAL) {
+      this.stomachContents = Math.max(this.stomachContents - amount, 0);
+      this.updateStomatchBar();
 
-    if (this.stomachContents == 0 && !this.isWerewolf) {
-      this.turnWerewolf();
+      if (this.stomachContents == 0) {
+        this.transformToWerewolf();
+      }
     }
   }
 
-  turnWerewolf() {
-    this.camera.shakeEffect.start(600, 0.01);
-    this.isWerewolf = true;
-    //this.physicsBody.setTint(0xff0000);
+  transformToWerewolf() {
+    this.playerState = PlayerState.TO_WEREWOLF;
+    this.camera.shakeEffect.start(200, 0.02);
+    this.shakeInterval = setInterval(() => {
+      if (this.playerState === PlayerState.WEREWOLF) {
+        this.camera.shakeEffect.start(200, 0.01);
+      } else {
+        clearInterval(this.shakeInterval);
+      }
+    }, 200);
+    let sfx = this.scene.sound.add('transformSound', { volume: 0.3, loop: false });
+    sfx.play();
+    this.damage(1, /* enableShake= */ false);
+    this.setCollisions(false);
+    this.speed = 0;
+    this.doMove({x: 0, y: 0});
 
+    const transformToWerewolfDurationMillis = 1000;
+
+    setTimeout(() => {
+      this.beWerewolf();
+    }, transformToWerewolfDurationMillis);
+  }
+
+  beWerewolf() {
+    this.playerState = PlayerState.WEREWOLF;
+    this.physicsBody.setScale(2, 2);
     this.speed = this.werewolfSpeed;
+    this.physicsBody.anims.play('runWolf', true);
     this.determineVillagerToConsume();
-    console.log("Yer a Were-wuff, 'Erry!");
   }
 
   turnHuman() {
-    this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX;
+    const transformToHumanDurationMillis = 1000;
+
+    this.playerState = PlayerState.FROM_WEREWOLF;
+    this.doMove({x: 0, y: 0});
+    this.setCollisions(true);
+    this.speed = 0;
+    this.resetVillagerToConsume();
+    setTimeout(() => {
+      this.finishBecomingHuman();
+    }, transformToHumanDurationMillis);
+  }
+
+  finishBecomingHuman() {
+    this.playerState = PlayerState.NORMAL;
+    this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX / 2;
     this.updateStomatchBar();
-    this.isWerewolf = false;
     this.physicsBody.clearTint();
     this.speed = this.humanSpeed;
-    this.resetVillagerToConsume();
-    console.log("You ate a big one heh. Back to a human you go.");
+    this.physicsBody.setScale(1,1);
   }
 
   isWerewolf() {
-    return this.isWerewolf;
+    return this.playerState === PlayerState.WEREWOLF;
+  }
+
+  isHuman() {
+    return this.playerState === PlayerState.NORMAL;
   }
 
   determineVillagerToConsume() {
@@ -283,17 +397,12 @@ class Player extends Phaser.GameObjects.Graphics {
     if (this.physicsBody.x < (villagerX - epsilson)) {
       direction['x'] += 1;
 
-      this.physicsBody.anims.play('runWolf', true);
-
       if (this.physicsBody.flipX)
       {          
         this.physicsBody.flipX = false;
       }
-
     } else if (this.physicsBody.x > (villagerX + epsilson)) {
       direction['x'] -= 1;
-
-      this.physicsBody.anims.play('runWolf', true);
 
       if (!this.physicsBody.flipX)
       {          
@@ -302,12 +411,8 @@ class Player extends Phaser.GameObjects.Graphics {
     }
     if (this.physicsBody.y < (villagerY - epsilson)) {
       direction['y'] += 1;
-
-      this.physicsBody.anims.play('runWolf', true);
     } else if (this.physicsBody.y > (villagerY + epsilson)) {
       direction['y'] -= 1;
-
-      this.physicsBody.anims.play('runWolf', true);
     }
 
     this.autoMove(direction);

@@ -54,21 +54,23 @@ const FILE_NAMES = {
 class WorldMap {
   constructor(params) {
     this.params = params;
-    this.obstacles = [];
+    Obstacle.setObstacles(null);
+    Obstacle.setTownObstacles(null);
+    // this.obstacles = [];
     // this.scene = params.scene;
     // this.physics = params.scene.physics;
 
     const level = [
       [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ],
-      [  1,  23,  24,   3,   4,   5,   6,   7,   8,   9,   1 ],
-      [  1,  12,   0,   0,   0,  16,  17,  18,  19,  20,   1 ],
-      [  1,   5,   0,   0,   0,  27,  28,  29,  30,  31,   1 ],
-      [  1,  34,  35,   0,  13,  14,   0,   0,   0,   0,   1 ],
-      [  1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1 ],
-      [  1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   1 ],
-      [  1,   0,  14,  14,  14,  14,  14,   0,   0,   0,   1 ],
-      [  1,   0,   0,   0,   0,   0,   0,   0,   0,  15,   1 ],
-      [  1,   0,   0,   0,   0,   0,   0,   0,  15,  15,   1 ],
+      [  1,  23,  12,  34,  27,  14,  13,  33,   0,   0,   1 ],
+      [  1,   9,   8,   8,  10,  16,   0,  17,  18,  30,   1 ],
+      [  1,  10,   2,   9,   8,  11,   0,   4,  13,  17,   1 ],
+      [  1,  11,   3,  11,  12,   9,   0,  30,   0,   0,   1 ],
+      [  1,  27,   8,  10,   9,  28,  12,   9,   0,  10,   1 ],
+      [  1,  12,  10,   4,   0,  25,   8,   0,   7,   8,   1 ],
+      [  1,   8,  35,  28,   8,  11,   9,  24,  29,  32,   1 ],
+      [  1,  27,   5,  16,   9,  10,   3,   6,  32,  31,   1 ],
+      [  1,  16,  15,  35,  12,   8,   7,  29,  31,  29,   1 ],
       [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1 ]
     ];
     const levelNumCols = level.length
@@ -76,26 +78,47 @@ class WorldMap {
 
     level.forEach((arr, row) => {
       arr.forEach((id, col) => {
-        const x = (CONSTANTS.WORLD_WIDTH / (levelNumCols - 1)) * col;
-        const y = (CONSTANTS.WORLD_HEIGHT / (levelNumRows - 1)) * row;
+        let x = (CONSTANTS.WORLD_WIDTH / (levelNumCols - 1)) * col;
+        let y = (CONSTANTS.WORLD_HEIGHT / (levelNumRows - 1)) * row;
+        if (id > 1) {
+          x += this.randomOffset(110);
+          y += this.randomOffset(110);
+        }
         this.createObstacle(id, x, y);
       });
     });
-    
+
     // Create the town
-    this.createObstacle(23, 1000, 600)
-    this.createObstacle(23, 800, 600)
-    this.createObstacle(12, 720, 710)
-    this.createObstacle(10, 835, 770)
-    this.createObstacle(24, 850, 600)
-    this.createObstacle(24, 890, 750)
+    this.createObstacle(23, 1000, 600, true)
+    this.createObstacle(23, 800, 600, true)
+    this.createObstacle(12, 720, 710, true)
+    this.createObstacle(10, 835, 770, true)
+    this.createObstacle(24, 850, 600, true)
+    this.createObstacle(24, 890, 750, true)
+    this.createObstacle(26, 840, 890, true) // Sign post
+  }
+
+  randomOffset(maxOffset) {
+    return -maxOffset + Math.random() * (2 * maxOffset);
   }
 
   getObstacles() {
     return Obstacle.getObstacles();
   }
 
-  createObstacle(id, x, y) {
+  getTownObstacles() {
+    return Obstacle.getTownObstacles();
+  }
+
+  setObstacles(setVal) {
+    Obstacle.setObstacles(setVal);
+  }
+
+  setTownObstacles(setVal) {
+    Obstacle.setTownObstacles(setVal);
+  }
+
+  createObstacle(id, x, y, town=false) {
     let filename;
 
     if (id == 0) {
@@ -109,10 +132,10 @@ class WorldMap {
     } else if (id < 27) {
       filename = FILE_NAMES.buildings[id - 23];
     } else if (id < 36) {
-      filename = FILE_NAMES.trees[id - 29];
+      filename = FILE_NAMES.trees[id - 27];
     }
     if (!filename) return false;
-    new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename});
+    new Obstacle({scene: this.params.scene, x: x, y: y, filename: filename, town: town});
     return true;
   }
 

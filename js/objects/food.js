@@ -17,6 +17,7 @@ class Food extends Collectible {
     this.physicsBody = this.scene.physics.add.image(this.x, this.y, this.texture.key);
     this.physicsBody.getFood = () => this;
     this.onEatListeners = [];
+    this.physicsBody.setDepth(this.y);
     allFood.push(this);
     this.setupHitbox();
   }
@@ -54,6 +55,11 @@ class Food extends Collectible {
     });
     this.onEatListeners = [];
   }
+
+  setLocation(x, y) {
+    this.physicsBody.setX(x);
+    this.physicsBody.setY(y);
+  }
 }
 
 Food.getAvailableFood = () => {
@@ -88,6 +94,10 @@ Food.getClosestAvailableFood = (x, y) => {
     return allFood[Math.floor(Math.random() * allFood.length)];
   }
   return closestAvailableFood;
+}
+
+Food.clearAllFood = () => {
+  allFood.length = 0;
 }
 
 export default Food;
