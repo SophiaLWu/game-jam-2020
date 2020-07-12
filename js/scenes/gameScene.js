@@ -21,6 +21,7 @@ class GameScene extends Phaser.Scene {
     }
     this.load.image('villager', '../../assets/star.png');
     this.load.image('apple', '../../assets/41-small.png');
+    this.load.image('heart', '../../assets/heart2.png');
 
     //this.load.multiatlas('princessIdle', '../../assets/Princess/PrincessIdle.json', '../../assets');
     //this.load.multiatlas('princessAtlas', '../../assets/Princess.json', '../../assets/Princess');

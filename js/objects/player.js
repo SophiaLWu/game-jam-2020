@@ -81,6 +81,22 @@ class Player extends Phaser.GameObjects.Graphics {
 
     //Hunger variables and timer
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_STARTING;
+
+    // Icons
+    this.appleIcon = this.scene.add.image(10, 60, 'apple');
+    this.appleIcon.displayWidth = 17;
+    this.appleIcon.displayHeight = 17;
+    this.appleIcon.setDepth(Number.MAX_SAFE_INTEGER);
+    this.appleIcon.setScrollFactor(0);
+    this.appleIcon.setActive(true);
+
+    this.heartIcon = this.scene.add.image(9, 32, 'heart');
+    this.heartIcon.displayWidth = 50;
+    this.heartIcon.displayHeight = 50;
+    this.heartIcon.setDepth(Number.MAX_SAFE_INTEGER);
+    this.heartIcon.setScrollFactor(0);
+    this.heartIcon.setActive(true);
+
     this.stomachBar = new Bar({
       scene: this.scene,
       name: 'Stomach Contents',
@@ -140,7 +156,7 @@ class Player extends Phaser.GameObjects.Graphics {
       repeat: -1 
     });
 
-    this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
+    this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.05, loop: true });  
   }
 
   handleKeyboardInput(direction) {
@@ -293,7 +309,7 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   eatFood() {
-    let sfx = this.scene.sound.add('eatSound', { volume: 0.4, loop: false });
+    let sfx = this.scene.sound.add('eatSound', { volume: 0.2, loop: false });
     sfx.play();
     this.foodEaten += 1;
     this.stomachContents = Math.min(this.stomachContents + 10, CONSTANTS.STOMACH_CONTENTS_MAX);
@@ -326,7 +342,7 @@ class Player extends Phaser.GameObjects.Graphics {
         clearInterval(this.shakeInterval);
       }
     }, 200);
-    let sfx = this.scene.sound.add('transformSound', { volume: 0.3, loop: false });
+    let sfx = this.scene.sound.add('transformSound', { volume: 0.1, loop: false });
     sfx.play();
     this.damage(1, /* enableShake= */ false);
     this.setCollisions(false);

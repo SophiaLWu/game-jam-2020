@@ -26,7 +26,7 @@ class GameOverScene extends Phaser.Scene {
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 98, `Villagers Eaten: ${this.villagersEaten}`, { fontSize: '24px', fill: '#fff' });
     this.add.text(30, CONSTANTS.SCREEN_HEIGHT / 3 + 122, 'Press Space to restart', { fontSize: '24px', fill: '#fff' });
 
-    let sfx = this.sound.add('gameEndSound', { volume: 0.2, loop: false });
+    let sfx = this.sound.add('gameEndSound', { volume: 0.1, loop: false });
     sfx.play();
   }
 
