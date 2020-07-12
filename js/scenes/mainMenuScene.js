@@ -32,9 +32,7 @@ class MainMenuScene extends Phaser.Scene {
     this.input.keyboard.once('keydown_M', function(){
       Game.toggleSound();
     }, this);
-  }
-
-  
+  }  
 }
 
 export default MainMenuScene;

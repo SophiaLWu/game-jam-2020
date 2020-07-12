@@ -322,6 +322,8 @@ class Player extends Phaser.GameObjects.Graphics {
     }, 200);
     let sfx = this.scene.sound.add('transformSound', { volume: 0.1, loop: false });
     sfx.play();
+    let howl = this.scene.sound.add('wolfHowl', { volume: 0.1, loop: false });
+    howl.play();
     this.damage(1, /* enableShake= */ false);
     this.setCollisions(false);
     this.speed = 0;

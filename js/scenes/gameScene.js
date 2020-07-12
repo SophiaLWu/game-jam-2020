@@ -45,6 +45,7 @@ class GameScene extends Phaser.Scene {
 
     // Sound FX
     this.load.audio('transformSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/Transform_Sound.wav');
+    this.load.audio('wolfHowl', 'https://sophialwu.github.io/game-jam-2020/assets/sound/fadewolf.mp3');
     this.load.audio('eatSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat.mp3');
     this.load.audio('eatVillagerSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/eat_villager.mp3');
     this.load.audio('humanFootstepsSnowSound', 'https://sophialwu.github.io/game-jam-2020/assets/sound/human_footsteps_snow.mp3');
