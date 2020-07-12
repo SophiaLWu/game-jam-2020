@@ -267,28 +267,28 @@ Villager.scareOtherVillagers = (playerX, playerY) => {
 Villager.buildVillagerAnimations = (scene) => {
   scene.anims.create({
     key: 'rightMaleVillager1',
-    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 6, end: 8 } ),
+    frames: scene.anims.generateFrameNames('maleVillager1', { prefix: 'right_walk', end: 2, suffix: '.png'}), //scene.anims.generateFrameNumbers('maleVillager1', { start: 6, end: 8 } ),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'leftMaleVillager1',
-    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 3, end: 5 } ),
+    frames: scene.anims.generateFrameNames('maleVillager1', { prefix: 'left_walk', end: 2, suffix: '.png'}), //scene.anims.generateFrameNumbers('maleVillager1', { start: 3, end: 5 } ),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'downMaleVillager1',
-    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 0, end: 2 } ),
+    frames: scene.anims.generateFrameNames('maleVillager1', { prefix: 'down_walk', end: 2, suffix: '.png'}), //scene.anims.generateFrameNumbers('maleVillager1', { start: 0, end: 2 } ),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'upMaleVillager1',
-    frames: scene.anims.generateFrameNumbers('maleVillager1', { start: 9, end: 11 } ),
+    frames: scene.anims.generateFrameNames('maleVillager1', { prefix: 'up_walk', end: 2, suffix: '.png'}), //scene.anims.generateFrameNumbers('maleVillager1', { start: 9, end: 11 } ),
     frameRate: 10,
     repeat: -1
   });
@@ -297,28 +297,28 @@ Villager.buildVillagerAnimations = (scene) => {
 
   scene.anims.create({
     key: 'rightMilitary1',
-    frames: scene.anims.generateFrameNumbers('rightMilitary1', { start: 0, end: 1 } ),
+    frames: scene.anims.generateFrameNames('military1', { prefix: 'right_walk', end: 2, suffix: '.png'} ),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'leftMilitary1',
-    frames: scene.anims.generateFrameNumbers('leftMilitary1', { start: 0, end: 1 } ),
+    frames: scene.anims.generateFrameNames('military1', { prefix: 'left_walk', end: 2, suffix: '.png'}),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'downMilitary1',
-    frames: scene.anims.generateFrameNumbers('downMilitary1', { start: 0, end: 1 } ),
+    frames: scene.anims.generateFrameNames('military1', { prefix: 'down_walk', end: 2, suffix: '.png'}),
     frameRate: 10,
     repeat: -1
   });
 
   scene.anims.create({
     key: 'upMilitary1',
-    frames: scene.anims.generateFrameNumbers('upMilitary1', { start: 0, end: 1 } ),
+    frames: scene.anims.generateFrameNames('military1', { prefix: 'up_walk', end: 2, suffix: '.png'}),
     frameRate: 10,
     repeat: -1
   });

@@ -124,6 +124,13 @@ class Player extends Phaser.GameObjects.Graphics {
       repeat: -1
     })
 
+    this.scene.anims.create({ 
+      key: 'wolfPrincessTransform', 
+      frames: this.scene.anims.generateFrameNames('wolfToPrincess'), 
+      frameRate: 10,
+      repeat: -1 
+    });
+
     this.snowSound = this.scene.sound.add('humanFootstepsSnowSound', { volume: 0.1, loop: true });  
   }
 
@@ -227,7 +234,8 @@ class Player extends Phaser.GameObjects.Graphics {
     }
 
     if ((!this.isWerewolf) && direction.x == 0 && direction.y == 0) {
-      this.physicsBody.anims.play('idlePrincess', true);
+      //this.physicsBody.anims.play('idlePrincess', true);
+      this.physicsBody.anims.play('wolfPrincessTransform', true);
     } else if (this.isWerewolf && direction.x == 0) {
       this.physicsBody.anims.play('attackWolf', true);
     }
@@ -315,6 +323,8 @@ class Player extends Phaser.GameObjects.Graphics {
   }
 
   turnHuman() {
+    this.physicsBody.anims.play('wolfPrincessTransform', true);
+
     this.setCollisions(true);
     this.stomachContents = CONSTANTS.STOMACH_CONTENTS_MAX / 2;
     this.updateStomatchBar();

@@ -1,0 +1,272 @@
+{
+	"textures": [
+		{
+			"image": "AngryMaleVillager1.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 204,
+				"h": 30
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "down_stand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 30
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 30
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 30
+					}
+				},
+				{
+					"filename": "down_walk1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 17,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "down_walk2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 34,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "left_stand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 30
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 30
+					},
+					"frame": {
+						"x": 51,
+						"y": 0,
+						"w": 15,
+						"h": 30
+					}
+				},
+				{
+					"filename": "left_walk1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 68,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "left_walk2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 85,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "right_stand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 30
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 30
+					},
+					"frame": {
+						"x": 102,
+						"y": 0,
+						"w": 15,
+						"h": 30
+					}
+				},
+				{
+					"filename": "right_walk1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 119,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "right_walk2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 136,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "up_stand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 30
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 30
+					},
+					"frame": {
+						"x": 153,
+						"y": 0,
+						"w": 17,
+						"h": 30
+					}
+				},
+				{
+					"filename": "up_walk1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 170,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "up_walk2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 187,
+						"y": 0,
+						"w": 15,
+						"h": 29
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:8f3723c04e73dfa1c00e997ad30ec51e:aa0907c19c8aa0386177592b98cfaaf6:d2e9b0c09b7cfbad4ea027b9b38b38e9$"
+	}
+}
